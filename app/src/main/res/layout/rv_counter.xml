@@ -1,34 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                                                   xmlns:app="http://schemas.android.com/apk/res-auto"
-                                                   xmlns:tools="http://schemas.android.com/tools"
-                                                   android:layout_width="match_parent"
-                                                   android:layout_height="wrap_content"
-                                                   android:layout_margin="8dp"
-                                                   android:background="@drawable/frame_background">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    android:background="@drawable/frame_background"
+    android:clickable="true"
+    android:focusable="true"
+    android:foreground="?attr/selectableItemBackground">
 
     <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:id="@+id/timestamp" tools:text="Timestamp" app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginStart="16dp" app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginTop="16dp" app:layout_constraintBottom_toBottomOf="parent"
-            android:layout_marginBottom="16dp" app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintEnd_toStartOf="@+id/index" android:gravity="center_horizontal"/>
+        android:id="@+id/timestamp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="24dp"
+        android:gravity="center_vertical"
+        android:textAppearance="@style/SingleLineSecondaryText"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/name"
+        tools:text="Timestamp" />
+
     <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:id="@+id/index" tools:text="Index" app:layout_constraintEnd_toStartOf="@+id/timing"
-            android:layout_marginEnd="8dp" app:layout_constraintStart_toEndOf="@+id/timestamp"
-            android:layout_marginStart="8dp" android:layout_marginTop="16dp" app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginBottom="16dp" app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintHorizontal_bias="0.5" android:gravity="center_horizontal"/>
+        android:id="@+id/name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="16dp"
+        android:textAppearance="@style/SingleLinePrimaryText"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toStartOf="@+id/count"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Counter #1" />
+
     <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:id="@+id/timing" tools:text="Timing" app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginEnd="8dp" app:layout_constraintTop_toTopOf="parent" android:layout_marginTop="16dp"
-            app:layout_constraintBottom_toBottomOf="parent" android:layout_marginBottom="16dp"
-            app:layout_constraintStart_toEndOf="@+id/index" app:layout_constraintHorizontal_bias="0.5"
-            android:gravity="center_horizontal"/>
+        android:id="@+id/count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="16dp"
+        android:textAppearance="@style/SingleLinePrimaryMediumText"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="@+id/name"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="2048" />
 </androidx.constraintlayout.widget.ConstraintLayout>

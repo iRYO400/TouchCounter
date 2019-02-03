@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">Touch Counter</string>
+    <string name="info_hold_timing">Время удержания кнопки. Погрешность ±5</string>
+    <string name="default_timing">0 ms</string>
+    <string name="default_count">0</string>
+    <string name="default_name">Counter #%d</string>
+    <string name="counter_group">Счетчики</string>
+    <string name="counter_list">Список счетчиков</string>
 </resources>

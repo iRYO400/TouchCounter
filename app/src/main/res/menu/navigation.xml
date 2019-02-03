@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:checkable="false"
+            android:title="@string/counter_group">
+            <menu>
+                <item
+                    android:id="@+id/list_counter"
+                    android:checkable="true"
+                    android:checked="true"
+                    android:icon="@drawable/ic_info_outline_black_24dp"
+                    android:title="@string/counter_list"
+                    android:visible="true" />
+            </menu>
+        </item>
+    </group>
+</menu>
