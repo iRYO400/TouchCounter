@@ -6,9 +6,10 @@ import androidx.room.PrimaryKey
 
 @Entity
 data class CounterObject(
-    val timestampCreating: Long,
+    var timestampCreating: Long,
+    var timestampEditing: Long,
     var count: Long,
-    val name: String
+    var name: String
 ) {
     @PrimaryKey(autoGenerate = true)
     var id: Long = 0

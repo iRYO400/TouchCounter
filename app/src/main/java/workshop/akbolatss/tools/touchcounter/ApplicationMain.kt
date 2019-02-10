@@ -19,7 +19,6 @@ class ApplicationMain : Application() {
         instance = this
 
         appDatabase = Room.databaseBuilder(instance, AppDataBase::class.java, DATABASE_ID)
-//            .allowMainThreadQueries()
             .build()
     }
 }

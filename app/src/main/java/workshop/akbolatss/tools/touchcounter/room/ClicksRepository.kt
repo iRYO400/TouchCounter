@@ -35,8 +35,8 @@ class ClicksRepository(private val dataDao: DataDao) {
     }
 
     private suspend fun saveClickObjects(
-            counterObject: CounterObject,
-            counterId: Long
+        counterObject: CounterObject,
+        counterId: Long
     ) {
         withContext(Dispatchers.IO) {
             for (click in counterObject.clickObjects) {
@@ -55,6 +55,31 @@ class ClicksRepository(private val dataDao: DataDao) {
     suspend fun updateCounter(counterObject: CounterObject) {
         withContext(Dispatchers.IO) {
             dataDao.updateCounter(counterObject)
+        }
+    }
+
+    suspend fun deleteCounter(counter: CounterObject) {
+        withContext(Dispatchers.IO) {
+            dataDao.deleteCounter(counter)
+            dataDao.deleteClicks(counter.id)
+        }
+    }
+
+    suspend fun getAllClicks(): Int {
+        return withContext(Dispatchers.IO) {
+            dataDao.getAllClicksCount()
+        }
+    }
+
+    suspend fun getLongestClick(): Long {
+        return withContext(Dispatchers.IO) {
+            dataDao.getLongestClick()
+        }
+    }
+
+    suspend fun getMostClicksInCounter(): Int {
+        return withContext(Dispatchers.IO) {
+            dataDao.getMostClicksInCounter()
         }
     }
 }

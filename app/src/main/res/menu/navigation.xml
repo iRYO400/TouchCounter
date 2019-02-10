@@ -15,5 +15,17 @@
                     android:visible="true" />
             </menu>
         </item>
+
+        <item
+            android:checkable="false"
+            android:title="@string/nav_others">
+            <menu>
+                <item
+                    android:id="@+id/send_email"
+                    android:checkable="false"
+                    android:icon="@drawable/ic_email_black_24dp"
+                    android:title="@string/nav_send_email" />
+            </menu>
+        </item>
     </group>
 </menu>

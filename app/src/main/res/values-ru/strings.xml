@@ -1,0 +1,30 @@
+<resources>
+    <string name="app_name">Счетчик кликов</string>
+    <string name="info_hold_timing">Время удержания кнопки. Погрешность ±5</string>
+    <string name="default_timing">0 мс</string>
+    <string name="default_count">0</string>
+    <string name="default_name">Счетчик #%d</string>
+    <string name="counter_group">Счетчики</string>
+    <string name="counter_list">Список счетчиков</string>
+    <string name="options_title">Настройки: %s</string>
+    <string name="options_hint_name">Имя</string>
+    <string name="options_positive">Сохранить</string>
+    <string name="options_negative">Отмена</string>
+    <string name="options_neutral">Удалить</string>
+    <string name="confirmation_delete_title">Вы уверены что хотите удалить?</string>
+    <string name="confirmation_delete_message">Удаленные данные не возможно восстановить</string>
+    <string name="confirmation_delete_positive">Да</string>
+    <string name="confirmation_delete_negative">Нет</string>
+    <string name="options_description">Настройки</string>
+
+    <string name="action_settings">Настройки</string>
+    <string name="stats_counters_count">Счетчиков:</string>
+    <string name="stats_clicks_count">Кликов:</string>
+    <string name="stats_long_click">Самый долгий клик(мс):</string>
+    <string name="stats_most_clicks">Макс. кликов:</string>
+
+    <string name="stats_title">Статистика</string>
+    <string name="nav_others">Другое</string>
+    <string name="nav_send_email">Ваши предложения</string>
+    <string name="nav_send_email_helper">Отправить предложения используя</string>
+</resources>

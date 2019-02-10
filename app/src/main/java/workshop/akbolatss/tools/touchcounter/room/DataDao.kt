@@ -18,7 +18,7 @@ interface DataDao {
     @Query("SELECT * FROM CounterObject WHERE id = :id")
     fun counterObject(id: Long): LiveData<CounterObject>
 
-    @Query("SELECT * FROM CounterObject ORDER BY timestampCreating DESC")
+    @Query("SELECT * FROM CounterObject ORDER BY timestampEditing DESC")
     fun getCounterObjects(): LiveData<List<CounterObject>>
 
     @Query("SELECT * FROM CounterObject")
@@ -45,13 +45,19 @@ interface DataDao {
     @Update
     fun updateCounter(counterObject: CounterObject)
 
-//    @Query("SELECT * FROM CounterObject WHERE id = :id")
-//    fun getById(id: Long): CounterObject
-//
-//    @Insert(onConflict = REPLACE)
-//    fun add(counterObject: CounterObject): Long
-//
-//    @Delete
-//    fun delete(counterObject: CounterObject)
+    @Delete
+    fun deleteCounter(counterObject: CounterObject)
+
+    @Query("SELECT SUM(count) FROM CounterObject")
+    fun getAllClicksCount(): Int
+
+    @Query("SELECT MAX(holdTiming) FROM ClickObject")
+    fun getLongestClick(): Long
+
+    @Query("SELECT MAX(count) FROM CounterObject")
+    fun getMostClicksInCounter(): Int
+
+    @Query("DELETE FROM ClickObject WHERE counterId = :id")
+    fun deleteClicks(id: Long)
 
 }

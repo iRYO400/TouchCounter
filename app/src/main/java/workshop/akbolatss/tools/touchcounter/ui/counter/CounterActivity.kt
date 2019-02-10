@@ -2,19 +2,21 @@ package workshop.akbolatss.tools.touchcounter.ui.counter
 
 import android.animation.ArgbEvaluator
 import android.animation.ObjectAnimator
-import android.graphics.Color
 import android.os.Bundle
-import android.os.PersistableBundle
 import android.util.Property
 import android.view.MotionEvent
 import android.view.animation.DecelerateInterpolator
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatImageView
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProviders
 import kotlinx.android.synthetic.main.activity_counter.*
 import workshop.akbolatss.tools.touchcounter.*
 import workshop.akbolatss.tools.touchcounter.pojo.ClickObject
+import workshop.akbolatss.tools.touchcounter.utils.PopupView
+import workshop.akbolatss.tools.touchcounter.utils.getCurrentTime
+import workshop.akbolatss.tools.touchcounter.utils.showToast
 import java.util.*
 
 
@@ -70,19 +72,27 @@ class CounterActivity : AppCompatActivity() {
     private lateinit var animator: ObjectAnimator
 
     private val property: Property<TextView, Int> =
-            object : Property<TextView, Int>(Int::class.javaPrimitiveType, "textColor") {
-                override operator fun get(`object`: TextView): Int? {
-                    return `object`.currentTextColor
-                }
-
-                override operator fun set(`object`: TextView, value: Int?) {
-                    `object`.setTextColor(value!!)
-                }
+        object : Property<TextView, Int>(Int::class.javaPrimitiveType, "textColor") {
+            override operator fun get(`object`: TextView): Int? {
+                return `object`.currentTextColor
             }
 
+            override operator fun set(`object`: TextView, value: Int?) {
+                `object`.setTextColor(value!!)
+            }
+        }
+
     private fun setListeners() {
-        animator = ObjectAnimator.ofInt(tv_timing, property, Color.RED, Color.BLUE, Color.GREEN)
-        animator.duration = 30000L
+        animator = ObjectAnimator.ofInt(
+            tv_timing, property,
+            ContextCompat.getColor(this, R.color.md_blue_grey_500),
+            ContextCompat.getColor(this, R.color.md_blue_500),
+            ContextCompat.getColor(this, R.color.md_red_500),
+            ContextCompat.getColor(this, R.color.md_green_500),
+            ContextCompat.getColor(this, R.color.md_grey_500),
+            ContextCompat.getColor(this, R.color.colorAccent)
+        )
+        animator.duration = 20000L
         animator.setEvaluator(ArgbEvaluator())
         animator.interpolator = DecelerateInterpolator(2f)
 
@@ -113,7 +123,7 @@ class CounterActivity : AppCompatActivity() {
         val popupView = PopupView(this)
         icon.setOnClickListener { v ->
             removeFocusFromCurrent()
-            popupView.showAsDropDownDef(v)
+            popupView.showPopup(v)
         }
     }
 

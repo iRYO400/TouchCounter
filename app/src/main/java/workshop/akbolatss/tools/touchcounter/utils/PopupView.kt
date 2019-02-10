@@ -1,43 +1,30 @@
-package workshop.akbolatss.tools.touchcounter
+package workshop.akbolatss.tools.touchcounter.utils
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
-import android.widget.PopupWindow
-import android.widget.TextView
-
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
+import android.widget.PopupWindow
+import workshop.akbolatss.tools.touchcounter.R
 
 class PopupView(context: Context) {
 
     private val popupWindow: PopupWindow
-    private val contentView: View
-    private val messageView: TextView
 
     init {
         val inflater = LayoutInflater.from(context)
-        contentView = inflater.inflate(R.layout.view_popup, null)
-
-        messageView = contentView.findViewById(R.id.tv_message)
-
+        val contentView: View = inflater.inflate(R.layout.view_popup, null)
         popupWindow = PopupWindow(contentView, WRAP_CONTENT, WRAP_CONTENT)
         popupWindow.isFocusable = true
     }
 
-    private fun showAsDropDown(anchor: View) {
-        setDismissTouchListener()
+    fun showPopup(anchor: View) {
+        setDismissListener()
         popupWindow.showAsDropDown(anchor)
     }
 
-    fun showAsDropDownDef(anchor: View) {
-        setDismissTouchListener()
-        showAsDropDown(anchor)
-    }
-
-    @SuppressLint("ClickableViewAccessibility")
-    private fun setDismissTouchListener() {
+    private fun setDismissListener() {
         popupWindow.setTouchInterceptor { _, event ->
             val dismissPopup = event.action == MotionEvent.ACTION_OUTSIDE
             if (dismissPopup)

@@ -7,8 +7,8 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
-import workshop.akbolatss.tools.touchcounter.INTENT_COUNTER_ID
-import workshop.akbolatss.tools.touchcounter.logd
+import workshop.akbolatss.tools.touchcounter.utils.INTENT_COUNTER_ID
+import workshop.akbolatss.tools.touchcounter.utils.getCurrentTime
 import workshop.akbolatss.tools.touchcounter.pojo.ClickObject
 import workshop.akbolatss.tools.touchcounter.pojo.CounterObject
 import workshop.akbolatss.tools.touchcounter.room.ClicksRepository
@@ -38,11 +38,6 @@ class CounterViewModel : ViewModel() {
 
     private var counterId: Long = -1L
 
-    override fun onCleared() {
-        super.onCleared()
-        viewModelJob.cancel()
-    }
-
     fun processRepository(dataDao: DataDao) {
         repository = ClicksRepository(dataDao)
     }
@@ -64,8 +59,15 @@ class CounterViewModel : ViewModel() {
     fun updateCounter() {
         uiScope.launch {
             val counterObject = counterLiveData.value!!
+            counterObject.timestampEditing =
+                getCurrentTime()
             counterObject.count = clicksLiveData.value!!.size.toLong()
             repository.updateCounter(counterObject)
         }
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        viewModelJob.cancel()
     }
 }

@@ -10,7 +10,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
-        app:cardBackgroundColor="@color/white"
         app:cardCornerRadius="4dp"
         app:cardElevation="4dp">
 
@@ -19,12 +18,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
-            android:background="@color/white"
-            android:lineSpacingMultiplier="1.1"
             android:text="@string/info_hold_timing"
             android:textAppearance="@style/SingleLinePrimaryText"
             android:textSize="14sp" />
 
     </com.google.android.material.card.MaterialCardView>
-
 </FrameLayout>
