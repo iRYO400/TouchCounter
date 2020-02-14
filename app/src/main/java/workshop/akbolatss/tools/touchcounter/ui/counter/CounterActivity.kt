@@ -10,9 +10,10 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import kotlinx.android.synthetic.main.activity_counter.*
-import workshop.akbolatss.tools.touchcounter.*
+import workshop.akbolatss.tools.touchcounter.ApplicationMain
+import workshop.akbolatss.tools.touchcounter.R
 import workshop.akbolatss.tools.touchcounter.pojo.ClickObject
 import workshop.akbolatss.tools.touchcounter.utils.PopupView
 import workshop.akbolatss.tools.touchcounter.utils.getCurrentTime
@@ -43,13 +44,13 @@ class CounterActivity : AppCompatActivity() {
     }
 
     private fun initViewModel() {
-        viewModel = ViewModelProviders.of(this).get(CounterViewModel::class.java)
+        viewModel = ViewModelProvider(this).get(CounterViewModel::class.java)
         viewModel.processRepository(ApplicationMain.instance.appDatabase.dataDao)
         viewModel.processIntent(intent)
     }
 
     private fun initRecyclerView() {
-        adapter = ClickAdapter { clickObject: ClickObject, position: Int ->
+        adapter = ClickAdapter { _: ClickObject, _: Int ->
 
         }
         recyclerView.adapter = adapter

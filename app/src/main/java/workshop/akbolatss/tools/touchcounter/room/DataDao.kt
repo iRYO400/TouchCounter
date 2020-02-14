@@ -27,9 +27,6 @@ interface DataDao {
     @Query("SELECT * FROM ClickObject WHERE counterId = :counterId")
     fun getClickObjects(counterId: Long): LiveData<List<ClickObject>>
 
-    @Query("SELECT * FROM ClickObject WHERE counterId = :counterId")
-    fun getClickObjectsLD(counterId: Long): LiveData<List<ClickObject>>
-
     @Insert(onConflict = REPLACE)
     fun saveCounter(counterObject: CounterObject): Long
 

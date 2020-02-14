@@ -9,14 +9,14 @@ import android.widget.Button
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.textfield.TextInputEditText
 import kotlinx.android.synthetic.main.fragment_counters.*
 import workshop.akbolatss.tools.touchcounter.ApplicationMain
 import workshop.akbolatss.tools.touchcounter.R
-import workshop.akbolatss.tools.touchcounter.utils.dp
 import workshop.akbolatss.tools.touchcounter.pojo.CounterObject
 import workshop.akbolatss.tools.touchcounter.ui.NavigationActivity
+import workshop.akbolatss.tools.touchcounter.utils.dp
 
 
 class ListCountersFragment : Fragment() {
@@ -31,7 +31,7 @@ class ListCountersFragment : Fragment() {
 
     private lateinit var adapter: CounterAdapter
 
-    override fun onAttach(context: Context?) {
+    override fun onAttach(context: Context) {
         super.onAttach(context)
         callback = (context as NavigationActivity)
     }
@@ -59,13 +59,13 @@ class ListCountersFragment : Fragment() {
     }
 
     private fun initViewModel() {
-        viewModel = ViewModelProviders.of(this).get(ListCountersViewModel::class.java)
+        viewModel = ViewModelProvider(this).get(ListCountersViewModel::class.java)
         viewModel.processRepository(ApplicationMain.instance.appDatabase.dataDao)
 
     }
 
     private fun initAdapter() {
-        adapter = CounterAdapter { counter, position, clickType ->
+        adapter = CounterAdapter { counter, _, clickType ->
             when (clickType) {
                 ClickType.ITEM_CLICK -> {
                     callback.onListItemClick(counter)
@@ -79,7 +79,7 @@ class ListCountersFragment : Fragment() {
     }
 
     private fun setObservers() {
-        viewModel.countersLiveData.observe(this, Observer { list ->
+        viewModel.countersLiveData.observe(viewLifecycleOwner, Observer { list ->
             adapter.submitList(list)
         })
     }
@@ -98,16 +98,16 @@ class ListCountersFragment : Fragment() {
         val input = view.findViewById<TextInputEditText>(R.id.input_name)
         input.setText(counter.name)
 
-        builder.setPositiveButton(R.string.options_positive) { dialog, which ->
+        builder.setPositiveButton(R.string.options_positive) { _, _ ->
             counter.name = input.text.toString()
             viewModel.updateCounter(counter)
         }
 
-        builder.setNegativeButton(R.string.options_negative) { dialog, which ->
+        builder.setNegativeButton(R.string.options_negative) { dialog, _ ->
             dialog.cancel()
         }
 
-        builder.setNeutralButton(R.string.options_neutral) { dialog, which ->
+        builder.setNeutralButton(R.string.options_neutral) { _, _ ->
             showDeleteDialog(counter)
         }
 
@@ -119,7 +119,7 @@ class ListCountersFragment : Fragment() {
             AlertDialog.BUTTON_NEUTRAL
         )
         for (i in buttons) {
-            var b: Button? = null
+            var b: Button?
             try {
                 b = alertDialog.getButton(i)
                 b!!.setPadding(8.dp, 0, 8.dp, 0)
@@ -136,11 +136,11 @@ class ListCountersFragment : Fragment() {
         val builder = AlertDialog.Builder(activity!!)
         builder.setTitle(getString(R.string.confirmation_delete_title))
         builder.setMessage(getString(R.string.confirmation_delete_message))
-        builder.setPositiveButton(R.string.confirmation_delete_positive) { dialog, which ->
+        builder.setPositiveButton(R.string.confirmation_delete_positive) { _, _ ->
             viewModel.deleteCounter(counter)
         }
 
-        builder.setNegativeButton(R.string.confirmation_delete_negative) { dialog, which ->
+        builder.setNegativeButton(R.string.confirmation_delete_negative) { dialog, _ ->
             dialog.cancel()
         }
         builder.show()
