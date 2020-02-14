@@ -10,9 +10,9 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import kotlinx.android.synthetic.main.activity_navigation.*
 import kotlinx.android.synthetic.main.nav_header.view.*
-import workshop.akbolatss.tools.touchcounter.ApplicationMain
 import workshop.akbolatss.tools.touchcounter.R
 import workshop.akbolatss.tools.touchcounter.pojo.CounterObject
+import workshop.akbolatss.tools.touchcounter.room.AppDataBase
 import workshop.akbolatss.tools.touchcounter.ui.counter.CounterActivity
 import workshop.akbolatss.tools.touchcounter.ui.list.OnListCallback
 import workshop.akbolatss.tools.touchcounter.utils.INTENT_COUNTER_ID
@@ -37,7 +37,7 @@ class NavigationActivity : AppCompatActivity(), OnListCallback {
 
     private fun initViewModel() {
         viewModel = ViewModelProvider(this).get(NavigationViewModel::class.java)
-        viewModel.processRepository(ApplicationMain.instance.appDatabase.dataDao)
+        viewModel.processRepository(AppDataBase.getInstance(this).dataDao)
     }
 
     private fun setObservers() {

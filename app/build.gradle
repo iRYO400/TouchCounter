@@ -53,7 +53,14 @@ dependencies {
     implementation 'androidx.room:room-ktx:2.2.3'
     kapt 'androidx.room:room-compiler:2.2.3'
 
-    testImplementation 'junit:junit:4.13'
     androidTestImplementation 'androidx.test:runner:1.2.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+
+    testImplementation 'junit:junit:4.13'
+    // Robolectric environment
+    testImplementation 'androidx.test:core:1.2.0'
+    // Mockito framework
+    testImplementation 'org.mockito:mockito-core:2.28.2'
+    // Assert helper
+    testImplementation "com.google.truth:truth:1.0.1"
 }

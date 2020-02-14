@@ -12,9 +12,9 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.textfield.TextInputEditText
 import kotlinx.android.synthetic.main.fragment_counters.*
-import workshop.akbolatss.tools.touchcounter.ApplicationMain
 import workshop.akbolatss.tools.touchcounter.R
 import workshop.akbolatss.tools.touchcounter.pojo.CounterObject
+import workshop.akbolatss.tools.touchcounter.room.AppDataBase
 import workshop.akbolatss.tools.touchcounter.ui.NavigationActivity
 import workshop.akbolatss.tools.touchcounter.utils.dp
 
@@ -60,8 +60,9 @@ class ListCountersFragment : Fragment() {
 
     private fun initViewModel() {
         viewModel = ViewModelProvider(this).get(ListCountersViewModel::class.java)
-        viewModel.processRepository(ApplicationMain.instance.appDatabase.dataDao)
-
+        context?.let {
+            viewModel.processRepository(AppDataBase.getInstance(it).dataDao)
+        }
     }
 
     private fun initAdapter() {

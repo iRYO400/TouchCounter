@@ -11,22 +11,11 @@ import java.sql.Timestamp
 import java.text.ParseException
 import java.util.*
 
-fun <T : Any?> MutableLiveData<T>.default(initialValue: T) = apply { setValue(initialValue) }
-
-public const val TAG = "COUNTER_TAG"
-
 const val INTENT_COUNTER_ID = "counterId"
 const val SUPPORT_EMAIL = "whitesteel400@gmail.com"
 
-
-// Quick & dirty logcat extensions
-inline fun <reified T> T.logd(message: () -> String) = Log.d(T::class.java.simpleName, message())
-
 inline fun Context.showToast(message: () -> String) =
     Toast.makeText(this, message(), Toast.LENGTH_LONG).show()
-
-inline fun <reified T> T.loge(error: Throwable, message: () -> String) =
-    Log.d(T::class.java.simpleName, message(), error)
 
 fun Context.defaultName(index: Int): String {
     return getString(R.string.default_name, index)

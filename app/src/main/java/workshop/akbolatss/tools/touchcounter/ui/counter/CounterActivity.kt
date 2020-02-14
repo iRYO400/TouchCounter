@@ -12,9 +12,9 @@ import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import kotlinx.android.synthetic.main.activity_counter.*
-import workshop.akbolatss.tools.touchcounter.ApplicationMain
 import workshop.akbolatss.tools.touchcounter.R
 import workshop.akbolatss.tools.touchcounter.pojo.ClickObject
+import workshop.akbolatss.tools.touchcounter.room.AppDataBase
 import workshop.akbolatss.tools.touchcounter.utils.PopupView
 import workshop.akbolatss.tools.touchcounter.utils.getCurrentTime
 import workshop.akbolatss.tools.touchcounter.utils.showToast
@@ -45,7 +45,7 @@ class CounterActivity : AppCompatActivity() {
 
     private fun initViewModel() {
         viewModel = ViewModelProvider(this).get(CounterViewModel::class.java)
-        viewModel.processRepository(ApplicationMain.instance.appDatabase.dataDao)
+        viewModel.processRepository(AppDataBase.getInstance(this).dataDao)
         viewModel.processIntent(intent)
     }
 
