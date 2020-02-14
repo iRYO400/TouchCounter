@@ -18,7 +18,11 @@ class ApplicationMain : Application() {
         super.onCreate()
         instance = this
 
-        appDatabase = Room.databaseBuilder(instance, AppDataBase::class.java, DATABASE_ID)
+        appDatabase = Room.databaseBuilder(
+            this,
+            AppDataBase::class.java,
+            DATABASE_ID
+        )
             .build()
     }
 }
