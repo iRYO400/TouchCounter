@@ -12,26 +12,17 @@ interface DataDao {
     @Query("SELECT COUNT(name) FROM CounterObject")
     fun getCountersRowCount(): Int
 
-    @Query("SELECT COUNT(counterId) FROM ClickObject WHERE counterId =:counterId")
-    fun getClicksRowInCounterObject(counterId: Long): Int
-
     @Query("SELECT * FROM CounterObject WHERE id = :id")
     fun counterObject(id: Long): LiveData<CounterObject>
 
     @Query("SELECT * FROM CounterObject ORDER BY timestampEditing DESC")
     fun getCounterObjects(): LiveData<List<CounterObject>>
 
-    @Query("SELECT * FROM CounterObject")
-    fun getCounterObjectsSS(): List<CounterObject>
-
     @Query("SELECT * FROM ClickObject WHERE counterId = :counterId")
     fun getClickObjects(counterId: Long): LiveData<List<ClickObject>>
 
     @Insert(onConflict = REPLACE)
     fun saveCounter(counterObject: CounterObject): Long
-
-    @Insert(onConflict = REPLACE)
-    fun saveCounters(counterObjects: List<CounterObject>)
 
     @Insert(onConflict = REPLACE)
     fun saveClickObjects(clickObjects: List<ClickObject>)
