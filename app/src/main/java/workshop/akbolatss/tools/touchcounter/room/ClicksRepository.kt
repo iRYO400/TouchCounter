@@ -10,7 +10,7 @@ import workshop.akbolatss.tools.touchcounter.pojo.CounterObject
 class ClicksRepository(private val dataDao: DataDao) {
 
     fun getCounter(id: Long): LiveData<CounterObject> {
-        return dataDao.counterObject(id)
+        return dataDao.getCounterObject(id)
     }
 
     suspend fun getCountersCount(): Int {

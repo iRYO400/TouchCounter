@@ -60,6 +60,9 @@ dependencies {
     androidTestImplementation "org.mockito:mockito-android:3.2.4"
 
     androidTestImplementation "androidx.arch.core:core-testing:2.1.0"
+    androidTestImplementation 'com.jraska.livedata:testing-ktx:1.1.1'
+
+    testImplementation 'com.jraska.livedata:testing-ktx:1.1.1'
 
     testImplementation 'junit:junit:4.13'
     // Robolectric environment
