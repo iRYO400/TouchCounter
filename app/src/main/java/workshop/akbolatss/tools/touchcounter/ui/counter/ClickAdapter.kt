@@ -12,44 +12,19 @@ import workshop.akbolatss.tools.touchcounter.R
 import workshop.akbolatss.tools.touchcounter.pojo.ClickObject
 
 
-class ClickAdapter(
-        private val clickListener: (ClickObject, Int) -> Unit
-) : ListAdapter<ClickObject, ClickAdapter.CounterVH>(DIFF_CALLBACK) {
-
-    companion object {
-        val DIFF_CALLBACK: DiffUtil.ItemCallback<ClickObject> = object : DiffUtil.ItemCallback<ClickObject>() {
-
-            override fun areItemsTheSame(oldItem: ClickObject, newItem: ClickObject): Boolean {
-                return oldItem.index == newItem.index
-            }
-
-            var hasSameId = false
-            var hasSameTimestamp = false
-
-            override fun areContentsTheSame(oldItem: ClickObject, newItem: ClickObject): Boolean {
-                hasSameId = oldItem.id == newItem.id
-                hasSameTimestamp = oldItem.timestamp == newItem.timestamp
-
-                return hasSameId && hasSameTimestamp
-            }
-        }
-    }
+class ClickAdapter : ListAdapter<ClickObject, ClickAdapter.CounterVH>(DIFF_CALLBACK) {
 
     private val handler = Handler()
 
     override fun onCreateViewHolder(parent: ViewGroup, p1: Int): CounterVH {
         val inflater = LayoutInflater.from(parent.context)
         return CounterVH(
-                inflater.inflate(
-                        R.layout.rv_click,
-                        parent,
-                        false
-                ), handler
+            inflater.inflate(
+                R.layout.rv_click,
+                parent,
+                false
+            ), handler
         )
-    }
-
-    fun clearAll() {
-        handler.removeCallbacksAndMessages(null)
     }
 
     override fun onBindViewHolder(holder: CounterVH, position: Int) {
@@ -57,10 +32,11 @@ class ClickAdapter(
         holder.bind(introAction)
     }
 
-    class CounterVH(itemView: View, private val handler: Handler) : RecyclerView.ViewHolder(itemView) {
+    class CounterVH(itemView: View, private val handler: Handler) :
+        RecyclerView.ViewHolder(itemView) {
 
         private var customRunnable: CustomRunnable =
-                CustomRunnable(handler, itemView.timestamp)
+            CustomRunnable(handler, itemView.timestamp)
 
         fun bind(clickObject: ClickObject) {
             handler.removeCallbacks(customRunnable)
@@ -73,3 +49,21 @@ class ClickAdapter(
         }
     }
 }
+
+private val DIFF_CALLBACK: DiffUtil.ItemCallback<ClickObject> =
+    object : DiffUtil.ItemCallback<ClickObject>() {
+
+        override fun areItemsTheSame(oldItem: ClickObject, newItem: ClickObject): Boolean {
+            return oldItem.index == newItem.index
+        }
+
+        var hasSameId = false
+        var hasSameTimestamp = false
+
+        override fun areContentsTheSame(oldItem: ClickObject, newItem: ClickObject): Boolean {
+            hasSameId = oldItem.id == newItem.id
+            hasSameTimestamp = oldItem.timestamp == newItem.timestamp
+
+            return hasSameId && hasSameTimestamp
+        }
+    }

@@ -38,6 +38,7 @@
             android:layout_height="wrap_content"
             android:elevation="12dp"
             android:src="@drawable/ic_add_black_24dp"
+            app:tint="@color/white"
             app:backgroundTint="@color/colorAccent"
             app:layout_anchor="@id/bottom_bar" />
 

@@ -3,7 +3,7 @@
     <string name="info_hold_timing">Hold timing. ± 5 error</string>
     <string name="default_timing">0 ms</string>
     <string name="default_count">0</string>
-    <string name="default_name">Counter #%d</string>
+    <string name="default_name">Counter #</string>
     <string name="counter_group">Counters</string>
     <string name="counter_list">Counters count</string>
     <string name="options_title">Options: %s</string>

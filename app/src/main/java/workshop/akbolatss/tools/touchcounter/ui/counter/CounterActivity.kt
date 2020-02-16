@@ -50,9 +50,7 @@ class CounterActivity : AppCompatActivity() {
     }
 
     private fun initRecyclerView() {
-        adapter = ClickAdapter { _: ClickObject, _: Int ->
-
-        }
+        adapter = ClickAdapter()
         recyclerView.adapter = adapter
     }
 

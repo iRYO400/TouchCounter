@@ -3,16 +3,14 @@ package workshop.akbolatss.tools.touchcounter.ui.counter
 import android.content.Intent
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
+import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
-import workshop.akbolatss.tools.touchcounter.utils.INTENT_COUNTER_ID
-import workshop.akbolatss.tools.touchcounter.utils.getCurrentTime
 import workshop.akbolatss.tools.touchcounter.pojo.ClickObject
 import workshop.akbolatss.tools.touchcounter.pojo.CounterObject
 import workshop.akbolatss.tools.touchcounter.room.ClicksRepository
 import workshop.akbolatss.tools.touchcounter.room.DataDao
+import workshop.akbolatss.tools.touchcounter.utils.INTENT_COUNTER_ID
+import workshop.akbolatss.tools.touchcounter.utils.getCurrentTime
 
 class CounterViewModel : ViewModel() {
 
@@ -20,21 +18,6 @@ class CounterViewModel : ViewModel() {
 
     lateinit var counterLiveData: LiveData<CounterObject>
     lateinit var clicksLiveData: LiveData<List<ClickObject>>
-
-    /**
-     * This is the job for all coroutines started by this ViewModel.
-     *
-     * Cancelling this job will cancel all coroutines started by this ViewModel.
-     */
-    private val viewModelJob = Job()
-
-    /**
-     * This is the main scope for all coroutines launched by MainViewModel.
-     *
-     * Since we pass viewModelJob, you can cancel all coroutines launched by uiScope by calling
-     * viewModelJob.cancel()
-     */
-    private val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
 
     private var counterId: Long = -1L
 
@@ -50,14 +33,14 @@ class CounterViewModel : ViewModel() {
     }
 
     fun addClickObject(clickObject: ClickObject) {
-        uiScope.launch {
+        viewModelScope.launch {
             clickObject.counterId = counterId
             repository.addClick(clickObject)
         }
     }
 
     fun updateCounter() {
-        uiScope.launch {
+        viewModelScope.launch {
             val counterObject = counterLiveData.value!!
             counterObject.timestampEditing =
                 getCurrentTime()
@@ -66,8 +49,4 @@ class CounterViewModel : ViewModel() {
         }
     }
 
-    override fun onCleared() {
-        super.onCleared()
-        viewModelJob.cancel()
-    }
 }

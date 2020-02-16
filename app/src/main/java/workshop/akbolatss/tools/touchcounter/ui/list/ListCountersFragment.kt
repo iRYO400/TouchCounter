@@ -1,6 +1,6 @@
 package workshop.akbolatss.tools.touchcounter.ui.list
 
-import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -15,26 +15,16 @@ import kotlinx.android.synthetic.main.fragment_counters.*
 import workshop.akbolatss.tools.touchcounter.R
 import workshop.akbolatss.tools.touchcounter.pojo.CounterObject
 import workshop.akbolatss.tools.touchcounter.room.AppDataBase
-import workshop.akbolatss.tools.touchcounter.ui.NavigationActivity
+import workshop.akbolatss.tools.touchcounter.ui.counter.CounterActivity
+import workshop.akbolatss.tools.touchcounter.utils.INTENT_COUNTER_ID
 import workshop.akbolatss.tools.touchcounter.utils.dp
 
 
 class ListCountersFragment : Fragment() {
 
-    companion object {
-        fun newInstance() = ListCountersFragment()
-    }
-
-    private lateinit var callback: OnListCallback
-
     private lateinit var viewModel: ListCountersViewModel
 
     private lateinit var adapter: CounterAdapter
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        callback = (context as NavigationActivity)
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -47,15 +37,8 @@ class ListCountersFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         initViewModel()
 
-        initRefresher()
         initAdapter()
         setObservers()
-    }
-
-    private fun initRefresher() {
-//        refresher.setOnRefreshListener {
-//            viewModel.loadData()
-//        }
     }
 
     private fun initViewModel() {
@@ -69,7 +52,7 @@ class ListCountersFragment : Fragment() {
         adapter = CounterAdapter { counter, _, clickType ->
             when (clickType) {
                 ClickType.ITEM_CLICK -> {
-                    callback.onListItemClick(counter)
+                    openCounterActivity(counter)
                 }
                 ClickType.OPTIONS_CLICK -> {
                     showPopupOptions(counter)
@@ -77,6 +60,14 @@ class ListCountersFragment : Fragment() {
             }
         }
         recyclerView.adapter = adapter
+    }
+
+    private fun openCounterActivity(counter: CounterObject) {
+        context?.let {
+            val intent = Intent(it, CounterActivity::class.java)
+            intent.putExtra(INTENT_COUNTER_ID, counter.id)
+            startActivity(intent)
+        }
     }
 
     private fun setObservers() {

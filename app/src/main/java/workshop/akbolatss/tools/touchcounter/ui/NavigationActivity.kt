@@ -11,15 +11,13 @@ import androidx.lifecycle.ViewModelProvider
 import kotlinx.android.synthetic.main.activity_navigation.*
 import kotlinx.android.synthetic.main.nav_header.view.*
 import workshop.akbolatss.tools.touchcounter.R
-import workshop.akbolatss.tools.touchcounter.pojo.CounterObject
 import workshop.akbolatss.tools.touchcounter.room.AppDataBase
-import workshop.akbolatss.tools.touchcounter.ui.counter.CounterActivity
-import workshop.akbolatss.tools.touchcounter.ui.list.OnListCallback
-import workshop.akbolatss.tools.touchcounter.utils.INTENT_COUNTER_ID
+import workshop.akbolatss.tools.touchcounter.ui.NavigationTab.ListCounters
 import workshop.akbolatss.tools.touchcounter.utils.SUPPORT_EMAIL
+import workshop.akbolatss.tools.touchcounter.utils.defaultName
 
 
-class NavigationActivity : AppCompatActivity(), OnListCallback {
+class NavigationActivity : AppCompatActivity() {
 
     private lateinit var viewModel: NavigationViewModel
 
@@ -27,10 +25,6 @@ class NavigationActivity : AppCompatActivity(), OnListCallback {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_navigation)
         initViewModel()
-
-        navigation_view.setCheckedItem(0)
-        navigateToTab(NavigationTab.LIST)
-
         setObservers()
         setListeners()
     }
@@ -47,6 +41,13 @@ class NavigationActivity : AppCompatActivity(), OnListCallback {
             navigation_view.header.tv_long_click.text = stats.longClick.toString()
             navigation_view.header.tv_max_click_in_counter.text = stats.mostClicks.toString()
         })
+        viewModel.currentTabTag.observe(this, Observer {
+            when (it) {
+                is ListCounters -> {
+                    loadFragmentByNavigationState(it)
+                }
+            }
+        })
     }
 
     private fun setListeners() {
@@ -58,15 +59,9 @@ class NavigationActivity : AppCompatActivity(), OnListCallback {
         }
 
         navigation_view.setNavigationItemSelectedListener { menuItem ->
-            val id = menuItem.itemId
-            when (id) {
-                R.id.list_counter -> {
-                    navigateToTab(NavigationTab.LIST)
-                    menuItem.isChecked = true
-                }
-                R.id.send_email -> {
-                    sendEmail()
-                }
+            when (menuItem.itemId) {
+                R.id.list_counter -> viewModel.currentTabTag.value = ListCounters
+                R.id.send_email -> sendEmail()
             }
             drawer_layout.closeDrawers()
             true
@@ -92,6 +87,36 @@ class NavigationActivity : AppCompatActivity(), OnListCallback {
         }
     }
 
+    private fun loadFragmentByNavigationState(state: NavigationTab) {
+        detachCurrentFragment()
+
+        val newFragment = supportFragmentManager.findFragmentByTag(state.fragmentTag)
+        if (newFragment == null) {
+            val newFragmentInstance = state.javaClass.newInstance()
+            supportFragmentManager.beginTransaction().apply {
+                add(R.id.container, newFragmentInstance, state.fragmentTag)
+                commit()
+            }
+        } else {
+            supportFragmentManager.beginTransaction().apply {
+                attach(newFragment)
+                commit()
+            }
+        }
+        viewModel::previousTabTag.set(state.fragmentTag)
+    }
+
+    private fun detachCurrentFragment() {
+        val currentFragment =
+            supportFragmentManager.findFragmentByTag(viewModel.previousTabTag)
+        currentFragment?.let {
+            supportFragmentManager.beginTransaction().apply {
+                detach(it)
+                commitNow()
+            }
+        }
+    }
+
     private fun sendEmail() {
         val mIntent = Intent(Intent.ACTION_SENDTO)
         mIntent.data = Uri.parse("mailto:")
@@ -101,44 +126,8 @@ class NavigationActivity : AppCompatActivity(), OnListCallback {
     }
 
     private fun createNewCounter() {
-        viewModel.createCounter(this)
+        viewModel.createCounter(defaultName())
     }
 
-    override fun onListItemClick(counterObject: CounterObject) {
-        openCounterActivity(counterObject)
-    }
-
-    private fun openCounterActivity(counterObject: CounterObject) {
-        val intent = Intent(this, CounterActivity::class.java)
-        intent.putExtra(INTENT_COUNTER_ID, counterObject.id)
-        startActivity(intent)
-    }
-
-    private fun navigateToTab(navigationTab: NavigationTab) {
-        hideCurrentTab()
-
-        val currentTabTag = navigationTab.fragmentTag
-        val fragmentManager = supportFragmentManager
-        var fragment = fragmentManager.findFragmentByTag(currentTabTag)
-        val transaction = fragmentManager.beginTransaction()
-        if (fragment == null) {
-            fragment = navigationTab.navigationTabFactory.newInstance()
-            transaction.add(container.id, fragment, currentTabTag)
-                .commit()
-        } else {
-            transaction.attach(fragment)
-                .commit()
-        }
-        viewModel.currentTabTag.value = currentTabTag
-    }
-
-    private fun hideCurrentTab() {
-        val currentTabTag = viewModel.currentTabTag.value
-        val fragmentManager = supportFragmentManager
-        val currentFragment = fragmentManager.findFragmentByTag(currentTabTag) ?: return
-        fragmentManager.beginTransaction()
-            .detach(currentFragment)
-            .commitNow()
-    }
 }
 

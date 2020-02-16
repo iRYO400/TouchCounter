@@ -5,7 +5,6 @@ import android.content.res.Resources
 import android.text.format.DateUtils
 import android.util.Log
 import android.widget.Toast
-import androidx.lifecycle.MutableLiveData
 import workshop.akbolatss.tools.touchcounter.R
 import java.sql.Timestamp
 import java.text.ParseException
@@ -17,8 +16,12 @@ const val SUPPORT_EMAIL = "whitesteel400@gmail.com"
 inline fun Context.showToast(message: () -> String) =
     Toast.makeText(this, message(), Toast.LENGTH_LONG).show()
 
-fun Context.defaultName(index: Int): String {
-    return getString(R.string.default_name, index)
+fun Context.defaultName(): String {
+    return getString(R.string.default_name)
+}
+
+fun String.appendIndex(index: Int): String {
+    return "$this $index"
 }
 
 fun convertTime(timestamp: Long): String {
