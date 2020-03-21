@@ -8,30 +8,31 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import dagger.android.AndroidInjection
 import kotlinx.android.synthetic.main.activity_navigation.*
 import kotlinx.android.synthetic.main.nav_header.view.*
 import workshop.akbolatss.tools.touchcounter.R
-import workshop.akbolatss.tools.touchcounter.room.AppDataBase
 import workshop.akbolatss.tools.touchcounter.ui.NavigationTab.ListCounters
 import workshop.akbolatss.tools.touchcounter.utils.SUPPORT_EMAIL
 import workshop.akbolatss.tools.touchcounter.utils.defaultName
+import javax.inject.Inject
 
 
 class NavigationActivity : AppCompatActivity() {
 
-    private lateinit var viewModel: NavigationViewModel
+    @Inject
+    lateinit var viewModelFactory: ViewModelFactory
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_navigation)
-        initViewModel()
-        setObservers()
-        setListeners()
+    private val viewModel: NavigationViewModel by lazy {
+        ViewModelProvider(this, viewModelFactory).get(NavigationViewModel::class.java)
     }
 
-    private fun initViewModel() {
-        viewModel = ViewModelProvider(this).get(NavigationViewModel::class.java)
-        viewModel.processRepository(AppDataBase.getInstance(this).dataDao)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        AndroidInjection.inject(this)
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_navigation)
+        setObservers()
+        setListeners()
     }
 
     private fun setObservers() {

@@ -5,17 +5,17 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import workshop.akbolatss.tools.touchcounter.pojo.CounterObject
-import workshop.akbolatss.tools.touchcounter.room.ClicksRepository
+import workshop.akbolatss.tools.touchcounter.room.ClicksRepositoryImpl
 import workshop.akbolatss.tools.touchcounter.room.DataDao
 
 class ListCountersViewModel : ViewModel() {
 
-    private lateinit var repository: ClicksRepository
+    private lateinit var repository: ClicksRepositoryImpl
 
     lateinit var countersLiveData: LiveData<List<CounterObject>>
 
     fun processRepository(dataDao: DataDao) {
-        repository = ClicksRepository(dataDao)
+        repository = ClicksRepositoryImpl(dataDao)
 
         loadData()
     }

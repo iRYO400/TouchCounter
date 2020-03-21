@@ -7,14 +7,14 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import workshop.akbolatss.tools.touchcounter.pojo.ClickObject
 import workshop.akbolatss.tools.touchcounter.pojo.CounterObject
-import workshop.akbolatss.tools.touchcounter.room.ClicksRepository
+import workshop.akbolatss.tools.touchcounter.room.ClicksRepositoryImpl
 import workshop.akbolatss.tools.touchcounter.room.DataDao
 import workshop.akbolatss.tools.touchcounter.utils.INTENT_COUNTER_ID
 import workshop.akbolatss.tools.touchcounter.utils.getCurrentTime
 
 class CounterViewModel : ViewModel() {
 
-    private lateinit var repository: ClicksRepository
+    private lateinit var repository: ClicksRepositoryImpl
 
     lateinit var counterLiveData: LiveData<CounterObject>
     lateinit var clicksLiveData: LiveData<List<ClickObject>>
@@ -22,7 +22,7 @@ class CounterViewModel : ViewModel() {
     private var counterId: Long = -1L
 
     fun processRepository(dataDao: DataDao) {
-        repository = ClicksRepository(dataDao)
+        repository = ClicksRepositoryImpl(dataDao)
     }
 
     fun processIntent(intent: Intent) {

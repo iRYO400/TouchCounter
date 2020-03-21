@@ -3,31 +3,35 @@ package workshop.akbolatss.tools.touchcounter.room
 import androidx.lifecycle.LiveData
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import workshop.akbolatss.tools.touchcounter.domain.repository.ClickRepository
 import workshop.akbolatss.tools.touchcounter.pojo.ClickObject
 import workshop.akbolatss.tools.touchcounter.pojo.CounterObject
+import javax.inject.Inject
 
 
-class ClicksRepository(private val dataDao: DataDao) {
+class ClicksRepositoryImpl
+@Inject
+constructor(private val dataDao: DataDao) : ClickRepository {
 
     fun getCounter(id: Long): LiveData<CounterObject> {
         return dataDao.getCounterObject(id)
     }
 
-    suspend fun getCountersCount(): Int {
+    override suspend fun getCountersCount(): Int {
         return withContext(Dispatchers.IO) {
             dataDao.getCountersRowCount()
         }
     }
 
-    fun getCounters(): LiveData<List<CounterObject>> {
+    override fun getCounters(): LiveData<List<CounterObject>> {
         return dataDao.getCounterObjects()
     }
 
-    fun getClicks(counterId: Long): LiveData<List<ClickObject>> {
+    override fun getClicks(counterId: Long): LiveData<List<ClickObject>> {
         return dataDao.getClickObjects(counterId)
     }
 
-    suspend fun saveCounter(counterObject: CounterObject) {
+    override suspend fun saveCounter(counterObject: CounterObject) {
         withContext(Dispatchers.IO) {
             val counterId = dataDao.saveCounter(counterObject)
             saveClickObjects(counterObject, counterId)
@@ -46,38 +50,38 @@ class ClicksRepository(private val dataDao: DataDao) {
         }
     }
 
-    suspend fun addClick(clickObject: ClickObject) {
+    override suspend fun addClick(clickObject: ClickObject) {
         withContext(Dispatchers.IO) {
             dataDao.saveClickObject(clickObject)
         }
     }
 
-    suspend fun updateCounter(counterObject: CounterObject) {
+    override suspend fun updateCounter(counterObject: CounterObject) {
         withContext(Dispatchers.IO) {
             dataDao.updateCounter(counterObject)
         }
     }
 
-    suspend fun deleteCounter(counter: CounterObject) {
+    override suspend fun deleteCounter(counter: CounterObject) {
         withContext(Dispatchers.IO) {
             dataDao.deleteCounter(counter)
             dataDao.deleteClicks(counter.id)
         }
     }
 
-    suspend fun getAllClicks(): Int {
+    override suspend fun getAllClicks(): Int {
         return withContext(Dispatchers.IO) {
             dataDao.getAllClicksCount()
         }
     }
 
-    suspend fun getLongestClick(): Long {
+    override suspend fun getLongestClick(): Long {
         return withContext(Dispatchers.IO) {
             dataDao.getLongestClick()
         }
     }
 
-    suspend fun getMostClicksInCounter(): Int {
+    override suspend fun getMostClicksInCounter(): Int {
         return withContext(Dispatchers.IO) {
             dataDao.getMostClicksInCounter()
         }
