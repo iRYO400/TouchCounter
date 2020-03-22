@@ -25,7 +25,6 @@ import workshop.akbolatss.tools.touchcounter.utils.defaultName
 import workshop.akbolatss.tools.touchcounter.utils.dp
 import javax.inject.Inject
 
-
 class NavigationActivity : AppCompatActivity() {
 
     @Inject
@@ -126,9 +125,6 @@ class NavigationActivity : AppCompatActivity() {
         viewModel.createCounter(defaultName())
     }
 
-    /**
-     * Show Options dialog
-     */
     private fun showPopupOptions(counter: CounterObject) {
         val layoutInflater = LayoutInflater.from(this)
         val view = layoutInflater.inflate(R.layout.dialog_options, null)
@@ -171,9 +167,6 @@ class NavigationActivity : AppCompatActivity() {
         }
     }
 
-    /**
-     * Show Delete Dialog confirmation
-     */
     private fun showDeleteDialog(counter: CounterObject) {
         val builder = AlertDialog.Builder(this)
         builder.setTitle(getString(R.string.confirmation_delete_title))
