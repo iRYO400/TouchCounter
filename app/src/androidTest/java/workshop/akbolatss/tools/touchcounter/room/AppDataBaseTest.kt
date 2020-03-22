@@ -11,6 +11,7 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import workshop.akbolatss.tools.touchcounter.data.dao.CounterDao
 
 @RunWith(AndroidJUnit4::class)
 class AppDataBaseTest {
@@ -19,7 +20,7 @@ class AppDataBaseTest {
     val liveDataRule = InstantTaskExecutorRule()
 
     private lateinit var db: AppDataBase
-    private lateinit var dataDao: DataDao
+    private lateinit var dataDao: CounterDao
 
     @Before
     fun setUp() {
@@ -39,9 +40,9 @@ class AppDataBaseTest {
         // given
         val counter = getDefaultCounter(id = DEFAULT_ID)
         // when
-        dataDao.saveCounter(counter)
+        dataDao.create(counter)
         // then
-        dataDao.getCounterObjects().test()
+        dataDao.findList().test()
             .assertValue {
                 it.isNotEmpty()
             }
@@ -55,10 +56,10 @@ class AppDataBaseTest {
     fun saveCounter_withSameCounterId_shouldReplace() {
         val counter = getDefaultCounter(id = COUNTER_ID_1)
 
-        dataDao.saveCounter(counter)
-        dataDao.saveCounter(counter)
+        dataDao.create(counter)
+        dataDao.create(counter)
 
-        dataDao.getCounterObjects().test()
+        dataDao.findList().test()
             .assertValue {
                 it.size == 1
             }
@@ -69,10 +70,10 @@ class AppDataBaseTest {
     fun saveCounter_withDefaultCounterId_shouldNotReplace() {
         val counter = getDefaultCounter(id = DEFAULT_ID)
 
-        dataDao.saveCounter(counter)
-        dataDao.saveCounter(counter)
+        dataDao.create(counter)
+        dataDao.create(counter)
 
-        dataDao.getCounterObjects().test()
+        dataDao.findList().test()
             .assertValue {
                 it.size == 2
             }
@@ -84,10 +85,10 @@ class AppDataBaseTest {
         val counter1 = getDefaultCounter(id = 1)
         val counter2 = getDefaultCounter(id = 2)
 
-        dataDao.saveCounter(counter1)
-        dataDao.saveCounter(counter2)
+        dataDao.create(counter1)
+        dataDao.create(counter2)
 
-        dataDao.getCounterObjects().test()
+        dataDao.findList().test()
             .assertValue {
                 it.size == 2
             }

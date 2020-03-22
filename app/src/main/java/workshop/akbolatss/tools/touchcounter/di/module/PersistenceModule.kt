@@ -13,7 +13,7 @@ import javax.inject.Singleton
 class PersistenceModule {
 
     companion object {
-        const val DATABASE_NAME = "YourCounters"
+        const val DATABASE_NAME = "YourCounters.db"
     }
 
     @Singleton
@@ -23,8 +23,10 @@ class PersistenceModule {
             application.applicationContext,
             AppDataBase::class.java,
             DATABASE_NAME
-        ).build()
-
+        )
+            .createFromAsset("databases/your_counters.db")
+            .fallbackToDestructiveMigration()
+            .build()
 
     @Singleton
     @Provides
