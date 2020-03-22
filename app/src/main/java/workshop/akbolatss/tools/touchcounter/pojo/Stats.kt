@@ -1,6 +1,6 @@
 package workshop.akbolatss.tools.touchcounter.pojo
 
-data class StatsObject(
+data class Stats(
     var countersCount: Int,
     var clicksCount: Int,
     var longClick: Long,

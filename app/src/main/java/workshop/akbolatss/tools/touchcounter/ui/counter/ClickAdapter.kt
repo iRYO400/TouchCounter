@@ -9,10 +9,10 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.rv_click.view.*
 import workshop.akbolatss.tools.touchcounter.R
-import workshop.akbolatss.tools.touchcounter.pojo.ClickObject
+import workshop.akbolatss.tools.touchcounter.data.dto.ClickDto
 
 
-class ClickAdapter : ListAdapter<ClickObject, ClickAdapter.CounterVH>(DIFF_CALLBACK) {
+class ClickAdapter : ListAdapter<ClickDto, ClickAdapter.CounterVH>(DIFF_CALLBACK) {
 
     private val handler = Handler()
 
@@ -38,32 +38,31 @@ class ClickAdapter : ListAdapter<ClickObject, ClickAdapter.CounterVH>(DIFF_CALLB
         private var customRunnable: CustomRunnable =
             CustomRunnable(handler, itemView.timestamp)
 
-        fun bind(clickObject: ClickObject) {
+        fun bind(clickObject: ClickDto) {
             handler.removeCallbacks(customRunnable)
             customRunnable.holder = itemView.timestamp
-            customRunnable.init(itemView.timestamp, clickObject.timestamp)
+            customRunnable.init(itemView.timestamp, clickObject.createTime)
             handler.postDelayed(customRunnable, 100)
 
-            itemView.index.text = clickObject.index.toString()
-            itemView.timing.text = clickObject.holdTiming.toString()
+            itemView.index.text = layoutPosition.toString()
+            itemView.timing.text = clickObject.heldMillis.toString()
         }
     }
 }
 
-private val DIFF_CALLBACK: DiffUtil.ItemCallback<ClickObject> =
-    object : DiffUtil.ItemCallback<ClickObject>() {
+private val DIFF_CALLBACK: DiffUtil.ItemCallback<ClickDto> =
+    object : DiffUtil.ItemCallback<ClickDto>() {
 
-        override fun areItemsTheSame(oldItem: ClickObject, newItem: ClickObject): Boolean {
-            return oldItem.index == newItem.index
+        override fun areItemsTheSame(oldItem: ClickDto, newItem: ClickDto): Boolean {
+            return oldItem.id == newItem.id
         }
 
-        var hasSameId = false
         var hasSameTimestamp = false
+        var hasSameMillis = false
 
-        override fun areContentsTheSame(oldItem: ClickObject, newItem: ClickObject): Boolean {
-            hasSameId = oldItem.id == newItem.id
-            hasSameTimestamp = oldItem.timestamp == newItem.timestamp
-
-            return hasSameId && hasSameTimestamp
+        override fun areContentsTheSame(oldItem: ClickDto, newItem: ClickDto): Boolean {
+            hasSameTimestamp = oldItem.createTime == newItem.createTime
+            hasSameMillis = oldItem.heldMillis == newItem.heldMillis
+            return hasSameTimestamp && hasSameMillis
         }
     }

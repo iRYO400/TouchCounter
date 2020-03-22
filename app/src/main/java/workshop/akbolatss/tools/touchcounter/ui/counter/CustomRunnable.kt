@@ -3,6 +3,7 @@ package workshop.akbolatss.tools.touchcounter.ui.counter
 import android.os.Handler
 import android.widget.TextView
 import workshop.akbolatss.tools.touchcounter.utils.convertTimeSeconds
+import java.util.*
 
 class CustomRunnable(private val handler: Handler, var holder: TextView) : Runnable {
 
@@ -14,8 +15,8 @@ class CustomRunnable(private val handler: Handler, var holder: TextView) : Runna
         handler.postDelayed(this, 10000)
     }
 
-    fun init(textView: TextView, timestamp: Long) {
+    fun init(textView: TextView, initTime: Date) {
         holder = textView
-        initialTimestamp = timestamp
+        initialTimestamp = initTime.time
     }
 }

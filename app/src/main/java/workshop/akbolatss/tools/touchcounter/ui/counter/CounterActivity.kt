@@ -83,9 +83,10 @@ class CounterActivity : AppCompatActivity() {
             }
         })
         viewModel.clickList.observe(this, Observer { clickObjects ->
-            adapter.submitList(clickObjects)
-            tv_counter.text = clickObjects.size.toString()
-            recyclerView.smoothScrollToPosition(adapter.itemCount)
+            adapter.submitList(clickObjects) {
+                tv_counter.text = clickObjects.size.toString()
+                recyclerView.smoothScrollToPosition(clickObjects.size)
+            }
         })
         viewModel.heldMillis.observe(this, Observer { millis ->
             tv_timing.text = getString(R.string.millis, millis)

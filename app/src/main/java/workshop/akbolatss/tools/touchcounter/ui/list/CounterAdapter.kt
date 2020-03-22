@@ -10,14 +10,14 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.rv_counter.view.*
 import workshop.akbolatss.tools.touchcounter.R
-import workshop.akbolatss.tools.touchcounter.pojo.CounterObject
+import workshop.akbolatss.tools.touchcounter.data.dto.CounterDto
 import workshop.akbolatss.tools.touchcounter.ui.list.ClickType.ITEM_CLICK
 import workshop.akbolatss.tools.touchcounter.ui.list.ClickType.OPTIONS_CLICK
-import workshop.akbolatss.tools.touchcounter.utils.convertTime
+import workshop.akbolatss.tools.touchcounter.utils.format
 
 class CounterAdapter(
-    private val clickListener: (CounterObject, Int, ClickType) -> Unit
-) : ListAdapter<CounterObject, CounterAdapter.CounterVH>(DIFF_CALLBACK) {
+    private val clickListener: (CounterDto, Int, ClickType) -> Unit
+) : ListAdapter<CounterDto, CounterAdapter.CounterVH>(DIFF_CALLBACK) {
 
     override fun onCreateViewHolder(parent: ViewGroup, p1: Int): CounterVH {
         val inflater = LayoutInflater.from(parent.context)
@@ -38,47 +38,46 @@ class CounterAdapter(
     class CounterVH(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         fun bind(
-            counterObject: CounterObject,
-            clickListener: (CounterObject, Int, ClickType) -> Unit
+            counter: CounterDto,
+            clickListener: (CounterDto, Int, ClickType) -> Unit
         ) {
-            itemView.name.text = counterObject.name
+            itemView.name.text = counter.name
 
-            itemView.timestamp.text =
-                convertTime(counterObject.timestampEditing)
-            itemView.count.text = counterObject.count.toString()
+            itemView.timestamp.text = counter.editTime.format()
+            itemView.count.text = counter.itemCount.toString()
 
             itemView.setOnClickListener {
-                clickListener(counterObject, adapterPosition, ITEM_CLICK)
+                clickListener(counter, adapterPosition, ITEM_CLICK)
             }
 
             itemView.img_options.setOnClickListener {
-                clickListener(counterObject, adapterPosition, OPTIONS_CLICK)
+                clickListener(counter, adapterPosition, OPTIONS_CLICK)
             }
         }
     }
 }
 
-private val DIFF_CALLBACK: ItemCallback<CounterObject> =
-    object : DiffUtil.ItemCallback<CounterObject>() {
+private val DIFF_CALLBACK: ItemCallback<CounterDto> =
+    object : DiffUtil.ItemCallback<CounterDto>() {
 
         override fun areItemsTheSame(
-            oldItem: CounterObject,
-            newItem: CounterObject
+            oldItem: CounterDto,
+            newItem: CounterDto
         ): Boolean {
             return oldItem.id == newItem.id
         }
 
         var hasSameName = false
-        var hasSameTimestamp = false
-        var hasSameCount = false
+        var hasSameCreateTime = false
+        var hasSameEditTime = false
 
         override fun areContentsTheSame(
-            oldItem: CounterObject,
-            newItem: CounterObject
+            oldItem: CounterDto,
+            newItem: CounterDto
         ): Boolean {
             hasSameName = TextUtils.equals(oldItem.name, newItem.name)
-            hasSameTimestamp = oldItem.timestampEditing == newItem.timestampEditing
-            hasSameCount = oldItem.count == newItem.count
-            return hasSameName && hasSameTimestamp && hasSameCount
+            hasSameCreateTime = oldItem.createTime == newItem.createTime
+            hasSameEditTime = oldItem.editTime == newItem.editTime
+            return hasSameName && hasSameCreateTime && hasSameEditTime
         }
     }

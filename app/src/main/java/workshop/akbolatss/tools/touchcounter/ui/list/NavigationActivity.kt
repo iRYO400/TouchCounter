@@ -16,7 +16,7 @@ import dagger.android.AndroidInjection
 import kotlinx.android.synthetic.main.activity_navigation.*
 import kotlinx.android.synthetic.main.nav_header.view.*
 import workshop.akbolatss.tools.touchcounter.R
-import workshop.akbolatss.tools.touchcounter.pojo.CounterObject
+import workshop.akbolatss.tools.touchcounter.data.dto.CounterDto
 import workshop.akbolatss.tools.touchcounter.ui.ViewModelFactory
 import workshop.akbolatss.tools.touchcounter.ui.counter.CounterActivity
 import workshop.akbolatss.tools.touchcounter.utils.INTENT_COUNTER_ID
@@ -41,7 +41,7 @@ class NavigationActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_navigation)
         initRecyclerView()
-        setObservers()
+        observeViewModel()
         setListeners()
     }
 
@@ -59,21 +59,25 @@ class NavigationActivity : AppCompatActivity() {
         recyclerView.adapter = adapter
     }
 
-    private fun openCounterActivity(counter: CounterObject) {
+    private fun openCounterActivity(counter: CounterDto) {
         val intent = Intent(this, CounterActivity::class.java)
         intent.putExtra(INTENT_COUNTER_ID, counter.id)
         startActivity(intent)
     }
 
-    private fun setObservers() {
+    private fun observeViewModel() {
         viewModel.counterList.observe(this, Observer { counters ->
-            adapter.submitList(counters)
+            adapter.submitList(counters) {
+                recyclerView.smoothScrollToPosition(0)
+            }
         })
         viewModel.statsLiveData.observe(this, Observer { stats ->
-            navigation_view.header.tv_counters_count.text = stats.countersCount.toString()
-            navigation_view.header.tv_clicks_count.text = stats.clicksCount.toString()
-            navigation_view.header.tv_long_click.text = stats.longClick.toString()
-            navigation_view.header.tv_max_click_in_counter.text = stats.mostClicks.toString()
+            navigation_view.header?.let {
+                it.tv_counters_count.text = stats.countersCount.toString()
+                it.tv_clicks_count.text = stats.clicksCount.toString()
+                it.tv_long_click.text = stats.longClick.toString()
+                it.tv_max_click_in_counter.text = stats.mostClicks.toString()
+            }
         })
     }
 
@@ -125,7 +129,7 @@ class NavigationActivity : AppCompatActivity() {
         viewModel.createCounter(defaultName())
     }
 
-    private fun showPopupOptions(counter: CounterObject) {
+    private fun showPopupOptions(counter: CounterDto) {
         val layoutInflater = LayoutInflater.from(this)
         val view = layoutInflater.inflate(R.layout.dialog_options, null)
 
@@ -137,8 +141,8 @@ class NavigationActivity : AppCompatActivity() {
         input.setText(counter.name)
 
         builder.setPositiveButton(R.string.options_positive) { _, _ ->
-            counter.name = input.text.toString()
-            viewModel.updateCounter(counter)
+            val updatedCounter = counter.copy(name = input.text.toString())
+            viewModel.updateCounter(updatedCounter)
         }
 
         builder.setNegativeButton(R.string.options_negative) { dialog, _ ->
@@ -167,7 +171,7 @@ class NavigationActivity : AppCompatActivity() {
         }
     }
 
-    private fun showDeleteDialog(counter: CounterObject) {
+    private fun showDeleteDialog(counter: CounterDto) {
         val builder = AlertDialog.Builder(this)
         builder.setTitle(getString(R.string.confirmation_delete_title))
         builder.setMessage(getString(R.string.confirmation_delete_message))

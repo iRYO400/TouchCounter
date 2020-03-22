@@ -5,6 +5,7 @@ import android.content.res.Resources
 import android.text.format.DateUtils
 import android.util.Log
 import android.widget.Toast
+import timber.log.Timber
 import workshop.akbolatss.tools.touchcounter.R
 import java.sql.Timestamp
 import java.text.ParseException
@@ -22,6 +23,19 @@ fun Context.defaultName(): String {
 
 fun String.appendIndex(index: Int): String {
     return "$this $index"
+}
+
+fun Date.format(): String {
+    return try {
+        DateUtils.getRelativeTimeSpanString(
+            this.time,
+            Calendar.getInstance().timeInMillis,
+            DateUtils.MINUTE_IN_MILLIS
+        ).toString()
+    } catch (e: ParseException) {
+        Timber.e(e)
+        this.time.toString()
+    }
 }
 
 fun convertTime(timestamp: Long): String {
@@ -63,6 +77,4 @@ fun convertTimeSeconds(timestamp: Long): String {
     }
 }
 
-fun getCurrentTime(): Long {
-    return System.currentTimeMillis()
-}
+fun getCurrentTime() = Date()

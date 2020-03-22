@@ -2,9 +2,10 @@ package workshop.akbolatss.tools.touchcounter.ui.list
 
 import androidx.lifecycle.*
 import kotlinx.coroutines.launch
+import workshop.akbolatss.tools.touchcounter.data.dto.CounterDto
 import workshop.akbolatss.tools.touchcounter.domain.repository.ClickRepository
-import workshop.akbolatss.tools.touchcounter.pojo.CounterObject
-import workshop.akbolatss.tools.touchcounter.pojo.StatsObject
+import workshop.akbolatss.tools.touchcounter.domain.repository.CounterRepository
+import workshop.akbolatss.tools.touchcounter.pojo.Stats
 import workshop.akbolatss.tools.touchcounter.utils.appendIndex
 import workshop.akbolatss.tools.touchcounter.utils.getCurrentTime
 import javax.inject.Inject
@@ -12,23 +13,25 @@ import javax.inject.Inject
 class NavigationViewModel
 @Inject
 constructor(
-    private val repository: ClickRepository
+    private val counterRepository: CounterRepository,
+    private val clickRepository: ClickRepository
 ) : ViewModel() {
 
-    val statsLiveData = MutableLiveData<StatsObject>()
+    val statsLiveData = MutableLiveData<Stats>()
 
-    val counterList: LiveData<List<CounterObject>> = Transformations.map(repository.getCounters()) {
-        it
-    }
+    val counterList: LiveData<List<CounterDto>> =
+        Transformations.map(counterRepository.findCounters()) {
+            it
+        }
 
     fun loadStats() {
         viewModelScope.launch {
-            val countersCount = repository.getCountersCount()
-            val clicksCount = repository.getAllClicks()
-            val longestClick = repository.getLongestClick()
-            val mostClicksInCounter = repository.getMostClicksInCounter()
+            val countersCount = counterRepository.getCountersCount()
+            val clicksCount = clickRepository.getAllClicks()
+            val longestClick = clickRepository.getLongestClick()
+            val mostClicksInCounter = clickRepository.getMostClicksInCounter()
 
-            val stats = StatsObject(
+            val stats = Stats(
                 countersCount = countersCount,
                 clicksCount = clicksCount,
                 longClick = longestClick,
@@ -40,27 +43,26 @@ constructor(
 
     fun createCounter(newName: String) {
         viewModelScope.launch {
-            val countersCount = repository.getCountersCount()
-            repository.saveCounter(
-                CounterObject(
-                    getCurrentTime(),
-                    getCurrentTime(),
-                    count = 0,
+            val countersCount = counterRepository.getCountersCount()
+            counterRepository.createCounter(
+                CounterDto(
+                    createTime = getCurrentTime(),
+                    editTime = getCurrentTime(),
                     name = newName.appendIndex(countersCount)
                 )
             )
         }
     }
 
-    fun deleteCounter(counter: CounterObject) {
+    fun deleteCounter(counter: CounterDto) {
         viewModelScope.launch {
-            repository.deleteCounter(counter)
+            counterRepository.deleteCounter(counter)
         }
     }
 
-    fun updateCounter(counter: CounterObject) {
+    fun updateCounter(counter: CounterDto) {
         viewModelScope.launch {
-            repository.updateCounter(counter)
+            counterRepository.updateCounter(counter)
         }
     }
 }
