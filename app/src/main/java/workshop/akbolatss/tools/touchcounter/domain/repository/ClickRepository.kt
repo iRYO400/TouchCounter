@@ -8,7 +8,6 @@ interface ClickRepository {
 
     suspend fun getCountersCount(): Int
     fun getCounters(): LiveData<List<CounterObject>>
-    fun getClicks(counterId: Long): LiveData<List<ClickObject>>
     suspend fun saveCounter(counterObject: CounterObject)
     suspend fun addClick(clickObject: ClickObject)
     suspend fun updateCounter(counterObject: CounterObject)
@@ -16,4 +15,8 @@ interface ClickRepository {
     suspend fun getAllClicks(): Int
     suspend fun getLongestClick(): Long
     suspend fun getMostClicksInCounter(): Int
+
+    fun getCounter(id: Long): LiveData<CounterObject>
+    fun getClicks(counterId: Long): LiveData<List<ClickObject>>
+
 }

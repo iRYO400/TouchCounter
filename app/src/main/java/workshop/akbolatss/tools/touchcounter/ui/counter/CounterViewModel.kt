@@ -1,51 +1,60 @@
 package workshop.akbolatss.tools.touchcounter.ui.counter
 
-import android.content.Intent
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import kotlinx.coroutines.launch
+import workshop.akbolatss.tools.touchcounter.domain.repository.ClickRepository
 import workshop.akbolatss.tools.touchcounter.pojo.ClickObject
 import workshop.akbolatss.tools.touchcounter.pojo.CounterObject
-import workshop.akbolatss.tools.touchcounter.room.ClicksRepositoryImpl
-import workshop.akbolatss.tools.touchcounter.room.DataDao
-import workshop.akbolatss.tools.touchcounter.utils.INTENT_COUNTER_ID
+import workshop.akbolatss.tools.touchcounter.utils.AbsentLiveData
 import workshop.akbolatss.tools.touchcounter.utils.getCurrentTime
+import javax.inject.Inject
 
-class CounterViewModel : ViewModel() {
+class CounterViewModel
+@Inject
+constructor(private val repository: ClickRepository) : ViewModel() {
 
-    private lateinit var repository: ClicksRepositoryImpl
+    private var counterId = MutableLiveData<Long>()
 
-    lateinit var counterLiveData: LiveData<CounterObject>
-    lateinit var clicksLiveData: LiveData<List<ClickObject>>
+    val counter: LiveData<CounterObject> =
+        Transformations.switchMap(counterId) { counterId ->
+            if (counterId == null)
+                AbsentLiveData.create()
+            else
+                repository.getCounter(counterId)
+        }
 
-    private var counterId: Long = -1L
+    val clickList: LiveData<List<ClickObject>> =
+        Transformations.switchMap(counterId) { counterId ->
+            if (counterId == null)
+                AbsentLiveData.create()
+            else
+                repository.getClicks(counterId)
+        }
 
-    fun processRepository(dataDao: DataDao) {
-        repository = ClicksRepositoryImpl(dataDao)
-    }
+    fun setCounterId(counterId: Long) {
+        if (this.counterId.value == counterId)
+            return
 
-    fun processIntent(intent: Intent) {
-        counterId = intent.getLongExtra(INTENT_COUNTER_ID, -1)
-
-        counterLiveData = repository.getCounter(counterId)
-        clicksLiveData = repository.getClicks(counterId)
+        this.counterId.value = counterId
     }
 
     fun addClickObject(clickObject: ClickObject) {
         viewModelScope.launch {
-            clickObject.counterId = counterId
-            repository.addClick(clickObject)
+            counterId.value?.let { counterId ->
+                clickObject.counterId = counterId
+                repository.addClick(clickObject)
+            }
         }
     }
 
     fun updateCounter() {
         viewModelScope.launch {
-            val counterObject = counterLiveData.value!!
-            counterObject.timestampEditing =
-                getCurrentTime()
-            counterObject.count = clicksLiveData.value!!.size.toLong()
-            repository.updateCounter(counterObject)
+            counter.value?.let { counter ->
+                counter.timestampEditing =
+                    getCurrentTime()
+                counter.count = clickList.value?.size?.toLong() ?: 0L
+                repository.updateCounter(counter)
+            }
         }
     }
 

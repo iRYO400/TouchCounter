@@ -10,29 +10,39 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import dagger.android.AndroidInjection
 import kotlinx.android.synthetic.main.activity_counter.*
 import workshop.akbolatss.tools.touchcounter.R
 import workshop.akbolatss.tools.touchcounter.pojo.ClickObject
-import workshop.akbolatss.tools.touchcounter.room.AppDataBase
+import workshop.akbolatss.tools.touchcounter.ui.ViewModelFactory
+import workshop.akbolatss.tools.touchcounter.utils.INTENT_COUNTER_ID
 import workshop.akbolatss.tools.touchcounter.utils.PopupView
 import workshop.akbolatss.tools.touchcounter.utils.getCurrentTime
 import workshop.akbolatss.tools.touchcounter.utils.showToast
 import java.util.*
+import javax.inject.Inject
 
 
 class CounterActivity : AppCompatActivity() {
 
-    private var downTiming: Long = 0L
-    private var holdTiming: Long = 0L
+    @Inject
+    lateinit var viewModelFactory: ViewModelFactory
 
-    private lateinit var viewModel: CounterViewModel
+    private val viewModel: CounterViewModel by lazy {
+        ViewModelProvider(this, viewModelFactory).get(CounterViewModel::class.java)
+    }
 
     private lateinit var adapter: ClickAdapter
 
     private lateinit var timer: Timer
 
+    private var downTiming: Long = 0L
+    private var holdTiming: Long = 0L
+
     override fun onCreate(savedInstanceState: Bundle?) {
+        AndroidInjection.inject(this)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_counter)
 
@@ -44,9 +54,8 @@ class CounterActivity : AppCompatActivity() {
     }
 
     private fun initViewModel() {
-        viewModel = ViewModelProvider(this).get(CounterViewModel::class.java)
-        viewModel.processRepository(AppDataBase.getInstance(this).dataDao)
-        viewModel.processIntent(intent)
+        val counterId = intent.getLongExtra(INTENT_COUNTER_ID, -1)
+        viewModel.setCounterId(counterId)
     }
 
     private fun initRecyclerView() {
@@ -55,13 +64,13 @@ class CounterActivity : AppCompatActivity() {
     }
 
     private fun setObservers() {
-        viewModel.counterLiveData.observe(this, androidx.lifecycle.Observer { counterObject ->
+        viewModel.counter.observe(this, Observer { counterObject ->
             if (counterObject == null) {
                 showToast { "Error of loading Counter " }
                 onBackPressed()
             }
         })
-        viewModel.clicksLiveData.observe(this, androidx.lifecycle.Observer { clickObjects ->
+        viewModel.clickList.observe(this, Observer { clickObjects ->
             adapter.submitList(clickObjects)
             tv_counter.text = clickObjects.size.toString()
             recyclerView.smoothScrollToPosition(adapter.itemCount)

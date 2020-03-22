@@ -13,7 +13,7 @@ class ClicksRepositoryImpl
 @Inject
 constructor(private val dataDao: DataDao) : ClickRepository {
 
-    fun getCounter(id: Long): LiveData<CounterObject> {
+    override fun getCounter(id: Long): LiveData<CounterObject> {
         return dataDao.getCounterObject(id)
     }
 
