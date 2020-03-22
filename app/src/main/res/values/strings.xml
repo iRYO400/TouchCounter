@@ -28,4 +28,5 @@
     <string name="nav_send_email_subject" translatable="false">[Feedback] Touch Counter</string>
     <string name="nav_send_email">Send feedback</string>
     <string name="options_description">Options</string>
+    <string name="millis">%d ms</string>
 </resources>

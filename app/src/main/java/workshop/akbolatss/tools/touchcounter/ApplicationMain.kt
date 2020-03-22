@@ -7,6 +7,7 @@ import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasAndroidInjector
 import workshop.akbolatss.tools.touchcounter.di.DaggerAppComponent
+import workshop.akbolatss.tools.touchcounter.utils.TimberLogImplementation
 import javax.inject.Inject
 
 class ApplicationMain : Application(), HasAndroidInjector {
@@ -17,6 +18,7 @@ class ApplicationMain : Application(), HasAndroidInjector {
     override fun onCreate() {
         super.onCreate()
         DaggerAppComponent.factory().create(this).inject(this)
+        TimberLogImplementation.init()
     }
 
     override fun androidInjector(): AndroidInjector<Any> =

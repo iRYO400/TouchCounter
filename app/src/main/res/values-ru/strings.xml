@@ -27,4 +27,5 @@
     <string name="nav_others">Другое</string>
     <string name="nav_send_email">Ваши предложения</string>
     <string name="nav_send_email_helper">Отправить предложения используя</string>
+    <string name="millis">%d мс</string>
 </resources>

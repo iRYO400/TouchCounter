@@ -7,7 +7,7 @@
     tools:context=".ui.counter.CounterActivity">
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/button"
+        android:id="@+id/btnClick"
         android:layout_width="0dp"
         android:layout_height="128dp"
         android:layout_marginStart="16dp"
@@ -54,7 +54,7 @@
         android:layout_marginBottom="8dp"
         android:text="@string/default_count"
         android:textSize="56sp"
-        app:layout_constraintBottom_toTopOf="@+id/button"
+        app:layout_constraintBottom_toTopOf="@+id/btnClick"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 

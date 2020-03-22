@@ -7,7 +7,9 @@ import workshop.akbolatss.tools.touchcounter.pojo.ClickObject
 import workshop.akbolatss.tools.touchcounter.pojo.CounterObject
 import workshop.akbolatss.tools.touchcounter.utils.AbsentLiveData
 import workshop.akbolatss.tools.touchcounter.utils.getCurrentTime
+import java.util.*
 import javax.inject.Inject
+import kotlin.concurrent.fixedRateTimer
 
 class CounterViewModel
 @Inject
@@ -31,6 +33,11 @@ constructor(private val repository: ClickRepository) : ViewModel() {
                 repository.getClicks(counterId)
         }
 
+    private var timer: Timer? = null
+    private var startTime = Date()
+
+    val heldMillis = MutableLiveData<Long>()
+
     fun setCounterId(counterId: Long) {
         if (this.counterId.value == counterId)
             return
@@ -38,7 +45,32 @@ constructor(private val repository: ClickRepository) : ViewModel() {
         this.counterId.value = counterId
     }
 
-    fun addClickObject(clickObject: ClickObject) {
+    fun startTimer() {
+        startTime = Date()
+        timer = fixedRateTimer(startAt = startTime, period = 1) {
+            heldMillis.postValue(System.currentTimeMillis().minus(startTime.time))
+        }
+    }
+
+    fun stopTimer() {
+        timer?.cancel()
+    }
+
+    fun createClick(isForce: Boolean) {
+        if (isForce)
+            return
+        clickList.value?.let { clickList ->
+            val index = clickList.size + 1
+            val click = ClickObject(
+                timestamp = startTime.time,
+                holdTiming = heldMillis.value ?: System.currentTimeMillis(),
+                index = index
+            )
+            addClick(click)
+        }
+    }
+
+    private fun addClick(clickObject: ClickObject) {
         viewModelScope.launch {
             counterId.value?.let { counterId ->
                 clickObject.counterId = counterId
@@ -57,5 +89,4 @@ constructor(private val repository: ClickRepository) : ViewModel() {
             }
         }
     }
-
 }
