@@ -11,13 +11,14 @@
         android:id="@+id/coordinator"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.NavigationActivity">
+        tools:context=".ui.list.NavigationActivity">
 
-        <FrameLayout
-            android:id="@+id/container"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:fitsSystemWindows="true" />
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            app:spanCount="2" />
 
         <com.google.android.material.bottomappbar.BottomAppBar
             android:id="@+id/bottom_bar"
@@ -38,9 +39,9 @@
             android:layout_height="wrap_content"
             android:elevation="12dp"
             android:src="@drawable/ic_add_black_24dp"
-            app:tint="@color/white"
             app:backgroundTint="@color/colorAccent"
-            app:layout_anchor="@id/bottom_bar" />
+            app:layout_anchor="@id/bottom_bar"
+            app:tint="@color/white" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

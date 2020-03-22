@@ -1,8 +1,6 @@
-package workshop.akbolatss.tools.touchcounter.ui
+package workshop.akbolatss.tools.touchcounter.ui.list
 
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import kotlinx.coroutines.launch
 import workshop.akbolatss.tools.touchcounter.domain.repository.ClickRepository
 import workshop.akbolatss.tools.touchcounter.pojo.CounterObject
@@ -17,13 +15,10 @@ constructor(
     private val repository: ClickRepository
 ) : ViewModel() {
 
-    val currentTabTag = MutableLiveData<NavigationTab>()
-    var previousTabTag: String? = null
-
     val statsLiveData = MutableLiveData<StatsObject>()
 
-    init {
-        currentTabTag.value = NavigationTab.ListCounters
+    val counterList: LiveData<List<CounterObject>> = Transformations.map(repository.getCounters()) {
+        it
     }
 
     fun loadStats() {
@@ -54,6 +49,18 @@ constructor(
                     name = newName.appendIndex(countersCount)
                 )
             )
+        }
+    }
+
+    fun deleteCounter(counter: CounterObject) {
+        viewModelScope.launch {
+            repository.deleteCounter(counter)
+        }
+    }
+
+    fun updateCounter(counter: CounterObject) {
+        viewModelScope.launch {
+            repository.updateCounter(counter)
         }
     }
 }

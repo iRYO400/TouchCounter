@@ -15,7 +15,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppThemeNoBar"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".ui.NavigationActivity">
+        <activity android:name=".ui.list.NavigationActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
