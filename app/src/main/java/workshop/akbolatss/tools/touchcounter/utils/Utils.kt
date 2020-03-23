@@ -3,11 +3,9 @@ package workshop.akbolatss.tools.touchcounter.utils
 import android.content.Context
 import android.content.res.Resources
 import android.text.format.DateUtils
-import android.util.Log
 import android.widget.Toast
 import timber.log.Timber
 import workshop.akbolatss.tools.touchcounter.R
-import java.sql.Timestamp
 import java.text.ParseException
 import java.util.*
 
@@ -25,7 +23,7 @@ fun String.appendIndex(index: Int): String {
     return "$this $index"
 }
 
-fun Date.format(): String {
+fun Date.formatAsRelativeInMinutes(): String {
     return try {
         DateUtils.getRelativeTimeSpanString(
             this.time,
@@ -38,19 +36,16 @@ fun Date.format(): String {
     }
 }
 
-fun convertTime(timestamp: Long): String {
-    val date = Date(Timestamp(timestamp).time)
+fun Date.formatAsRelativeInSeconds(): String {
     return try {
-        val niceDateStr = DateUtils.getRelativeTimeSpanString(
-            date.time,
+        DateUtils.getRelativeTimeSpanString(
+            this.time,
             Calendar.getInstance().timeInMillis,
-            DateUtils.MINUTE_IN_MILLIS
-        )
-        niceDateStr.toString()
+            DateUtils.SECOND_IN_MILLIS
+        ).toString()
     } catch (e: ParseException) {
-        e.printStackTrace()
-        Log.e("ParseException", "Unparseable date " + e.message)
-        timestamp.toString()
+        Timber.e(e)
+        this.time.toString()
     }
 }
 
@@ -60,21 +55,5 @@ val Int.dp: Int
 val Float.dp: Int
     get() = (this * Resources.getSystem().displayMetrics.density + 0.5f).toInt()
 
-
-fun convertTimeSeconds(timestamp: Long): String {
-    val date = Date(Timestamp(timestamp).time)
-    return try {
-        val niceDateStr = DateUtils.getRelativeTimeSpanString(
-            date.time,
-            Calendar.getInstance().timeInMillis,
-            DateUtils.SECOND_IN_MILLIS
-        )
-        niceDateStr.toString()
-    } catch (e: ParseException) {
-        e.printStackTrace()
-        Log.e("ParseException", "Unparseable date " + e.message)
-        timestamp.toString()
-    }
-}
 
 fun getCurrentTime() = Date()

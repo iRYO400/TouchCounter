@@ -13,7 +13,7 @@ import workshop.akbolatss.tools.touchcounter.R
 import workshop.akbolatss.tools.touchcounter.data.dto.CounterDto
 import workshop.akbolatss.tools.touchcounter.ui.list.ClickType.ITEM_CLICK
 import workshop.akbolatss.tools.touchcounter.ui.list.ClickType.OPTIONS_CLICK
-import workshop.akbolatss.tools.touchcounter.utils.format
+import workshop.akbolatss.tools.touchcounter.utils.formatAsRelativeInMinutes
 
 class CounterAdapter(
     private val clickListener: (CounterDto, Int, ClickType) -> Unit
@@ -43,7 +43,7 @@ class CounterAdapter(
         ) {
             itemView.name.text = counter.name
 
-            itemView.timestamp.text = counter.editTime.format()
+            itemView.timestamp.text = counter.editTime.formatAsRelativeInMinutes()
             itemView.count.text = counter.itemCount.toString()
 
             itemView.setOnClickListener {
