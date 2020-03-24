@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.res.Resources
 import android.text.format.DateUtils
 import android.widget.Toast
+import androidx.lifecycle.MutableLiveData
 import timber.log.Timber
 import workshop.akbolatss.tools.touchcounter.R
 import java.text.ParseException
@@ -11,6 +12,11 @@ import java.util.*
 
 const val INTENT_COUNTER_ID = "counterId"
 const val SUPPORT_EMAIL = "whitesteel400@gmail.com"
+
+fun <T> MutableLiveData<T>.init(t: T?): MutableLiveData<T> {
+    this.postValue(t)
+    return this
+}
 
 inline fun Context.showToast(message: () -> String) =
     Toast.makeText(this, message(), Toast.LENGTH_LONG).show()

@@ -13,6 +13,7 @@ import org.mockito.Mockito.*
 import workshop.akbolatss.tools.touchcounter.data.dao.CounterDao
 import workshop.akbolatss.tools.touchcounter.data.dto.CounterDto
 import workshop.akbolatss.tools.touchcounter.domain.repository.CounterRepository
+import workshop.akbolatss.tools.touchcounter.utils.init
 import java.util.*
 
 class CounterRepositoryImplTest {
@@ -36,7 +37,7 @@ class CounterRepositoryImplTest {
     @Test
     fun `create counter`() = runBlockingTest {
         // given
-        val counter = getFakeCounter()
+        val counter = getFakeCounterA()
         val repository = CounterRepositoryImpl(counterDao)
 
         // when
@@ -50,23 +51,23 @@ class CounterRepositoryImplTest {
     @Test
     fun `create counter which is not modified`() = runBlockingTest {
         // given
-        val counter = getFakeCounter()
-        val modifiedCounter = getModifiedFakeCounter()
+        val counterA = getFakeCounterA()
+        val counterB = getFakeCounterB()
         val repository = CounterRepositoryImpl(counterDao)
 
         // when
-        `when`(counterDao.create(counter)).thenReturn(0)
-        repository.createCounter(counter)
+        `when`(counterDao.create(counterA)).thenReturn(0)
+        repository.createCounter(counterA)
 
         // then
-        verify(counterDao, times(1)).create(counter)
-        verify(counterDao, never()).create(modifiedCounter)
+        verify(counterDao, times(1)).create(counterA)
+        verify(counterDao, never()).create(counterB)
     }
 
     @Test
     fun `update counter`() = runBlockingTest {
         // given
-        val counter = getFakeCounter()
+        val counter = getFakeCounterA()
         val repository = CounterRepositoryImpl(counterDao)
 
         // when
@@ -80,22 +81,22 @@ class CounterRepositoryImplTest {
     @Test
     fun `update counter which is not modified`() = runBlockingTest {
         // given
-        val counter = getFakeCounter()
-        val modifiedCounter = getModifiedFakeCounter()
+        val counterA = getFakeCounterA()
+        val counterB = getFakeCounterB()
 
         // when
-        `when`(counterDao.update(counter)).thenReturn(Unit)
-        repository.updateCounter(counter)
+        `when`(counterDao.update(counterA)).thenReturn(Unit)
+        repository.updateCounter(counterA)
 
         // then
-        verify(counterDao, times(1)).update(counter)
-        verify(counterDao, never()).update(modifiedCounter)
+        verify(counterDao, times(1)).update(counterA)
+        verify(counterDao, never()).update(counterB)
     }
 
     @Test
     fun `delete counter exact`() = runBlockingTest {
         // given
-        val counter = getFakeCounter()
+        val counter = getFakeCounterA()
 
         // when
         `when`(counterDao.delete(counter)).thenReturn(Unit)
@@ -108,16 +109,16 @@ class CounterRepositoryImplTest {
     @Test
     fun `delete counter not different`() = runBlockingTest {
         // given
-        val counter = getFakeCounter()
-        val differentCounter = getModifiedFakeCounter()
+        val counterA = getFakeCounterA()
+        val counterB = getFakeCounterB()
 
         // when
-        `when`(counterDao.delete(counter)).thenReturn(Unit)
-        repository.deleteCounter(counter)
+        `when`(counterDao.delete(counterA)).thenReturn(Unit)
+        repository.deleteCounter(counterA)
 
         // then
-        verify(counterDao, times(1)).delete(counter)
-        verify(counterDao, never()).delete(differentCounter)
+        verify(counterDao, times(1)).delete(counterA)
+        verify(counterDao, never()).delete(counterB)
     }
 
     @Test
@@ -188,7 +189,7 @@ class CounterRepositoryImplTest {
     @Test
     fun `find counters, when data source has 1 item, return list with one element`() {
         // given
-        val expectedResponse = MutableLiveData<List<CounterDto>>().init(listOf(getFakeCounter()))
+        val expectedResponse = MutableLiveData<List<CounterDto>>().init(listOf(getFakeCounterA()))
 
         // when
         `when`(counterDao.findList()).thenReturn(expectedResponse)
@@ -230,7 +231,7 @@ class CounterRepositoryImplTest {
     @Test
     fun `find counter, when data source gives item, return that item`() {
         // given
-        val counter = getFakeCounter()
+        val counter = getFakeCounterA()
         val expectedResponse = MutableLiveData<CounterDto>().init(counter)
 
         // when
@@ -247,14 +248,9 @@ class CounterRepositoryImplTest {
         verify(counterDao, never()).findBy(-1)
     }
 
-    fun <T> MutableLiveData<T>.init(t: T?): MutableLiveData<T> {
-        this.postValue(t)
-        return this
-    }
-
-    private fun getFakeCounter(): CounterDto =
+    private fun getFakeCounterA(): CounterDto =
         CounterDto(createTime = Date(), editTime = Date(), name = "Test1")
 
-    private fun getModifiedFakeCounter(): CounterDto =
+    private fun getFakeCounterB(): CounterDto =
         CounterDto(createTime = Date(), editTime = Date(), name = "Test2")
 }

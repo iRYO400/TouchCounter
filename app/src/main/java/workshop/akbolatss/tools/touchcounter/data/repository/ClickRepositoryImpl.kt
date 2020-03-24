@@ -6,7 +6,7 @@ import workshop.akbolatss.tools.touchcounter.data.dto.ClickDto
 import workshop.akbolatss.tools.touchcounter.domain.repository.ClickRepository
 import javax.inject.Inject
 
-class ClicksRepositoryImpl
+class ClickRepositoryImpl
 @Inject
 constructor(private val clickDao: ClickDao) : ClickRepository {
 
