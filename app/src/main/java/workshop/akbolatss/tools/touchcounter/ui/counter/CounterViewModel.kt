@@ -10,7 +10,7 @@ import workshop.akbolatss.tools.touchcounter.utils.AbsentLiveData
 import workshop.akbolatss.tools.touchcounter.utils.getCurrentTime
 import java.util.*
 import javax.inject.Inject
-import kotlin.concurrent.fixedRateTimer
+import kotlin.concurrent.scheduleAtFixedRate
 
 class CounterViewModel
 @Inject
@@ -19,7 +19,7 @@ constructor(
     private val clickRepository: ClickRepository
 ) : ViewModel() {
 
-    private var counterId = MutableLiveData<Long>()
+    val counterId = MutableLiveData<Long>()
 
     val counter: LiveData<CounterDto> =
         Transformations.switchMap(counterId) { counterId ->
@@ -37,8 +37,9 @@ constructor(
                 clickRepository.findClickList(counterId)
         }
 
-    private var timer: Timer? = null
-    private var startTime = Date()
+    private val timer: Timer = Timer()
+    private var timerTask: TimerTask? = null
+    private var btnHoldingStartTime = Date()
 
     val heldMillis = MutableLiveData<Long>()
 
@@ -49,15 +50,16 @@ constructor(
         this.counterId.value = counterId
     }
 
-    fun startTimer() {
-        startTime = Date()
-        timer = fixedRateTimer(startAt = startTime, period = 1) {
-            heldMillis.postValue(System.currentTimeMillis().minus(startTime.time))
+    fun executeTask() {
+        btnHoldingStartTime = Date()
+        timerTask = timer.scheduleAtFixedRate(time = btnHoldingStartTime, period = 1) {
+            heldMillis.postValue(System.currentTimeMillis().minus(btnHoldingStartTime.time))
         }
     }
 
-    fun stopTimer() {
-        timer?.cancel()
+    fun cancelTask() {
+        timerTask?.cancel()
+        timerTask = null
     }
 
     fun createClick(isForce: Boolean) {
@@ -65,7 +67,7 @@ constructor(
             return
         counterId.value?.let { counterId ->
             val click = ClickDto(
-                createTime = startTime,
+                createTime = btnHoldingStartTime,
                 heldMillis = heldMillis.value ?: System.currentTimeMillis(),
                 counterId = counterId
             )
@@ -86,5 +88,11 @@ constructor(
                 counterRepository.updateCounter(updatedCounter)
             }
         }
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        timer.cancel()
+        timer.purge()
     }
 }

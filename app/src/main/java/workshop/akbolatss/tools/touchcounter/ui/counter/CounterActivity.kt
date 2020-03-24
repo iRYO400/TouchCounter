@@ -113,11 +113,11 @@ class CounterActivity : AppCompatActivity() {
     private fun btnHold() {
         btnClick.isPressed = true
         animator.start()
-        viewModel.startTimer()
+        viewModel.executeTask()
     }
 
     private fun btnRelease(isForce: Boolean = false) {
-        viewModel.stopTimer()
+        viewModel.cancelTask()
         viewModel.createClick(isForce)
         animator.cancel()
         btnClick.isPressed = false
