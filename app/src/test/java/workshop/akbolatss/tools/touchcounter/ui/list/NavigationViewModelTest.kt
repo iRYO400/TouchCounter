@@ -75,7 +75,7 @@ class NavigationViewModelTest {
         // then
         viewModel.counterList.test()
             .assertHasValue()
-            .assertHistorySize(0)
+            .assertHistorySize(1)
             .assertValue {
                 it.isEmpty()
             }
