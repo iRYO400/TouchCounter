@@ -11,7 +11,6 @@ import kotlinx.android.synthetic.main.rv_click.view.*
 import workshop.akbolatss.tools.touchcounter.R
 import workshop.akbolatss.tools.touchcounter.data.dto.ClickDto
 
-
 class ClickAdapter : ListAdapter<ClickDto, ClickAdapter.CounterVH>(DIFF_CALLBACK) {
 
     private val handler = Handler()

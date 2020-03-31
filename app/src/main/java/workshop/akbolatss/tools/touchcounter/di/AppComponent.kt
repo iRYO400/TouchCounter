@@ -4,7 +4,11 @@ import dagger.Component
 import dagger.android.AndroidInjector
 import dagger.android.support.AndroidSupportInjectionModule
 import workshop.akbolatss.tools.touchcounter.ApplicationMain
-import workshop.akbolatss.tools.touchcounter.di.module.*
+import workshop.akbolatss.tools.touchcounter.di.module.ActivityBindingModule
+import workshop.akbolatss.tools.touchcounter.di.module.AppModule
+import workshop.akbolatss.tools.touchcounter.di.module.PersistenceModule
+import workshop.akbolatss.tools.touchcounter.di.module.RepositoryModule
+import workshop.akbolatss.tools.touchcounter.di.module.ViewModelModule
 import javax.inject.Singleton
 
 @Singleton

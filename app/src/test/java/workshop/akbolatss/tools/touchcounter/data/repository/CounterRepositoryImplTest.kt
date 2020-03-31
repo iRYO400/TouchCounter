@@ -9,12 +9,16 @@ import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import org.mockito.Mockito.*
+import org.mockito.Mockito.`when`
+import org.mockito.Mockito.mock
+import org.mockito.Mockito.never
+import org.mockito.Mockito.times
+import org.mockito.Mockito.verify
 import workshop.akbolatss.tools.touchcounter.data.dao.CounterDao
 import workshop.akbolatss.tools.touchcounter.data.dto.CounterDto
 import workshop.akbolatss.tools.touchcounter.domain.repository.CounterRepository
 import workshop.akbolatss.tools.touchcounter.utils.init
-import java.util.*
+import java.util.Date
 
 class CounterRepositoryImplTest {
 
@@ -208,7 +212,7 @@ class CounterRepositoryImplTest {
         // when
         `when`(counterDao.findBy(0)).thenReturn(null)
 
-        //then
+        // then
         repository.findCounter(0).test()
     }
 
@@ -220,7 +224,7 @@ class CounterRepositoryImplTest {
         // when
         `when`(counterDao.findBy(0)).thenReturn(expectedResponse)
 
-        //then
+        // then
         repository.findCounter(0).test()
             .assertNullValue()
             .assertHistorySize(1)
@@ -237,7 +241,7 @@ class CounterRepositoryImplTest {
         // when
         `when`(counterDao.findBy(0)).thenReturn(expectedResponse)
 
-        //then
+        // then
         repository.findCounter(0).test()
             .assertHasValue()
             .assertValue {

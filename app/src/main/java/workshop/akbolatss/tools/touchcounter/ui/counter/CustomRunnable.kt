@@ -3,7 +3,7 @@ package workshop.akbolatss.tools.touchcounter.ui.counter
 import android.os.Handler
 import android.widget.TextView
 import workshop.akbolatss.tools.touchcounter.utils.formatAsRelativeInSeconds
-import java.util.*
+import java.util.Date
 
 class CustomRunnable(private val handler: Handler, var holder: TextView) : Runnable {
 

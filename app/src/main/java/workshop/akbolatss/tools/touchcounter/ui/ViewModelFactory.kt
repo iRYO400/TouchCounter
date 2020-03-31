@@ -23,5 +23,4 @@ class ViewModelFactory
             throw RuntimeException(e)
         }
     }
-
 }

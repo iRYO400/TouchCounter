@@ -8,7 +8,8 @@ import androidx.lifecycle.MutableLiveData
 import timber.log.Timber
 import workshop.akbolatss.tools.touchcounter.R
 import java.text.ParseException
-import java.util.*
+import java.util.Calendar
+import java.util.Date
 
 const val INTENT_COUNTER_ID = "counterId"
 const val SUPPORT_EMAIL = "whitesteel400@gmail.com"
@@ -60,6 +61,5 @@ val Int.dp: Int
 
 val Float.dp: Int
     get() = (this * Resources.getSystem().displayMetrics.density + 0.5f).toInt()
-
 
 fun getCurrentTime() = Date()

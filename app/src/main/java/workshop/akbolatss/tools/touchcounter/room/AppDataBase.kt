@@ -21,5 +21,4 @@ abstract class AppDataBase : RoomDatabase() {
     abstract val counterDao: CounterDao
 
     abstract val clickDao: ClickDao
-
 }

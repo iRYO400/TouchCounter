@@ -13,7 +13,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import workshop.akbolatss.tools.touchcounter.data.dto.CounterDto
 import workshop.akbolatss.tools.touchcounter.room.AppDataBase
-import java.util.*
+import java.util.Date
 
 @RunWith(AndroidJUnit4::class)
 class CounterDaoTest {
@@ -37,7 +37,6 @@ class CounterDaoTest {
     fun tearDown() {
         appDataBase.close()
     }
-
 
     @Test
     fun create() = runBlockingTest {
@@ -70,5 +69,4 @@ class CounterDaoTest {
                 it != null
             }
     }
-
 }

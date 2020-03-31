@@ -38,4 +38,3 @@ class PersistenceModule {
     fun provideClickDao(appDataBase: AppDataBase): ClickDao =
         appDataBase.clickDao
 }
-

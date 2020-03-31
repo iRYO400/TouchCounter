@@ -1,6 +1,10 @@
 package workshop.akbolatss.tools.touchcounter.ui.counter
 
-import androidx.lifecycle.*
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Transformations
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import workshop.akbolatss.tools.touchcounter.data.dto.ClickDto
 import workshop.akbolatss.tools.touchcounter.data.dto.CounterDto
@@ -8,7 +12,9 @@ import workshop.akbolatss.tools.touchcounter.domain.repository.ClickRepository
 import workshop.akbolatss.tools.touchcounter.domain.repository.CounterRepository
 import workshop.akbolatss.tools.touchcounter.utils.AbsentLiveData
 import workshop.akbolatss.tools.touchcounter.utils.getCurrentTime
-import java.util.*
+import java.util.Date
+import java.util.Timer
+import java.util.TimerTask
 import javax.inject.Inject
 import kotlin.concurrent.scheduleAtFixedRate
 

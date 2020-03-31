@@ -6,9 +6,9 @@ import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
 import workshop.akbolatss.tools.touchcounter.di.ViewModelKey
-import workshop.akbolatss.tools.touchcounter.ui.list.NavigationViewModel
 import workshop.akbolatss.tools.touchcounter.ui.ViewModelFactory
 import workshop.akbolatss.tools.touchcounter.ui.counter.CounterViewModel
+import workshop.akbolatss.tools.touchcounter.ui.list.NavigationViewModel
 
 @Module
 abstract class ViewModelModule {

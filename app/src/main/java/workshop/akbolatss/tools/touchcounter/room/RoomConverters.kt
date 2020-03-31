@@ -1,7 +1,7 @@
 package workshop.akbolatss.tools.touchcounter.room
 
 import androidx.room.TypeConverter
-import java.util.*
+import java.util.Date
 
 class RoomConverters {
 
@@ -18,5 +18,4 @@ class RoomConverters {
             return -1
         return date.time
     }
-
 }

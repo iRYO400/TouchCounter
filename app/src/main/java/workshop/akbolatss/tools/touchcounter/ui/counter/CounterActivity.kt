@@ -21,7 +21,6 @@ import workshop.akbolatss.tools.touchcounter.utils.PopupView
 import workshop.akbolatss.tools.touchcounter.utils.showToast
 import javax.inject.Inject
 
-
 class CounterActivity : AppCompatActivity() {
 
     @Inject
@@ -152,5 +151,4 @@ class CounterActivity : AppCompatActivity() {
                 `object`.setTextColor(value)
             }
         }
-
 }

@@ -3,7 +3,9 @@ package workshop.akbolatss.tools.touchcounter.ui.counter
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.MutableLiveData
 import com.jraska.livedata.test
-import com.nhaarman.mockitokotlin2.*
+import com.nhaarman.mockitokotlin2.mock
+import com.nhaarman.mockitokotlin2.verifyNoMoreInteractions
+import com.nhaarman.mockitokotlin2.verifyZeroInteractions
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.test.TestCoroutineDispatcher
 import kotlinx.coroutines.test.resetMain
@@ -13,20 +15,24 @@ import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import org.mockito.Mockito
+import org.mockito.ArgumentMatchers.any
+import org.mockito.Mockito.`when`
+import org.mockito.Mockito.never
+import org.mockito.Mockito.times
+import org.mockito.Mockito.verify
 import workshop.akbolatss.tools.touchcounter.data.dto.CounterDto
 import workshop.akbolatss.tools.touchcounter.domain.repository.ClickRepository
 import workshop.akbolatss.tools.touchcounter.domain.repository.CounterRepository
 import workshop.akbolatss.tools.touchcounter.utils.init
-import java.util.*
+import java.util.Date
 
 class CounterViewModelTest {
 
     @get:Rule
     val liveDataRule = InstantTaskExecutorRule()
 
-    private val counterRepository = Mockito.mock(CounterRepository::class.java)
-    private val clickRepository = Mockito.mock(ClickRepository::class.java)
+    private val counterRepository: CounterRepository = mock()
+    private val clickRepository: ClickRepository = mock()
 
     private val testDispatcher = TestCoroutineDispatcher()
 
@@ -111,7 +117,6 @@ class CounterViewModelTest {
                 it == counterIdB
             }
     }
-
 
 //    @Test TODO don't know
 //    fun executeTask() {
@@ -210,7 +215,7 @@ class CounterViewModelTest {
             .assertNoValue()
         val counter = CounterDto(createTime = Date(), editTime = Date(), name = "Test")
         val counterLD = MutableLiveData<CounterDto>().init(counter)
-        whenever(counterRepository.findCounter(any())).thenReturn(counterLD)
+        `when`(counterRepository.findCounter(any())).thenReturn(counterLD)
         viewModel.counterId.postValue(1L)
 
         // when
@@ -224,5 +229,4 @@ class CounterViewModelTest {
         testObserverId.assertHasValue()
         testObserverCounter.assertHasValue()
     }
-
 }

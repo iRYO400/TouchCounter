@@ -26,5 +26,4 @@ constructor(private val clickDao: ClickDao) : ClickRepository {
     override fun findClickList(counterId: Long): LiveData<List<ClickDto>> {
         return clickDao.findListBy(counterId)
     }
-
 }

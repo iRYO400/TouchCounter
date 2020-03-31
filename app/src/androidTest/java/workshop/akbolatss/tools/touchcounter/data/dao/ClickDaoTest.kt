@@ -13,7 +13,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import workshop.akbolatss.tools.touchcounter.data.dto.ClickDto
 import workshop.akbolatss.tools.touchcounter.room.AppDataBase
-import java.util.*
+import java.util.Date
 
 @RunWith(AndroidJUnit4::class)
 class ClickDaoTest {
@@ -23,7 +23,6 @@ class ClickDaoTest {
 
     private lateinit var database: AppDataBase
     private lateinit var clickDao: ClickDao
-
 
     @Before
     fun setUp() {
@@ -105,5 +104,4 @@ class ClickDaoTest {
             heldMillis = heldMillis,
             counterId = foreignKeyId
         )
-
 }

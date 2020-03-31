@@ -25,7 +25,6 @@ constructor(private val counterDao: CounterDao) : CounterRepository {
     override suspend fun getCountersCount(): Int =
         counterDao.getCount() ?: 0
 
-
     override fun findCounters(): LiveData<List<CounterDto>> {
         return counterDao.findList()
     }

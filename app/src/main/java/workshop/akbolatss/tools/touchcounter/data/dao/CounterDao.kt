@@ -1,8 +1,12 @@
 package workshop.akbolatss.tools.touchcounter.data.dao
 
 import androidx.lifecycle.LiveData
-import androidx.room.*
+import androidx.room.Dao
+import androidx.room.Delete
+import androidx.room.Insert
 import androidx.room.OnConflictStrategy.REPLACE
+import androidx.room.Query
+import androidx.room.Update
 import workshop.akbolatss.tools.touchcounter.data.dto.CounterDto
 
 @Dao
@@ -25,5 +29,4 @@ interface CounterDao {
 
     @Delete
     suspend fun delete(counterObject: CounterDto)
-
 }

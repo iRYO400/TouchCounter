@@ -1,5 +1,6 @@
 package workshop.akbolatss.tools.touchcounter.ui.list
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -129,6 +130,7 @@ class NavigationActivity : AppCompatActivity() {
         viewModel.createCounter(defaultName())
     }
 
+    @SuppressLint("InflateParams")
     private fun showPopupOptions(counter: CounterDto) {
         val layoutInflater = LayoutInflater.from(this)
         val view = layoutInflater.inflate(R.layout.dialog_options, null)
@@ -185,4 +187,3 @@ class NavigationActivity : AppCompatActivity() {
         builder.show()
     }
 }
-

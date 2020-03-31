@@ -8,12 +8,16 @@ import kotlinx.coroutines.test.runBlockingTest
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import org.mockito.Mockito.*
+import org.mockito.Mockito.`when`
+import org.mockito.Mockito.mock
+import org.mockito.Mockito.never
+import org.mockito.Mockito.times
+import org.mockito.Mockito.verify
 import workshop.akbolatss.tools.touchcounter.data.dao.ClickDao
 import workshop.akbolatss.tools.touchcounter.data.dto.ClickDto
 import workshop.akbolatss.tools.touchcounter.domain.repository.ClickRepository
 import workshop.akbolatss.tools.touchcounter.utils.init
-import java.util.*
+import java.util.Date
 
 class ClickRepositoryImplTest {
 
@@ -198,5 +202,4 @@ class ClickRepositoryImplTest {
 
     private fun getFakeClickB(): ClickDto =
         ClickDto(createTime = Date(), heldMillis = 0L, counterId = 1L)
-
 }

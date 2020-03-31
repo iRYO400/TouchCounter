@@ -14,12 +14,15 @@ import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import org.mockito.Mockito.*
+import org.mockito.Mockito.`when`
+import org.mockito.Mockito.mock
+import org.mockito.Mockito.times
+import org.mockito.Mockito.verify
 import workshop.akbolatss.tools.touchcounter.data.dto.CounterDto
 import workshop.akbolatss.tools.touchcounter.domain.repository.ClickRepository
 import workshop.akbolatss.tools.touchcounter.domain.repository.CounterRepository
 import workshop.akbolatss.tools.touchcounter.utils.init
-import java.util.*
+import java.util.Date
 
 class NavigationViewModelTest {
 
@@ -105,7 +108,6 @@ class NavigationViewModelTest {
         verifyZeroInteractions(clickRepository)
     }
 
-
 //    @Test(expected = NullPointerException::class) TODO wait for https://github.com/Kotlin/kotlinx.coroutines/issues/1205
 //    fun `load stats, when result is null, throw exception`() = runBlockingTest {
 //        // given
@@ -118,11 +120,10 @@ class NavigationViewModelTest {
 //        viewModel.loadStats()
 //
 //        // then
-////        viewModel.statsLiveData.test()
-////            .assertNoValue()
-////            .assertHistorySize(0)
+// //        viewModel.statsLiveData.test()
+// //            .assertNoValue()
+// //            .assertHistorySize(0)
 //    }
-
 
     @Test
     fun `load stats, when result is expected, then return expected`() = runBlockingTest {
@@ -149,10 +150,10 @@ class NavigationViewModelTest {
             .assertHasValue()
             .assertHistorySize(1)
             .assertValue { stats ->
-                stats.countersCount == expectedCountersCount
-                        && stats.clicksCount == expectedClicks
-                        && stats.longClick == expectedLongestClick
-                        && stats.mostClicks == expectedMostClicks
+                stats.countersCount == expectedCountersCount &&
+                        stats.clicksCount == expectedClicks &&
+                        stats.longClick == expectedLongestClick &&
+                        stats.mostClicks == expectedMostClicks
             }
     }
 
@@ -203,5 +204,4 @@ class NavigationViewModelTest {
 
     private fun getFakeCounter(name: String = "Test"): CounterDto =
         CounterDto(createTime = Date(), editTime = Date(), name = name)
-
 }

@@ -23,5 +23,4 @@ class ApplicationMain : Application(), HasAndroidInjector {
 
     override fun androidInjector(): AndroidInjector<Any> =
         dispatchingAndroidInjector
-
 }

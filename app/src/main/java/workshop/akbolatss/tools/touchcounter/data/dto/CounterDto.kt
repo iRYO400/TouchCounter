@@ -2,7 +2,7 @@ package workshop.akbolatss.tools.touchcounter.data.dto
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import java.util.*
+import java.util.Date
 
 @Entity(
     tableName = "counter"
