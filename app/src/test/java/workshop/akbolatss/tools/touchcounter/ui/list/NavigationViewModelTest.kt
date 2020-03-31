@@ -4,7 +4,11 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.MutableLiveData
 import com.jraska.livedata.test
 import com.nhaarman.mockitokotlin2.any
+import com.nhaarman.mockitokotlin2.mock
+import com.nhaarman.mockitokotlin2.times
+import com.nhaarman.mockitokotlin2.verify
 import com.nhaarman.mockitokotlin2.verifyZeroInteractions
+import com.nhaarman.mockitokotlin2.whenever
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.test.TestCoroutineDispatcher
 import kotlinx.coroutines.test.resetMain
@@ -14,10 +18,6 @@ import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import org.mockito.Mockito.`when`
-import org.mockito.Mockito.mock
-import org.mockito.Mockito.times
-import org.mockito.Mockito.verify
 import workshop.akbolatss.tools.touchcounter.data.dto.CounterDto
 import workshop.akbolatss.tools.touchcounter.domain.repository.ClickRepository
 import workshop.akbolatss.tools.touchcounter.domain.repository.CounterRepository
@@ -29,8 +29,8 @@ class NavigationViewModelTest {
     @get:Rule
     val liveDataRule = InstantTaskExecutorRule()
 
-    private val counterRepository = mock(CounterRepository::class.java)
-    private val clickRepository = mock(ClickRepository::class.java)
+    private val counterRepository: CounterRepository = mock()
+    private val clickRepository: ClickRepository = mock()
 
     private val testDispatcher = TestCoroutineDispatcher()
 
@@ -53,7 +53,7 @@ class NavigationViewModelTest {
     fun `get counters at init, when result is null, return empty`() {
         // given
         val expected = MutableLiveData<List<CounterDto>>().init(null)
-        `when`(counterRepository.findCounters()).thenReturn(expected)
+        whenever(counterRepository.findCounters()).thenReturn(expected)
 
         // when
         val viewModel = NavigationViewModel(counterRepository, clickRepository)
@@ -70,7 +70,7 @@ class NavigationViewModelTest {
     fun `get counters at init, when result is empty, return empty`() {
         // given
         val expected = MutableLiveData<List<CounterDto>>().init(emptyList())
-        `when`(counterRepository.findCounters()).thenReturn(expected)
+        whenever(counterRepository.findCounters()).thenReturn(expected)
 
         // when
         val viewModel = NavigationViewModel(counterRepository, clickRepository)
@@ -91,7 +91,7 @@ class NavigationViewModelTest {
     fun `get counters at init, when result has value , return expected`() {
         // given
         val expected = MutableLiveData<List<CounterDto>>().init(listOf(getFakeCounter()))
-        `when`(counterRepository.findCounters()).thenReturn(expected)
+        whenever(counterRepository.findCounters()).thenReturn(expected)
 
         // when
         val viewModel = NavigationViewModel(counterRepository, clickRepository)
@@ -132,10 +132,10 @@ class NavigationViewModelTest {
         val expectedClicks = 20
         val expectedLongestClick = 2500L
         val expectedMostClicks = 35
-        `when`(counterRepository.getCountersCount()).thenReturn(expectedCountersCount)
-        `when`(clickRepository.getAllClicks()).thenReturn(expectedClicks)
-        `when`(clickRepository.getLongestClick()).thenReturn(expectedLongestClick)
-        `when`(clickRepository.getMostClicksInCounter()).thenReturn(expectedMostClicks)
+        whenever(counterRepository.getCountersCount()).thenReturn(expectedCountersCount)
+        whenever(clickRepository.getAllClicks()).thenReturn(expectedClicks)
+        whenever(clickRepository.getLongestClick()).thenReturn(expectedLongestClick)
+        whenever(clickRepository.getMostClicksInCounter()).thenReturn(expectedMostClicks)
         val viewModel = NavigationViewModel(counterRepository, clickRepository)
 
         // when
@@ -162,8 +162,8 @@ class NavigationViewModelTest {
         // given
         val counterName = "Test"
         val counter = CounterDto(createTime = Date(), editTime = Date(), name = counterName)
-        `when`(counterRepository.getCountersCount()).thenReturn(0)
-        `when`(counterRepository.createCounter(counter)).thenReturn(Unit)
+        whenever(counterRepository.getCountersCount()).thenReturn(0)
+        whenever(counterRepository.createCounter(counter)).thenReturn(Unit)
         val viewModel = NavigationViewModel(counterRepository, clickRepository)
 
         // when
@@ -178,7 +178,7 @@ class NavigationViewModelTest {
     fun deleteCounter() = runBlockingTest {
         // given
         val counter = getFakeCounter()
-        `when`(counterRepository.deleteCounter(counter)).thenReturn(Unit)
+        whenever(counterRepository.deleteCounter(counter)).thenReturn(Unit)
         val viewModel = NavigationViewModel(counterRepository, clickRepository)
 
         // when
@@ -192,7 +192,7 @@ class NavigationViewModelTest {
     fun `update counter`() = runBlockingTest {
         // given
         val counter = getFakeCounter()
-        `when`(counterRepository.updateCounter(any())).thenReturn(Unit)
+        whenever(counterRepository.updateCounter(any())).thenReturn(Unit)
         val viewModel = NavigationViewModel(counterRepository, clickRepository)
 
         // when

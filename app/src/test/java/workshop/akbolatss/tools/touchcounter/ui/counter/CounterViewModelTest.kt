@@ -3,9 +3,14 @@ package workshop.akbolatss.tools.touchcounter.ui.counter
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.MutableLiveData
 import com.jraska.livedata.test
+import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.mock
+import com.nhaarman.mockitokotlin2.never
+import com.nhaarman.mockitokotlin2.times
+import com.nhaarman.mockitokotlin2.verify
 import com.nhaarman.mockitokotlin2.verifyNoMoreInteractions
 import com.nhaarman.mockitokotlin2.verifyZeroInteractions
+import com.nhaarman.mockitokotlin2.whenever
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.test.TestCoroutineDispatcher
 import kotlinx.coroutines.test.resetMain
@@ -15,11 +20,6 @@ import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import org.mockito.ArgumentMatchers.any
-import org.mockito.Mockito.`when`
-import org.mockito.Mockito.never
-import org.mockito.Mockito.times
-import org.mockito.Mockito.verify
 import workshop.akbolatss.tools.touchcounter.data.dto.CounterDto
 import workshop.akbolatss.tools.touchcounter.domain.repository.ClickRepository
 import workshop.akbolatss.tools.touchcounter.domain.repository.CounterRepository
@@ -215,7 +215,7 @@ class CounterViewModelTest {
             .assertNoValue()
         val counter = CounterDto(createTime = Date(), editTime = Date(), name = "Test")
         val counterLD = MutableLiveData<CounterDto>().init(counter)
-        `when`(counterRepository.findCounter(any())).thenReturn(counterLD)
+        whenever(counterRepository.findCounter(any())).thenReturn(counterLD)
         viewModel.counterId.postValue(1L)
 
         // when
