@@ -151,9 +151,9 @@ class NavigationViewModelTest {
             .assertHistorySize(1)
             .assertValue { stats ->
                 stats.countersCount == expectedCountersCount &&
-                        stats.clicksCount == expectedClicks &&
-                        stats.longClick == expectedLongestClick &&
-                        stats.mostClicks == expectedMostClicks
+                    stats.clicksCount == expectedClicks &&
+                    stats.longClick == expectedLongestClick &&
+                    stats.mostClicks == expectedMostClicks
             }
     }
 
