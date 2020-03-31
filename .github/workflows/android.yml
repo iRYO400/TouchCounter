@@ -9,7 +9,7 @@ on:
 jobs:
   build:
 
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
 
     steps:
     - uses: actions/checkout@v2
@@ -30,6 +30,12 @@ jobs:
 
     - name: Run some unit tests
       run: ./gradlew test
+
+    - name: Run instrumental tests
+      uses: reactivecircus/android-emulator-runner@v2
+      with:
+        api-level: 29
+        script: ./gradlew connectedCheck
 
     - name: Run debug
       run: ./gradlew assembleDebug
