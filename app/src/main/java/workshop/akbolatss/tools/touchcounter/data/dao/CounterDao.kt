@@ -1,5 +1,6 @@
 package workshop.akbolatss.tools.touchcounter.data.dao
 
+import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Delete
@@ -29,4 +30,8 @@ interface CounterDao {
 
     @Delete
     suspend fun delete(counterObject: CounterDto)
+
+    @VisibleForTesting
+    @Query("SELECT * FROM counter WHERE id = :id")
+    fun find(id: Long): CounterDto?
 }
