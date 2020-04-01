@@ -27,10 +27,6 @@ interface ClickDao {
     suspend fun getMostClicksInCounter(): Int?
 
     @VisibleForTesting
-    @Query("SELECT * FROM click WHERE counterId = :counterId")
-    suspend fun findBy(counterId: Long): ClickDto?
-
-    @VisibleForTesting
-    @Query("SELECT * FROM click WHERE counterId = :counterId")
-    suspend fun findList(counterId: Long): List<ClickDto>
+    @Query("SELECT * FROM click WHERE id = :id")
+    fun findBy(id: Long): ClickDto?
 }
