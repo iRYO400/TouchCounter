@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <style name="Theme.TouchCounter" parent="Base.Theme.TouchCounter" />
+
+    <style name="Base.Theme.TouchCounter" parent="Base.Theme.Root">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+
+        <item name="colorDivider">@color/md_grey_500</item>
+
+        <item name="colorOnAccent">@color/white</item>
+        <item name="popupBackgroundColor">@color/transparent</item>
+    </style>
+
+
+    <style name="Base.Theme.Root" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="android:statusBarColor">?android:attr/colorBackground</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
+    </style>
+
+</resources>

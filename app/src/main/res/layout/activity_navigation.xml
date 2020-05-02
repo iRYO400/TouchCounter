@@ -26,7 +26,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
-            app:backgroundTint="@color/colorPrimary"
+            app:backgroundTint="?attr/colorPrimary"
             app:fabAlignmentMode="center"
             app:fabCradleMargin="10dp"
             app:hideOnScroll="true"
@@ -40,9 +40,9 @@
             android:layout_height="wrap_content"
             android:elevation="12dp"
             android:src="@drawable/ic_add_black_24dp"
-            app:backgroundTint="@color/colorAccent"
+            app:backgroundTint="?attr/colorAccent"
             app:layout_anchor="@id/bottom_bar"
-            app:tint="@color/white" />
+            app:tint="?attr/colorOnAccent" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

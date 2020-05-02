@@ -19,7 +19,7 @@
     <string name="stats_long_click">Longest click (ms):</string>
     <string name="stats_most_clicks">Max clicks:</string>
 
-    <string name="stats_title">Stats</string>
+    <string name="stats_title">Statistics</string>
     <string name="confirmation_delete_title">Are you sure you want to delete?</string>
     <string name="confirmation_delete_positive">Yes</string>
     <string name="confirmation_delete_negative">No</string>
@@ -29,4 +29,5 @@
     <string name="nav_send_email">Send feedback</string>
     <string name="options_description">Options</string>
     <string name="millis">%d ms</string>
+    <string name="click" translatable="false">Click</string>
 </resources>

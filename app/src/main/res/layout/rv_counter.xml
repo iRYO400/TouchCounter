@@ -8,8 +8,7 @@
     android:clickable="true"
     android:focusable="true"
     android:foreground="?attr/selectableItemBackground"
-    app:cardCornerRadius="8dp"
-    app:cardElevation="2dp">
+    app:cardCornerRadius="8dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -24,8 +23,7 @@
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="16dp"
             android:gravity="center_vertical"
-            android:textAppearance="@style/SingleLineSecondaryText"
-            android:textSize="14sp"
+            android:textColor="?android:attr/textColorSecondary"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/img_options"
             app:layout_constraintStart_toStartOf="parent"
@@ -39,7 +37,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
-            android:textAppearance="@style/SingleLinePrimaryText"
+            android:textColor="?android:attr/textColorPrimary"
             android:textSize="16sp"
             app:layout_constraintEnd_toStartOf="@+id/count"
             app:layout_constraintStart_toStartOf="parent"
@@ -52,7 +50,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
-            android:textAppearance="@style/SingleLinePrimaryMediumText"
+            android:fontFamily="@font/roboto_medium"
+            android:textColor="?android:attr/textColorPrimary"
             android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="@+id/name"
             app:layout_constraintEnd_toEndOf="parent"
