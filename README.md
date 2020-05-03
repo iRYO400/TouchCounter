@@ -2,8 +2,8 @@
 
 ![Android CI](https://github.com/iRYO400/TouchCounter/workflows/Android%20CI/badge.svg)
 
-## Overview ##
-        Kotlin Android application to counter anything with retention time, storing and dark theme.
+## Overview
+Kotlin Android application to counter anything with retention time, storing and dark theme.
 
 <p align="center">
     <img src="./images/preview_1.gif" align="left" />
