@@ -70,7 +70,7 @@ class CounterActivity : AppCompatActivity() {
             ContextCompat.getColor(this, R.color.md_red_500),
             ContextCompat.getColor(this, R.color.md_green_500),
             ContextCompat.getColor(this, R.color.md_grey_500),
-            ContextCompat.getColor(this, R.color.colorAccent)
+            ContextCompat.getColor(this, R.color.blue)
         ).apply {
             duration = 20000L
             setEvaluator(ArgbEvaluator())
