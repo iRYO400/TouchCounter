@@ -16,6 +16,7 @@ import kotlinx.android.synthetic.main.activity_counter.*
 import timber.log.Timber
 import workshop.akbolatss.tools.touchcounter.R
 import workshop.akbolatss.tools.touchcounter.ui.ViewModelFactory
+import workshop.akbolatss.tools.touchcounter.utils.DarkThemeDelegate
 import workshop.akbolatss.tools.touchcounter.utils.INTENT_COUNTER_ID
 import workshop.akbolatss.tools.touchcounter.utils.PopupView
 import workshop.akbolatss.tools.touchcounter.utils.showToast
@@ -25,6 +26,9 @@ class CounterActivity : AppCompatActivity() {
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
+
+    @Inject
+    lateinit var darkThemeDelegate: DarkThemeDelegate
 
     private val viewModel: CounterViewModel by lazy {
         ViewModelProvider(this, viewModelFactory).get(CounterViewModel::class.java)
@@ -89,6 +93,11 @@ class CounterActivity : AppCompatActivity() {
         })
         viewModel.heldMillis.observe(this, Observer { millis ->
             tv_timing.text = getString(R.string.millis, millis)
+        })
+        darkThemeDelegate.nightModeLive.observe(this, Observer { nightMode ->
+            nightMode?.let {
+                delegate.localNightMode = it
+            }
         })
     }
 

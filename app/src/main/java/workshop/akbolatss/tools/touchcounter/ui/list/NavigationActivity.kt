@@ -9,7 +9,6 @@ import android.view.View
 import android.widget.Button
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -21,6 +20,7 @@ import workshop.akbolatss.tools.touchcounter.R
 import workshop.akbolatss.tools.touchcounter.data.dto.CounterDto
 import workshop.akbolatss.tools.touchcounter.ui.ViewModelFactory
 import workshop.akbolatss.tools.touchcounter.ui.counter.CounterActivity
+import workshop.akbolatss.tools.touchcounter.utils.DarkThemeDelegate
 import workshop.akbolatss.tools.touchcounter.utils.INTENT_COUNTER_ID
 import workshop.akbolatss.tools.touchcounter.utils.SUPPORT_EMAIL
 import workshop.akbolatss.tools.touchcounter.utils.defaultName
@@ -31,6 +31,9 @@ class NavigationActivity : AppCompatActivity() {
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
+
+    @Inject
+    lateinit var darkThemeDelegate: DarkThemeDelegate
 
     private val viewModel: NavigationViewModel by lazy {
         ViewModelProvider(this, viewModelFactory).get(NavigationViewModel::class.java)
@@ -81,6 +84,16 @@ class NavigationActivity : AppCompatActivity() {
                 it.tv_max_click_in_counter.text = stats.mostClicks.toString()
             }
         })
+        darkThemeDelegate.nightModeLive.observe(this, Observer { nightMode ->
+            nightMode?.let {
+                delegate.localNightMode = it
+            }
+        })
+        darkThemeDelegate.isDarkThemeLive.observe(this, Observer { isDarkTheme ->
+            isDarkTheme?.let {
+                navigation_view.getHeaderView(0).darkThemeSwitch.isChecked = it
+            }
+        })
     }
 
     private fun setListeners() {
@@ -119,10 +132,7 @@ class NavigationActivity : AppCompatActivity() {
         }
 
         navigation_view.getHeaderView(0).darkThemeSwitch.setOnCheckedChangeListener { _, isChecked ->
-            if (isChecked)
-                delegate.localNightMode = AppCompatDelegate.MODE_NIGHT_YES
-            else
-                delegate.localNightMode = AppCompatDelegate.MODE_NIGHT_NO
+            darkThemeDelegate.isDarkTheme = isChecked
         }
     }
 

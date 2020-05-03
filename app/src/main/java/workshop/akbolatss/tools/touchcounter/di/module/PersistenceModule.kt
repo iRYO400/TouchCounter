@@ -1,6 +1,8 @@
 package workshop.akbolatss.tools.touchcounter.di.module
 
 import android.app.Application
+import android.content.Context
+import android.content.SharedPreferences
 import androidx.room.Room
 import dagger.Module
 import dagger.Provides
@@ -13,6 +15,7 @@ import javax.inject.Singleton
 class PersistenceModule {
 
     companion object {
+        const val SHARED_PREFERENCES = "YourCountersPreferences"
         const val DATABASE_NAME = "YourCounters.db"
     }
 
@@ -37,4 +40,9 @@ class PersistenceModule {
     @Provides
     fun provideClickDao(appDataBase: AppDataBase): ClickDao =
         appDataBase.clickDao
+
+    @Singleton
+    @Provides
+    fun provideSharedPreference(application: Application): SharedPreferences =
+        application.getSharedPreferences(SHARED_PREFERENCES, Context.MODE_PRIVATE)
 }
