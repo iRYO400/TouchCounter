@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import workshop.akbolatss.tools.touchcounter.R
 import workshop.akbolatss.tools.touchcounter.data.dto.CounterDto
 import workshop.akbolatss.tools.touchcounter.databinding.ItemCounterBinding
-import workshop.akbolatss.tools.touchcounter.utils.formatAsRelativeInMinutes
+import workshop.akbolatss.tools.touchcounter.utils.exts.formatAsRelativeInMinutes
 
 class CounterListRVA(
     private val onCounterClickListener: (CounterDto) -> Unit,

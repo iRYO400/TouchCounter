@@ -10,8 +10,7 @@ import workshop.akbolatss.tools.touchcounter.data.dto.ClickDto
 import workshop.akbolatss.tools.touchcounter.data.dto.CounterDto
 import workshop.akbolatss.tools.touchcounter.domain.repository.ClickRepository
 import workshop.akbolatss.tools.touchcounter.domain.repository.CounterRepository
-import workshop.akbolatss.tools.touchcounter.utils.AbsentLiveData
-import workshop.akbolatss.tools.touchcounter.utils.getCurrentTime
+import workshop.akbolatss.tools.touchcounter.utils.android.AbsentLiveData
 import java.util.Date
 import java.util.Timer
 import java.util.TimerTask
@@ -90,7 +89,7 @@ constructor(
     fun updateCounter() {
         viewModelScope.launch {
             counter.value?.let { counter ->
-                val updatedCounter = counter.copy(editTime = getCurrentTime())
+                val updatedCounter = counter.copy(editTime = Date())
                 counterRepository.updateCounter(updatedCounter)
             }
         }

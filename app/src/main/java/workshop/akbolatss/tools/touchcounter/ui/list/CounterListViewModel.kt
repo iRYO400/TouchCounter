@@ -10,8 +10,7 @@ import workshop.akbolatss.tools.touchcounter.data.dto.CounterDto
 import workshop.akbolatss.tools.touchcounter.domain.repository.ClickRepository
 import workshop.akbolatss.tools.touchcounter.domain.repository.CounterRepository
 import workshop.akbolatss.tools.touchcounter.pojo.Stats
-import workshop.akbolatss.tools.touchcounter.utils.appendIndex
-import workshop.akbolatss.tools.touchcounter.utils.getCurrentTime
+import java.util.Date
 import javax.inject.Inject
 
 class CounterListViewModel
@@ -50,9 +49,9 @@ constructor(
             val countersCount = counterRepository.getCountersCount()
             counterRepository.createCounter(
                 CounterDto(
-                    createTime = getCurrentTime(),
-                    editTime = getCurrentTime(),
-                    name = newName.appendIndex(countersCount)
+                    createTime = Date(),
+                    editTime = Date(),
+                    name = "$newName $countersCount"
                 )
             )
         }

@@ -24,7 +24,7 @@ import org.junit.Test
 import workshop.akbolatss.tools.touchcounter.data.dto.CounterDto
 import workshop.akbolatss.tools.touchcounter.domain.repository.ClickRepository
 import workshop.akbolatss.tools.touchcounter.domain.repository.CounterRepository
-import workshop.akbolatss.tools.touchcounter.utils.init
+import workshop.akbolatss.tools.touchcounter.utils.exts.init
 import java.util.Date
 
 @ExperimentalCoroutinesApi

@@ -2,7 +2,7 @@ package workshop.akbolatss.tools.touchcounter.ui.counter
 
 import android.os.Handler
 import android.widget.TextView
-import workshop.akbolatss.tools.touchcounter.utils.formatAsRelativeInSeconds
+import workshop.akbolatss.tools.touchcounter.utils.exts.formatAsRelativeInSeconds
 import java.util.Date
 
 class TextViewAutoUpdateRunnable(

@@ -1,4 +1,4 @@
-package workshop.akbolatss.tools.touchcounter.utils;
+package workshop.akbolatss.tools.touchcounter.utils.logging;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -10,12 +10,12 @@ public class TimberLogImplementation {
 
     public static void init() {
         if (BuildConfig.DEBUG)
-            Timber.plant(new CustomDebugTree());
+            Timber.plant(new DevelopmentDebugTree());
         else
             Timber.plant(new ProductionTree());
     }
 
-    public static class CustomDebugTree extends Timber.DebugTree {
+    public static class DevelopmentDebugTree extends Timber.DebugTree {
         @Override
         protected @Nullable String createStackElementTag(@NotNull StackTraceElement element) {
             return String.format("TouchCounter:C:%s:%s",

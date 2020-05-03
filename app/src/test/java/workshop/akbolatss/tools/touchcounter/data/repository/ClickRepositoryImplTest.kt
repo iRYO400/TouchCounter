@@ -17,7 +17,7 @@ import org.mockito.Mockito.verify
 import workshop.akbolatss.tools.touchcounter.data.dao.ClickDao
 import workshop.akbolatss.tools.touchcounter.data.dto.ClickDto
 import workshop.akbolatss.tools.touchcounter.domain.repository.ClickRepository
-import workshop.akbolatss.tools.touchcounter.utils.init
+import workshop.akbolatss.tools.touchcounter.utils.exts.init
 import java.util.Date
 
 @ExperimentalCoroutinesApi

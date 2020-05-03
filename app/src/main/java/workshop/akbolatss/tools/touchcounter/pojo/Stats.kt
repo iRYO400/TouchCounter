@@ -1,8 +1,8 @@
 package workshop.akbolatss.tools.touchcounter.pojo
 
 data class Stats(
-    var countersCount: Int,
-    var clicksCount: Int,
-    var longClick: Long,
-    var mostClicks: Int
+    val countersCount: Int,
+    val clicksCount: Int,
+    val longClick: Long,
+    val mostClicks: Int
 )

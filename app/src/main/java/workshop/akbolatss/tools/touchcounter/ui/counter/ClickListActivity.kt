@@ -17,10 +17,10 @@ import workshop.akbolatss.tools.touchcounter.R
 import workshop.akbolatss.tools.touchcounter.databinding.ActivityCounterBinding
 import workshop.akbolatss.tools.touchcounter.ui.ViewModelFactory
 import workshop.akbolatss.tools.touchcounter.ui.counter.ClickListRVA.Companion.ITEM_POSITION_CHANGED
-import workshop.akbolatss.tools.touchcounter.utils.DarkThemeDelegate
 import workshop.akbolatss.tools.touchcounter.utils.INTENT_COUNTER_ID
-import workshop.akbolatss.tools.touchcounter.utils.PopupView
-import workshop.akbolatss.tools.touchcounter.utils.toast
+import workshop.akbolatss.tools.touchcounter.utils.android.DarkThemeDelegate
+import workshop.akbolatss.tools.touchcounter.utils.exts.toast
+import workshop.akbolatss.tools.touchcounter.utils.widget.PopupView
 import javax.inject.Inject
 
 class ClickListActivity : AppCompatActivity() {
@@ -146,10 +146,9 @@ class ClickListActivity : AppCompatActivity() {
     }
 
     private fun setupPopupView() {
-        val popupView = PopupView(this)
         binding.infoTiming.setOnClickListener { v ->
             removeFocusFromCurrent()
-            popupView.showPopup(v)
+            PopupView.show(v)
         }
     }
 

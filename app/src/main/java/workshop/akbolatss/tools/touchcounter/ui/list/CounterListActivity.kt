@@ -20,11 +20,10 @@ import workshop.akbolatss.tools.touchcounter.databinding.ActivityNavigationBindi
 import workshop.akbolatss.tools.touchcounter.databinding.NavHeaderBinding
 import workshop.akbolatss.tools.touchcounter.ui.ViewModelFactory
 import workshop.akbolatss.tools.touchcounter.ui.counter.ClickListActivity
-import workshop.akbolatss.tools.touchcounter.utils.DarkThemeDelegate
 import workshop.akbolatss.tools.touchcounter.utils.INTENT_COUNTER_ID
 import workshop.akbolatss.tools.touchcounter.utils.SUPPORT_EMAIL
-import workshop.akbolatss.tools.touchcounter.utils.defaultName
-import workshop.akbolatss.tools.touchcounter.utils.dp
+import workshop.akbolatss.tools.touchcounter.utils.android.DarkThemeDelegate
+import workshop.akbolatss.tools.touchcounter.utils.exts.dp
 import javax.inject.Inject
 
 class CounterListActivity : AppCompatActivity() {
@@ -122,7 +121,7 @@ class CounterListActivity : AppCompatActivity() {
             createNewCounter()
         }
 
-        navHeaderBinding.darkThemeSwitch.setOnCheckedChangeListener { buttonView, isChecked ->
+        navHeaderBinding.darkThemeSwitch.setOnCheckedChangeListener { _, isChecked ->
             darkThemeDelegate.isDarkTheme = isChecked
         }
     }
@@ -136,7 +135,7 @@ class CounterListActivity : AppCompatActivity() {
     }
 
     private fun createNewCounter() {
-        viewModel.createCounter(defaultName())
+        viewModel.createCounter(getString(R.string.default_name))
     }
 
     @SuppressLint("InflateParams")

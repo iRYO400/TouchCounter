@@ -1,4 +1,4 @@
-package workshop.akbolatss.tools.touchcounter.utils
+package workshop.akbolatss.tools.touchcounter.utils.android
 
 import androidx.lifecycle.LiveData
 

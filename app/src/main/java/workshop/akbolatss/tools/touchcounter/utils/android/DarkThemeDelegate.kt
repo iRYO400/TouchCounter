@@ -1,4 +1,4 @@
-package workshop.akbolatss.tools.touchcounter.utils
+package workshop.akbolatss.tools.touchcounter.utils.android
 
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatDelegate
@@ -15,7 +15,10 @@ class DarkThemeDelegate(
     }
 
     private val nightMode: Int
-        get() = sharedPreferences.getInt(SHARED_NIGHT_MODE, DEFAULT_NIGHT_MODE)
+        get() = sharedPreferences.getInt(
+            SHARED_NIGHT_MODE,
+            DEFAULT_NIGHT_MODE
+        )
 
     private val _nightModelLive = MutableLiveData<Int>()
     val nightModeLive: LiveData<Int>

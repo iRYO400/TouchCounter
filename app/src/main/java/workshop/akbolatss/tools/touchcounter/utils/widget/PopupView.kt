@@ -1,25 +1,26 @@
-package workshop.akbolatss.tools.touchcounter.utils
+package workshop.akbolatss.tools.touchcounter.utils.widget
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.PopupWindow
-import workshop.akbolatss.tools.touchcounter.R
+import workshop.akbolatss.tools.touchcounter.databinding.ViewPopupBinding
 
-class PopupView(context: Context) {
+class PopupView(anchor: View) {
 
     private val popupWindow: PopupWindow
 
-    init {
-        val inflater = LayoutInflater.from(context)
-        val contentView: View = inflater.inflate(R.layout.view_popup, null)
-        popupWindow = PopupWindow(contentView, WRAP_CONTENT, WRAP_CONTENT)
-        popupWindow.isFocusable = true
+    companion object {
+        fun show(anchor: View) {
+            PopupView(anchor)
+        }
     }
 
-    fun showPopup(anchor: View) {
+    init {
+        val binding = ViewPopupBinding.inflate(LayoutInflater.from(anchor.context))
+        popupWindow = PopupWindow(binding.root, WRAP_CONTENT, WRAP_CONTENT)
+        popupWindow.isFocusable = true
         setDismissListener()
         popupWindow.showAsDropDown(anchor)
     }
@@ -32,4 +33,5 @@ class PopupView(context: Context) {
             dismissPopup
         }
     }
+
 }

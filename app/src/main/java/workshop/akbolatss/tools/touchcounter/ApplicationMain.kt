@@ -7,7 +7,7 @@ import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasAndroidInjector
 import workshop.akbolatss.tools.touchcounter.di.DaggerAppComponent
-import workshop.akbolatss.tools.touchcounter.utils.TimberLogImplementation
+import workshop.akbolatss.tools.touchcounter.utils.logging.TimberLogImplementation
 import javax.inject.Inject
 
 class ApplicationMain : Application(), HasAndroidInjector {
