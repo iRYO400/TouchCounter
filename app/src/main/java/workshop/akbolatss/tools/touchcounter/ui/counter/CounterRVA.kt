@@ -13,6 +13,10 @@ import workshop.akbolatss.tools.touchcounter.data.dto.ClickDto
 
 class ClickAdapter : ListAdapter<ClickDto, ClickAdapter.CounterVH>(DIFF_CALLBACK) {
 
+    companion object {
+        const val ITEM_POSITION_CHANGED = "_itemPosChanged"
+    }
+
     private val handler = Handler()
 
     override fun onCreateViewHolder(parent: ViewGroup, p1: Int): CounterVH {
@@ -31,6 +35,13 @@ class ClickAdapter : ListAdapter<ClickDto, ClickAdapter.CounterVH>(DIFF_CALLBACK
         holder.bind(introAction)
     }
 
+    override fun onBindViewHolder(holder: CounterVH, position: Int, payloads: MutableList<Any>) {
+        if (payloads.isEmpty())
+            super.onBindViewHolder(holder, position, payloads)
+        else
+            holder.setItemPosition()
+    }
+
     class CounterVH(itemView: View, private val handler: Handler) :
         RecyclerView.ViewHolder(itemView) {
 
@@ -43,8 +54,12 @@ class ClickAdapter : ListAdapter<ClickDto, ClickAdapter.CounterVH>(DIFF_CALLBACK
             customRunnable.init(itemView.timestamp, clickObject.createTime)
             handler.postDelayed(customRunnable, 100)
 
-            itemView.index.text = layoutPosition.toString()
             itemView.timing.text = clickObject.heldMillis.toString()
+            setItemPosition()
+        }
+
+        fun setItemPosition() {
+            itemView.index.text = (layoutPosition + 1).toString()
         }
     }
 }

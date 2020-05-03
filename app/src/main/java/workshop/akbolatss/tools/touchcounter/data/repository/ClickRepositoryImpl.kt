@@ -14,6 +14,10 @@ constructor(private val clickDao: ClickDao) : ClickRepository {
         clickDao.create(clickObject)
     }
 
+    override suspend fun remove(id: Long) {
+        clickDao.remove(id)
+    }
+
     override suspend fun getAllClicks(): Int =
         clickDao.getCount() ?: 0
 

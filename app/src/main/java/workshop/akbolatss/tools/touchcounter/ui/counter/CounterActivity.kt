@@ -11,15 +11,17 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.ItemTouchHelper
 import dagger.android.AndroidInjection
 import kotlinx.android.synthetic.main.activity_counter.*
 import timber.log.Timber
 import workshop.akbolatss.tools.touchcounter.R
 import workshop.akbolatss.tools.touchcounter.ui.ViewModelFactory
+import workshop.akbolatss.tools.touchcounter.ui.counter.ClickAdapter.Companion.ITEM_POSITION_CHANGED
 import workshop.akbolatss.tools.touchcounter.utils.DarkThemeDelegate
 import workshop.akbolatss.tools.touchcounter.utils.INTENT_COUNTER_ID
 import workshop.akbolatss.tools.touchcounter.utils.PopupView
-import workshop.akbolatss.tools.touchcounter.utils.showToast
+import workshop.akbolatss.tools.touchcounter.utils.toast
 import javax.inject.Inject
 
 class CounterActivity : AppCompatActivity() {
@@ -60,6 +62,13 @@ class CounterActivity : AppCompatActivity() {
     private fun initRecyclerView() {
         adapter = ClickAdapter()
         recyclerView.adapter = adapter
+        val itemSwipeHelper = SwipeToDeleteCallback { clickPos ->
+            val click = adapter.currentList[clickPos]
+            click?.let {
+                viewModel.removeClick(it)
+            }
+        }
+        ItemTouchHelper(itemSwipeHelper).attachToRecyclerView(recyclerView)
     }
 
     private fun initAnimator() {
@@ -79,16 +88,20 @@ class CounterActivity : AppCompatActivity() {
     }
 
     private fun observeViewModel() {
-        viewModel.counter.observe(this, Observer { counterObject ->
-            if (counterObject == null) {
-                showToast { "Error of loading Counter " }
+        viewModel.counter.observe(this, Observer { counterDto ->
+            if (counterDto == null) {
+                toast("Error occurred, please try open again")
                 onBackPressed()
             }
         })
-        viewModel.clickList.observe(this, Observer { clickObjects ->
-            adapter.submitList(clickObjects) {
-                tv_counter.text = clickObjects.size.toString()
-                recyclerView.smoothScrollToPosition(clickObjects.size)
+        viewModel.clickList.observe(this, Observer { clicks ->
+            adapter.submitList(clicks) {
+                adapter.notifyItemRangeChanged(
+                    0, clicks.size,
+                    ITEM_POSITION_CHANGED
+                )
+                tv_counter.text = clicks.size.toString()
+                recyclerView.smoothScrollToPosition(clicks.size)
             }
         })
         viewModel.heldMillis.observe(this, Observer { millis ->

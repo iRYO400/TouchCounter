@@ -19,8 +19,8 @@ fun <T> MutableLiveData<T>.init(t: T?): MutableLiveData<T> {
     return this
 }
 
-inline fun Context.showToast(message: () -> String) =
-    Toast.makeText(this, message(), Toast.LENGTH_LONG).show()
+fun Context.toast(message: String) =
+    Toast.makeText(this, message, Toast.LENGTH_LONG).show()
 
 fun Context.defaultName(): String {
     return getString(R.string.default_name)

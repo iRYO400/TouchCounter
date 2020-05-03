@@ -101,4 +101,10 @@ constructor(
         timer.cancel()
         timer.purge()
     }
+
+    fun removeClick(clickDto: ClickDto) {
+        viewModelScope.launch {
+            clickRepository.remove(clickDto.id)
+        }
+    }
 }

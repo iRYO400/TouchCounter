@@ -14,6 +14,9 @@ interface ClickDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun create(clickObject: ClickDto)
 
+    @Query("DELETE FROM click WHERE id = :id")
+    suspend fun remove(id: Long)
+
     @Query("SELECT * FROM click WHERE counterId = :counterId")
     fun findListBy(counterId: Long): LiveData<List<ClickDto>>
 
