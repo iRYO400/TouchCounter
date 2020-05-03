@@ -1,29 +1,25 @@
 package workshop.akbolatss.tools.touchcounter.ui.list
 
-import android.annotation.SuppressLint
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.widget.Button
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.google.android.material.textfield.TextInputEditText
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.android.AndroidInjection
 import workshop.akbolatss.tools.touchcounter.R
 import workshop.akbolatss.tools.touchcounter.data.dto.CounterDto
 import workshop.akbolatss.tools.touchcounter.databinding.ActivityNavigationBinding
+import workshop.akbolatss.tools.touchcounter.databinding.DialogOptionsBinding
 import workshop.akbolatss.tools.touchcounter.databinding.NavHeaderBinding
 import workshop.akbolatss.tools.touchcounter.ui.ViewModelFactory
 import workshop.akbolatss.tools.touchcounter.ui.counter.ClickListActivity
 import workshop.akbolatss.tools.touchcounter.utils.INTENT_COUNTER_ID
 import workshop.akbolatss.tools.touchcounter.utils.SUPPORT_EMAIL
 import workshop.akbolatss.tools.touchcounter.utils.android.DarkThemeDelegate
-import workshop.akbolatss.tools.touchcounter.utils.exts.dp
 import javax.inject.Inject
 
 class CounterListActivity : AppCompatActivity() {
@@ -138,60 +134,37 @@ class CounterListActivity : AppCompatActivity() {
         viewModel.createCounter(getString(R.string.default_name))
     }
 
-    @SuppressLint("InflateParams")
     private fun showPopupOptions(counter: CounterDto) {
-        val layoutInflater = LayoutInflater.from(this)
-        val view = layoutInflater.inflate(R.layout.dialog_options, null)
+        val dialogOptionsBinding = DialogOptionsBinding.inflate(layoutInflater)
+        dialogOptionsBinding.inputName.setText(counter.name)
 
-        val builder = AlertDialog.Builder(this)
-        builder.setTitle(getString(R.string.options_title, counter.name))
-        builder.setView(view)
-
-        val input = view.findViewById<TextInputEditText>(R.id.input_name)
-        input.setText(counter.name)
-
-        builder.setPositiveButton(R.string.options_positive) { _, _ ->
-            val updatedCounter = counter.copy(name = input.text.toString())
-            viewModel.updateCounter(updatedCounter)
-        }
-
-        builder.setNegativeButton(R.string.options_negative) { dialog, _ ->
-            dialog.cancel()
-        }
-
-        builder.setNeutralButton(R.string.options_neutral) { _, _ ->
-            showDeleteDialog(counter)
-        }
-
-        val alertDialog = builder.show()
-
-        val buttons = intArrayOf(
-            AlertDialog.BUTTON_POSITIVE,
-            AlertDialog.BUTTON_NEGATIVE,
-            AlertDialog.BUTTON_NEUTRAL
-        )
-        for (i in buttons) {
-            var b: Button?
-            try {
-                b = alertDialog.getButton(i)
-                b!!.setPadding(8.dp, 0, 8.dp, 0)
-            } catch (e: Exception) {
-                e.printStackTrace()
+        MaterialAlertDialogBuilder(this)
+            .setTitle(getString(R.string.options_title, counter.name))
+            .setView(dialogOptionsBinding.root)
+            .setNegativeButton(R.string.options_negative) { dialog, _ ->
+                dialog.cancel()
             }
-        }
+            .setNeutralButton(R.string.options_neutral) { _, _ ->
+                showDeleteDialog(counter)
+            }
+            .setPositiveButton(R.string.options_positive) { _, _ ->
+                val updatedCounter =
+                    counter.copy(name = dialogOptionsBinding.inputName.text.toString())
+                viewModel.updateCounter(updatedCounter)
+            }
+            .show()
     }
 
     private fun showDeleteDialog(counter: CounterDto) {
-        val builder = AlertDialog.Builder(this)
-        builder.setTitle(getString(R.string.confirmation_delete_title))
-        builder.setMessage(getString(R.string.confirmation_delete_message))
-        builder.setPositiveButton(R.string.confirmation_delete_positive) { _, _ ->
-            viewModel.deleteCounter(counter)
-        }
-
-        builder.setNegativeButton(R.string.confirmation_delete_negative) { dialog, _ ->
-            dialog.cancel()
-        }
-        builder.show()
+        MaterialAlertDialogBuilder(this)
+            .setTitle(getString(R.string.confirmation_delete_title))
+            .setMessage(getString(R.string.confirmation_delete_message))
+            .setPositiveButton(R.string.confirmation_delete_positive) { _, _ ->
+                viewModel.deleteCounter(counter)
+            }
+            .setNegativeButton(R.string.confirmation_delete_negative) { dialog, _ ->
+                dialog.cancel()
+            }
+            .show()
     }
 }
