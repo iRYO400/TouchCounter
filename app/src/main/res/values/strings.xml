@@ -30,4 +30,5 @@
     <string name="options_description">Options</string>
     <string name="millis">%d ms</string>
     <string name="click" translatable="false">Click</string>
+    <string name="enable_dark_theme">Enable dark theme</string>
 </resources>
