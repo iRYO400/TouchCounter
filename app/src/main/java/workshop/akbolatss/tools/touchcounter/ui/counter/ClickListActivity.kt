@@ -13,18 +13,17 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.ItemTouchHelper
 import dagger.android.AndroidInjection
-import kotlinx.android.synthetic.main.activity_counter.*
-import timber.log.Timber
 import workshop.akbolatss.tools.touchcounter.R
+import workshop.akbolatss.tools.touchcounter.databinding.ActivityCounterBinding
 import workshop.akbolatss.tools.touchcounter.ui.ViewModelFactory
-import workshop.akbolatss.tools.touchcounter.ui.counter.ClickAdapter.Companion.ITEM_POSITION_CHANGED
+import workshop.akbolatss.tools.touchcounter.ui.counter.ClickListRVA.Companion.ITEM_POSITION_CHANGED
 import workshop.akbolatss.tools.touchcounter.utils.DarkThemeDelegate
 import workshop.akbolatss.tools.touchcounter.utils.INTENT_COUNTER_ID
 import workshop.akbolatss.tools.touchcounter.utils.PopupView
 import workshop.akbolatss.tools.touchcounter.utils.toast
 import javax.inject.Inject
 
-class CounterActivity : AppCompatActivity() {
+class ClickListActivity : AppCompatActivity() {
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
@@ -32,18 +31,21 @@ class CounterActivity : AppCompatActivity() {
     @Inject
     lateinit var darkThemeDelegate: DarkThemeDelegate
 
-    private val viewModel: CounterViewModel by lazy {
-        ViewModelProvider(this, viewModelFactory).get(CounterViewModel::class.java)
+    private val viewModel: ClickListViewModel by lazy {
+        ViewModelProvider(this, viewModelFactory).get(ClickListViewModel::class.java)
     }
 
-    private lateinit var adapter: ClickAdapter
+    private lateinit var binding: ActivityCounterBinding
+    private lateinit var adapter: ClickListRVA
 
     private lateinit var animator: ObjectAnimator
 
     override fun onCreate(savedInstanceState: Bundle?) {
         AndroidInjection.inject(this)
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_counter)
+        binding = ActivityCounterBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
         initViewModel()
 
         initRecyclerView()
@@ -51,7 +53,6 @@ class CounterActivity : AppCompatActivity() {
 
         observeViewModel()
         setListeners()
-        Timber.d("onCreate")
     }
 
     private fun initViewModel() {
@@ -60,20 +61,20 @@ class CounterActivity : AppCompatActivity() {
     }
 
     private fun initRecyclerView() {
-        adapter = ClickAdapter()
-        recyclerView.adapter = adapter
+        adapter = ClickListRVA()
+        binding.recyclerView.adapter = adapter
         val itemSwipeHelper = SwipeToDeleteCallback { clickPos ->
             val click = adapter.currentList[clickPos]
             click?.let {
                 viewModel.removeClick(it)
             }
         }
-        ItemTouchHelper(itemSwipeHelper).attachToRecyclerView(recyclerView)
+        ItemTouchHelper(itemSwipeHelper).attachToRecyclerView(binding.recyclerView)
     }
 
     private fun initAnimator() {
         animator = ObjectAnimator.ofInt(
-            tv_timing, property,
+            binding.tvTiming, property,
             ContextCompat.getColor(this, R.color.md_blue_grey_500),
             ContextCompat.getColor(this, R.color.md_blue_500),
             ContextCompat.getColor(this, R.color.md_red_500),
@@ -100,12 +101,12 @@ class CounterActivity : AppCompatActivity() {
                     0, clicks.size,
                     ITEM_POSITION_CHANGED
                 )
-                tv_counter.text = clicks.size.toString()
-                recyclerView.smoothScrollToPosition(clicks.size)
+                binding.tvCounter.text = clicks.size.toString()
+                binding.recyclerView.smoothScrollToPosition(clicks.size)
             }
         })
         viewModel.heldMillis.observe(this, Observer { millis ->
-            tv_timing.text = getString(R.string.millis, millis)
+            binding.tvTiming.text = getString(R.string.millis, millis)
         })
         darkThemeDelegate.nightModeLive.observe(this, Observer { nightMode ->
             nightMode?.let {
@@ -116,7 +117,7 @@ class CounterActivity : AppCompatActivity() {
 
     private fun setListeners() {
         setupPopupView()
-        btnClick.setOnTouchListener { _, event ->
+        binding.btnClick.setOnTouchListener { _, event ->
             return@setOnTouchListener when (event.action) {
                 MotionEvent.ACTION_DOWN -> {
                     btnHold()
@@ -132,7 +133,7 @@ class CounterActivity : AppCompatActivity() {
     }
 
     private fun btnHold() {
-        btnClick.isPressed = true
+        binding.btnClick.isPressed = true
         animator.start()
         viewModel.executeTask()
     }
@@ -141,12 +142,12 @@ class CounterActivity : AppCompatActivity() {
         viewModel.cancelTask()
         viewModel.createClick(isForce)
         animator.cancel()
-        btnClick.isPressed = false
+        binding.btnClick.isPressed = false
     }
 
     private fun setupPopupView() {
         val popupView = PopupView(this)
-        info_timing.setOnClickListener { v ->
+        binding.infoTiming.setOnClickListener { v ->
             removeFocusFromCurrent()
             popupView.showPopup(v)
         }

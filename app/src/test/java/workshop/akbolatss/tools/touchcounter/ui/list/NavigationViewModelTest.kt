@@ -58,7 +58,7 @@ class NavigationViewModelTest {
         whenever(counterRepository.findCounters()).thenReturn(expected)
 
         // when
-        val viewModel = NavigationViewModel(counterRepository, clickRepository)
+        val viewModel = CounterListViewModel(counterRepository, clickRepository)
 
         // then
         viewModel.counterList.test()
@@ -75,7 +75,7 @@ class NavigationViewModelTest {
         whenever(counterRepository.findCounters()).thenReturn(expected)
 
         // when
-        val viewModel = NavigationViewModel(counterRepository, clickRepository)
+        val viewModel = CounterListViewModel(counterRepository, clickRepository)
 
         // then
         viewModel.counterList.test()
@@ -96,7 +96,7 @@ class NavigationViewModelTest {
         whenever(counterRepository.findCounters()).thenReturn(expected)
 
         // when
-        val viewModel = NavigationViewModel(counterRepository, clickRepository)
+        val viewModel = CounterListViewModel(counterRepository, clickRepository)
 
         // then
         viewModel.counterList.test()
@@ -138,7 +138,7 @@ class NavigationViewModelTest {
         whenever(clickRepository.getAllClicks()).thenReturn(expectedClicks)
         whenever(clickRepository.getLongestClick()).thenReturn(expectedLongestClick)
         whenever(clickRepository.getMostClicksInCounter()).thenReturn(expectedMostClicks)
-        val viewModel = NavigationViewModel(counterRepository, clickRepository)
+        val viewModel = CounterListViewModel(counterRepository, clickRepository)
 
         // when
         viewModel.loadStats()
@@ -166,7 +166,7 @@ class NavigationViewModelTest {
         val counter = CounterDto(createTime = Date(), editTime = Date(), name = counterName)
         whenever(counterRepository.getCountersCount()).thenReturn(0)
         whenever(counterRepository.createCounter(counter)).thenReturn(Unit)
-        val viewModel = NavigationViewModel(counterRepository, clickRepository)
+        val viewModel = CounterListViewModel(counterRepository, clickRepository)
 
         // when
         viewModel.createCounter(counterName)
@@ -181,7 +181,7 @@ class NavigationViewModelTest {
         // given
         val counter = getFakeCounter()
         whenever(counterRepository.deleteCounter(counter)).thenReturn(Unit)
-        val viewModel = NavigationViewModel(counterRepository, clickRepository)
+        val viewModel = CounterListViewModel(counterRepository, clickRepository)
 
         // when
         viewModel.deleteCounter(counter)
@@ -195,7 +195,7 @@ class NavigationViewModelTest {
         // given
         val counter = getFakeCounter()
         whenever(counterRepository.updateCounter(any())).thenReturn(Unit)
-        val viewModel = NavigationViewModel(counterRepository, clickRepository)
+        val viewModel = CounterListViewModel(counterRepository, clickRepository)
 
         // when
         viewModel.updateCounter(counter)

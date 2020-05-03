@@ -38,12 +38,12 @@ class CounterViewModelTest {
 
     private val testDispatcher = TestCoroutineDispatcher()
 
-    private lateinit var viewModel: CounterViewModel
+    private lateinit var viewModel: ClickListViewModel
 
     @Before
     fun setUp() {
         Dispatchers.setMain(testDispatcher)
-        viewModel = CounterViewModel(counterRepository, clickRepository)
+        viewModel = ClickListViewModel(counterRepository, clickRepository)
     }
 
     @After

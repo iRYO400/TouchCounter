@@ -5,13 +5,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.rv_click.view.*
 import workshop.akbolatss.tools.touchcounter.R
 import workshop.akbolatss.tools.touchcounter.data.dto.ClickDto
+import workshop.akbolatss.tools.touchcounter.databinding.ItemClickBinding
 
-class ClickAdapter : ListAdapter<ClickDto, ClickAdapter.CounterVH>(DIFF_CALLBACK) {
+class ClickListRVA : ListAdapter<ClickDto, ClickListRVA.CounterVH>(DIFF_CALLBACK) {
 
     companion object {
         const val ITEM_POSITION_CHANGED = "_itemPosChanged"
@@ -23,7 +24,7 @@ class ClickAdapter : ListAdapter<ClickDto, ClickAdapter.CounterVH>(DIFF_CALLBACK
         val inflater = LayoutInflater.from(parent.context)
         return CounterVH(
             inflater.inflate(
-                R.layout.rv_click,
+                R.layout.item_click,
                 parent,
                 false
             ), handler
@@ -42,24 +43,28 @@ class ClickAdapter : ListAdapter<ClickDto, ClickAdapter.CounterVH>(DIFF_CALLBACK
             holder.setItemPosition()
     }
 
-    class CounterVH(itemView: View, private val handler: Handler) :
-        RecyclerView.ViewHolder(itemView) {
+    class CounterVH(
+        itemView: View,
+        private val handler: Handler
+    ) : RecyclerView.ViewHolder(itemView) {
 
-        private var customRunnable: CustomRunnable =
-            CustomRunnable(handler, itemView.timestamp)
+        private var binding: ItemClickBinding = ItemClickBinding.bind(itemView)
+
+        private var customRunnable: TextViewAutoUpdateRunnable =
+            TextViewAutoUpdateRunnable(handler, binding.timestamp)
 
         fun bind(clickObject: ClickDto) {
             handler.removeCallbacks(customRunnable)
-            customRunnable.holder = itemView.timestamp
-            customRunnable.init(itemView.timestamp, clickObject.createTime)
+            customRunnable.tvLastUpdate = binding.timestamp
+            customRunnable.init(binding.timestamp, clickObject.createTime)
             handler.postDelayed(customRunnable, 100)
 
-            itemView.timing.text = clickObject.heldMillis.toString()
+            binding.timing.text = clickObject.heldMillis.toString()
             setItemPosition()
         }
 
         fun setItemPosition() {
-            itemView.index.text = (layoutPosition + 1).toString()
+            binding.index.text = (layoutPosition + 1).toString()
         }
     }
 }
@@ -67,16 +72,30 @@ class ClickAdapter : ListAdapter<ClickDto, ClickAdapter.CounterVH>(DIFF_CALLBACK
 private val DIFF_CALLBACK: DiffUtil.ItemCallback<ClickDto> =
     object : DiffUtil.ItemCallback<ClickDto>() {
 
-        override fun areItemsTheSame(oldItem: ClickDto, newItem: ClickDto): Boolean {
-            return oldItem.id == newItem.id
-        }
-
-        var hasSameTimestamp = false
-        var hasSameMillis = false
+        override fun areItemsTheSame(oldItem: ClickDto, newItem: ClickDto): Boolean =
+            oldItem.id == newItem.id
 
         override fun areContentsTheSame(oldItem: ClickDto, newItem: ClickDto): Boolean {
-            hasSameTimestamp = oldItem.createTime == newItem.createTime
-            hasSameMillis = oldItem.heldMillis == newItem.heldMillis
-            return hasSameTimestamp && hasSameMillis
+            return oldItem.createTime == newItem.createTime &&
+                oldItem.heldMillis == newItem.heldMillis
         }
     }
+
+class SwipeToDeleteCallback(
+    private val itemPos: (Int) -> Unit
+) : ItemTouchHelper.SimpleCallback(
+    0, ItemTouchHelper.LEFT
+) {
+
+    override fun onMove(
+        recyclerView: RecyclerView,
+        viewHolder: RecyclerView.ViewHolder,
+        target: RecyclerView.ViewHolder
+    ): Boolean = false
+
+    override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+        itemPos(viewHolder.layoutPosition)
+    }
+
+    override fun getSwipeThreshold(viewHolder: RecyclerView.ViewHolder): Float = 0.7f
+}

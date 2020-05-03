@@ -14,7 +14,7 @@ import workshop.akbolatss.tools.touchcounter.utils.appendIndex
 import workshop.akbolatss.tools.touchcounter.utils.getCurrentTime
 import javax.inject.Inject
 
-class NavigationViewModel
+class CounterListViewModel
 @Inject
 constructor(
     private val counterRepository: CounterRepository,

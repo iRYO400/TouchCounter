@@ -18,7 +18,7 @@ import java.util.TimerTask
 import javax.inject.Inject
 import kotlin.concurrent.scheduleAtFixedRate
 
-class CounterViewModel
+class ClickListViewModel
 @Inject
 constructor(
     private val counterRepository: CounterRepository,

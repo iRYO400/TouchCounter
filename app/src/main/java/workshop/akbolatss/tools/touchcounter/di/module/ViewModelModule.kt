@@ -7,21 +7,21 @@ import dagger.Module
 import dagger.multibindings.IntoMap
 import workshop.akbolatss.tools.touchcounter.di.ViewModelKey
 import workshop.akbolatss.tools.touchcounter.ui.ViewModelFactory
-import workshop.akbolatss.tools.touchcounter.ui.counter.CounterViewModel
-import workshop.akbolatss.tools.touchcounter.ui.list.NavigationViewModel
+import workshop.akbolatss.tools.touchcounter.ui.counter.ClickListViewModel
+import workshop.akbolatss.tools.touchcounter.ui.list.CounterListViewModel
 
 @Module
 abstract class ViewModelModule {
 
     @Binds
     @IntoMap
-    @ViewModelKey(NavigationViewModel::class)
-    abstract fun bindNavigationViewModel(navigationViewModel: NavigationViewModel): ViewModel
+    @ViewModelKey(CounterListViewModel::class)
+    abstract fun bindNavigationViewModel(navigationViewModel: CounterListViewModel): ViewModel
 
     @Binds
     @IntoMap
-    @ViewModelKey(CounterViewModel::class)
-    abstract fun bindCounterViewModel(counterViewModel: CounterViewModel): ViewModel
+    @ViewModelKey(ClickListViewModel::class)
+    abstract fun bindCounterViewModel(counterViewModel: ClickListViewModel): ViewModel
 
     @Binds
     abstract fun bindViewModelFactory(viewModelFactory: ViewModelFactory): ViewModelProvider.Factory

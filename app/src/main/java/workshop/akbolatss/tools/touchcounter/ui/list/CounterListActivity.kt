@@ -14,12 +14,12 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.textfield.TextInputEditText
 import dagger.android.AndroidInjection
-import kotlinx.android.synthetic.main.activity_navigation.*
-import kotlinx.android.synthetic.main.nav_header.view.*
 import workshop.akbolatss.tools.touchcounter.R
 import workshop.akbolatss.tools.touchcounter.data.dto.CounterDto
+import workshop.akbolatss.tools.touchcounter.databinding.ActivityNavigationBinding
+import workshop.akbolatss.tools.touchcounter.databinding.NavHeaderBinding
 import workshop.akbolatss.tools.touchcounter.ui.ViewModelFactory
-import workshop.akbolatss.tools.touchcounter.ui.counter.CounterActivity
+import workshop.akbolatss.tools.touchcounter.ui.counter.ClickListActivity
 import workshop.akbolatss.tools.touchcounter.utils.DarkThemeDelegate
 import workshop.akbolatss.tools.touchcounter.utils.INTENT_COUNTER_ID
 import workshop.akbolatss.tools.touchcounter.utils.SUPPORT_EMAIL
@@ -27,7 +27,7 @@ import workshop.akbolatss.tools.touchcounter.utils.defaultName
 import workshop.akbolatss.tools.touchcounter.utils.dp
 import javax.inject.Inject
 
-class NavigationActivity : AppCompatActivity() {
+class CounterListActivity : AppCompatActivity() {
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
@@ -35,37 +35,40 @@ class NavigationActivity : AppCompatActivity() {
     @Inject
     lateinit var darkThemeDelegate: DarkThemeDelegate
 
-    private val viewModel: NavigationViewModel by lazy {
-        ViewModelProvider(this, viewModelFactory).get(NavigationViewModel::class.java)
+    private val viewModel: CounterListViewModel by lazy {
+        ViewModelProvider(this, viewModelFactory).get(CounterListViewModel::class.java)
     }
 
-    private lateinit var adapter: CounterAdapter
+    private lateinit var binding: ActivityNavigationBinding
+    private val navHeaderBinding by lazy {
+        NavHeaderBinding.bind(binding.navigationView.getHeaderView(0))
+    }
+    private lateinit var adapter: CounterListRVA
 
     override fun onCreate(savedInstanceState: Bundle?) {
         AndroidInjection.inject(this)
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_navigation)
+        binding = ActivityNavigationBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
         initRecyclerView()
         observeViewModel()
         setListeners()
     }
 
     private fun initRecyclerView() {
-        adapter = CounterAdapter { counter, _, clickType ->
-            when (clickType) {
-                ClickType.ITEM_CLICK -> {
-                    openCounterActivity(counter)
-                }
-                ClickType.OPTIONS_CLICK -> {
-                    showPopupOptions(counter)
-                }
+        adapter = CounterListRVA(
+            onCounterClickListener = {
+                openCounterActivity(it)
+            }, onCounterOptionsClickListener = {
+                showPopupOptions(it)
             }
-        }
-        recyclerView.adapter = adapter
+        )
+        binding.recyclerView.adapter = adapter
     }
 
     private fun openCounterActivity(counter: CounterDto) {
-        val intent = Intent(this, CounterActivity::class.java)
+        val intent = Intent(this, ClickListActivity::class.java)
         intent.putExtra(INTENT_COUNTER_ID, counter.id)
         startActivity(intent)
     }
@@ -73,16 +76,14 @@ class NavigationActivity : AppCompatActivity() {
     private fun observeViewModel() {
         viewModel.counterList.observe(this, Observer { counters ->
             adapter.submitList(counters) {
-                recyclerView.smoothScrollToPosition(0)
+                binding.recyclerView.smoothScrollToPosition(0)
             }
         })
         viewModel.statsLiveData.observe(this, Observer { stats ->
-            navigation_view.header?.let {
-                it.tv_counters_count.text = stats.countersCount.toString()
-                it.tv_clicks_count.text = stats.clicksCount.toString()
-                it.tv_long_click.text = stats.longClick.toString()
-                it.tv_max_click_in_counter.text = stats.mostClicks.toString()
-            }
+            navHeaderBinding.tvCountersCount.text = stats.countersCount.toString()
+            navHeaderBinding.tvClicksCount.text = stats.clicksCount.toString()
+            navHeaderBinding.tvLongClick.text = stats.longClick.toString()
+            navHeaderBinding.tvMaxClickInCounter.text = stats.mostClicks.toString()
         })
         darkThemeDelegate.nightModeLive.observe(this, Observer { nightMode ->
             nightMode?.let {
@@ -91,47 +92,37 @@ class NavigationActivity : AppCompatActivity() {
         })
         darkThemeDelegate.isDarkThemeLive.observe(this, Observer { isDarkTheme ->
             isDarkTheme?.let {
-                navigation_view.getHeaderView(0).darkThemeSwitch.isChecked = it
+                navHeaderBinding.darkThemeSwitch.isChecked = isDarkTheme
             }
         })
     }
 
     private fun setListeners() {
-        bottom_bar.setNavigationOnClickListener {
-            if (!drawer_layout.isDrawerOpen(navigation_view))
-                drawer_layout.openDrawer(navigation_view)
+        binding.bottomBar.setNavigationOnClickListener {
+            if (!binding.drawerLayout.isDrawerOpen(binding.navigationView))
+                binding.drawerLayout.openDrawer(binding.navigationView)
             else
-                drawer_layout.closeDrawer(navigation_view)
+                binding.drawerLayout.closeDrawer(binding.navigationView)
         }
-
-        navigation_view.setNavigationItemSelectedListener { menuItem ->
+        binding.navigationView.setNavigationItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.send_email -> sendEmail()
             }
-            drawer_layout.closeDrawers()
+            binding.drawerLayout.closeDrawers()
             true
         }
 
-        drawer_layout.addDrawerListener(object : DrawerLayout.DrawerListener {
-            override fun onDrawerStateChanged(newState: Int) {
-            }
-
-            override fun onDrawerSlide(drawerView: View, slideOffset: Float) {
-            }
-
-            override fun onDrawerClosed(drawerView: View) {
-            }
-
+        binding.drawerLayout.addDrawerListener(object : DrawerLayout.SimpleDrawerListener() {
             override fun onDrawerOpened(drawerView: View) {
                 viewModel.loadStats()
             }
         })
 
-        fab.setOnClickListener {
+        binding.fab.setOnClickListener {
             createNewCounter()
         }
 
-        navigation_view.getHeaderView(0).darkThemeSwitch.setOnCheckedChangeListener { _, isChecked ->
+        navHeaderBinding.darkThemeSwitch.setOnCheckedChangeListener { buttonView, isChecked ->
             darkThemeDelegate.isDarkTheme = isChecked
         }
     }

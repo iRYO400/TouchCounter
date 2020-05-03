@@ -5,17 +5,20 @@ import android.widget.TextView
 import workshop.akbolatss.tools.touchcounter.utils.formatAsRelativeInSeconds
 import java.util.Date
 
-class CustomRunnable(private val handler: Handler, var holder: TextView) : Runnable {
+class TextViewAutoUpdateRunnable(
+    private val handler: Handler,
+    var tvLastUpdate: TextView
+) : Runnable {
 
     private var initialTimestamp: Date = Date()
 
     override fun run() {
-        holder.text = initialTimestamp.formatAsRelativeInSeconds()
+        tvLastUpdate.text = initialTimestamp.formatAsRelativeInSeconds()
         handler.postDelayed(this, 10000)
     }
 
     fun init(textView: TextView, initTime: Date) {
-        holder = textView
+        tvLastUpdate = textView
         initialTimestamp = initTime
     }
 }
