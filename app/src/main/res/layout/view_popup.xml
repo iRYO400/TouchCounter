@@ -19,7 +19,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
             android:text="@string/info_hold_timing"
-            android:textColor="?android:attr/textColorPrimary" />
+            android:textColor="@color/material_on_surface_emphasis_high_type" />
 
     </com.google.android.material.card.MaterialCardView>
 </FrameLayout>

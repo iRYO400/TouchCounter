@@ -9,6 +9,7 @@ import android.view.View
 import android.widget.Button
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -115,6 +116,13 @@ class NavigationActivity : AppCompatActivity() {
 
         fab.setOnClickListener {
             createNewCounter()
+        }
+
+        navigation_view.getHeaderView(0).darkThemeSwitch.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked)
+                delegate.localNightMode = AppCompatDelegate.MODE_NIGHT_YES
+            else
+                delegate.localNightMode = AppCompatDelegate.MODE_NIGHT_NO
         }
     }
 

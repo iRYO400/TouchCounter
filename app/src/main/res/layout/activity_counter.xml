@@ -15,7 +15,7 @@
         android:layout_marginBottom="16dp"
         android:text="@string/click"
         android:textSize="56sp"
-        app:backgroundTint="?attr/colorAccent"
+        app:backgroundTint="?attr/colorPrimary"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
