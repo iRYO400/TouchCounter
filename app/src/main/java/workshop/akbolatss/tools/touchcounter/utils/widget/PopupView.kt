@@ -33,5 +33,4 @@ class PopupView(anchor: View) {
             dismissPopup
         }
     }
-
 }
