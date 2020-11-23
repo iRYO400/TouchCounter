@@ -5,26 +5,27 @@
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
     tools:openDrawer="start">
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:id="@+id/coordinator"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".ui.NavigationActivity">
+        android:layout_height="match_parent">
 
-        <FrameLayout
-            android:id="@+id/container"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:fitsSystemWindows="true" />
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            app:spanCount="2"
+            tools:listitem="@layout/item_counter" />
 
         <com.google.android.material.bottomappbar.BottomAppBar
             android:id="@+id/bottom_bar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
-            app:backgroundTint="@color/colorPrimary"
             app:fabAlignmentMode="center"
             app:fabCradleMargin="10dp"
             app:hideOnScroll="true"
@@ -38,8 +39,9 @@
             android:layout_height="wrap_content"
             android:elevation="12dp"
             android:src="@drawable/ic_add_black_24dp"
-            app:backgroundTint="@color/colorAccent"
-            app:layout_anchor="@id/bottom_bar" />
+            app:backgroundTint="?attr/colorPrimary"
+            app:layout_anchor="@id/bottom_bar"
+            app:tint="?attr/colorOnPrimary" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
@@ -50,7 +52,6 @@
         android:layout_gravity="start"
         android:fitsSystemWindows="true"
         app:headerLayout="@layout/nav_header"
-        app:menu="@menu/navigation"
-        tools:headerLayout="@layout/nav_header_main" />
+        app:menu="@menu/navigation" />
 
 </androidx.drawerlayout.widget.DrawerLayout>

@@ -3,7 +3,7 @@
     <string name="info_hold_timing">Время удержания кнопки. Погрешность ±5</string>
     <string name="default_timing">0 мс</string>
     <string name="default_count">0</string>
-    <string name="default_name">Счетчик #%d</string>
+    <string name="default_name">Счетчик #</string>
     <string name="counter_group">Счетчики</string>
     <string name="counter_list">Список счетчиков</string>
     <string name="options_title">Настройки: %s</string>
@@ -27,4 +27,6 @@
     <string name="nav_others">Другое</string>
     <string name="nav_send_email">Ваши предложения</string>
     <string name="nav_send_email_helper">Отправить предложения используя</string>
+    <string name="millis">%d мс</string>
+    <string name="enable_dark_theme">Вкл. темную тему</string>
 </resources>

@@ -14,8 +14,8 @@
         android:layout_marginBottom="12dp">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:layout_width="match_parent"
             android:id="@+id/input_name"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/options_hint_name" />
     </com.google.android.material.textfield.TextInputLayout>

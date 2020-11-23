@@ -1,43 +1,24 @@
 package workshop.akbolatss.tools.touchcounter.room
 
-import android.content.Context
 import androidx.room.Database
-import androidx.room.Room
 import androidx.room.RoomDatabase
-import workshop.akbolatss.tools.touchcounter.pojo.ClickObject
-import workshop.akbolatss.tools.touchcounter.pojo.CounterObject
+import androidx.room.TypeConverters
+import workshop.akbolatss.tools.touchcounter.data.dao.ClickDao
+import workshop.akbolatss.tools.touchcounter.data.dao.CounterDao
+import workshop.akbolatss.tools.touchcounter.data.dto.ClickDto
+import workshop.akbolatss.tools.touchcounter.data.dto.CounterDto
 
 @Database(
-    entities = [(CounterObject::class), (ClickObject::class)],
+    entities = [(CounterDto::class), (ClickDto::class)],
     version = 1,
-    exportSchema = false
+    exportSchema = true
+)
+@TypeConverters(
+    RoomConverters::class
 )
 abstract class AppDataBase : RoomDatabase() {
 
-    abstract val dataDao: DataDao
+    abstract val counterDao: CounterDao
 
-    companion object {
-
-        private const val DB_NAME = "YourCounters"
-
-        @Volatile
-        private var INSTANCE: AppDataBase? = null
-
-        fun getInstance(context: Context): AppDataBase {
-            synchronized(this) {
-                var instance = INSTANCE
-
-                if (instance == null) {
-                    instance = Room.databaseBuilder(
-                        context,
-                        AppDataBase::class.java,
-                        DB_NAME
-                    )
-                        .build()
-                    INSTANCE = instance
-                }
-                return instance
-            }
-        }
-    }
+    abstract val clickDao: ClickDao
 }
