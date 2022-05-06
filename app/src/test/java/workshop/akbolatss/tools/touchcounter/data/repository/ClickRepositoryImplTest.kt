@@ -131,7 +131,7 @@ class ClickRepositoryImplTest {
         assertThat(actual).isEqualTo(expected)
     }
 
-    @Test(expected = IllegalArgumentException::class)
+    @Test(expected = NullPointerException::class)
     fun `find clicks, when result is null, throw exception `() {
         // given
         val counterId = 0L

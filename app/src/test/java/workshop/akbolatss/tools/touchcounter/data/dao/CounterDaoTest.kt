@@ -8,7 +8,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.google.common.truth.Truth.assertThat
 import com.jraska.livedata.test
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.test.runBlockingTest
+import kotlinx.coroutines.test.runTest
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule
@@ -19,7 +19,7 @@ import workshop.akbolatss.tools.touchcounter.data.dto.CounterDto
 import workshop.akbolatss.tools.touchcounter.room.AppDataBase
 import java.util.Date
 
-@ExperimentalCoroutinesApi
+@OptIn(ExperimentalCoroutinesApi::class)
 @RunWith(AndroidJUnit4::class)
 @Config(sdk = [Build.VERSION_CODES.O_MR1], manifest = Config.NONE)
 class CounterDaoTest {
@@ -48,7 +48,7 @@ class CounterDaoTest {
 
     @Test
     fun `create one counter when autoincrement primary key then expected primary key`() =
-        runBlockingTest {
+        runTest {
             val expectedId = 1L
             assertThat(counterDao.getCount()).isEqualTo(0)
 
@@ -64,7 +64,7 @@ class CounterDaoTest {
 
     @Test
     fun `create two counters when autoincrement primary key then expected primary key`() =
-        runBlockingTest {
+        runTest {
             val expectedIdA = 1L
             val expectedIdB = 2L
             assertThat(counterDao.getCount()).isEqualTo(0)
@@ -85,7 +85,7 @@ class CounterDaoTest {
 
     @Test
     fun `create two counters when same autoincrement primary key then expected primary key`() =
-        runBlockingTest {
+        runTest {
             val expectedId = 1L
             val notExpectedId = 2L
             assertThat(counterDao.getCount()).isEqualTo(0)
@@ -104,7 +104,7 @@ class CounterDaoTest {
         }
 
     @Test
-    fun `update counter name by id then entity get name`() = runBlockingTest {
+    fun `update counter name by id then entity get name`() = runTest {
         val counterId = 1L
         val oldName = "Mega Name"
         val newName = "Ultra Name"
@@ -120,7 +120,7 @@ class CounterDaoTest {
     }
 
     @Test
-    fun `update counter name by wrong id then nothing changes`() = runBlockingTest {
+    fun `update counter name by wrong id then nothing changes`() = runTest {
         val counterId = 1L
         val wrongCounterId = 2L
         val oldName = "Mega Name"
@@ -139,7 +139,7 @@ class CounterDaoTest {
     }
 
     @Test
-    fun `update counter createTime by id then entity get new createTime`() = runBlockingTest {
+    fun `update counter createTime by id then entity get new createTime`() = runTest {
         val counterId = 1L
         val oldCreateTime = Date(1000)
         val newCreateTime = Date(5000)
@@ -155,7 +155,7 @@ class CounterDaoTest {
     }
 
     @Test
-    fun `update counter createTime by wrong id then nothing changes`() = runBlockingTest {
+    fun `update counter createTime by wrong id then nothing changes`() = runTest {
         val counterId = 1L
         val wrongCounterId = 5L
         val oldCreateTime = Date(1000)
@@ -174,7 +174,7 @@ class CounterDaoTest {
     }
 
     @Test
-    fun `update counter editTime by id then entity get new editTime`() = runBlockingTest {
+    fun `update counter editTime by id then entity get new editTime`() = runTest {
         val counterId = 1L
         val oldEditTime = Date(2000)
         val newEditTime = Date(7000)
@@ -190,7 +190,7 @@ class CounterDaoTest {
     }
 
     @Test
-    fun `update counter editTime by wrong id then nothing changes`() = runBlockingTest {
+    fun `update counter editTime by wrong id then nothing changes`() = runTest {
         val counterId = 2L
         val wrongCounterId = 7L
         val oldEditTime = Date(2000)
@@ -209,7 +209,7 @@ class CounterDaoTest {
     }
 
     @Test
-    fun `delete counter by id then result empty`() = runBlockingTest {
+    fun `delete counter by id then result empty`() = runTest {
         val expectedId = 1L
         counterDao.create(getFakeCounter(id = expectedId))
 
@@ -225,7 +225,7 @@ class CounterDaoTest {
     }
 
     @Test
-    fun `delete counter by wrong id then nothing changes`() = runBlockingTest {
+    fun `delete counter by wrong id then nothing changes`() = runTest {
         val expectedId = 1L
         val wrongCounterId = 5L
         counterDao.create(getFakeCounter(id = expectedId))
@@ -242,7 +242,7 @@ class CounterDaoTest {
     }
 
     @Test
-    fun `observe list changes when create then expected results`() = runBlockingTest {
+    fun `observe list changes when create then expected results`() = runTest {
         val testObserver = counterDao.findList().test()
             .assertHistorySize(1)
             .assertHasValue()
@@ -276,7 +276,7 @@ class CounterDaoTest {
     }
 
     @Test
-    fun `observe list changes when update then expected results`() = runBlockingTest {
+    fun `observe list changes when update then expected results`() = runTest {
         val testObserver = counterDao.findList().test()
             .assertHistorySize(1)
             .assertHasValue()
@@ -311,7 +311,7 @@ class CounterDaoTest {
     }
 
     @Test
-    fun `observe by id counter when create then expected results`() = runBlockingTest {
+    fun `observe by id counter when create then expected results`() = runTest {
         val counterId = 1L
         val testObserver = counterDao.findBy(counterId).test()
             .assertNullValue()
@@ -350,7 +350,7 @@ class CounterDaoTest {
     }
 
     @Test
-    fun `observe by id counter when update then expected results`() = runBlockingTest {
+    fun `observe by id counter when update then expected results`() = runTest {
         val counterId = 1L
         val testObserver = counterDao.findBy(counterId).test()
             .assertNullValue()
@@ -364,7 +364,7 @@ class CounterDaoTest {
 
     @Test
     fun `observe by id counter when create, update and delete then expected results`() =
-        runBlockingTest {
+        runTest {
             val counterId = 1L
             val testObserver = counterDao.findBy(counterId).test()
                 .assertNullValue()

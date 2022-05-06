@@ -8,7 +8,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.google.common.truth.Truth.assertThat
 import com.jraska.livedata.test
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.test.runBlockingTest
+import kotlinx.coroutines.test.runTest
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule
@@ -19,7 +19,7 @@ import workshop.akbolatss.tools.touchcounter.data.dto.ClickDto
 import workshop.akbolatss.tools.touchcounter.room.AppDataBase
 import java.util.Date
 
-@ExperimentalCoroutinesApi
+@OptIn(ExperimentalCoroutinesApi::class)
 @RunWith(AndroidJUnit4::class)
 @Config(sdk = [Build.VERSION_CODES.O_MR1], manifest = Config.NONE)
 class ClickDaoTest {
@@ -47,7 +47,7 @@ class ClickDaoTest {
     }
 
     @Test
-    fun create_single_click_autoincrement() = runBlockingTest {
+    fun create_single_click_autoincrement() = runTest {
         val counterId = 1L
         val click = getFakeClick(counterId = counterId)
 
@@ -63,7 +63,7 @@ class ClickDaoTest {
     }
 
     @Test
-    fun create_double_click_autoincrement() = runBlockingTest {
+    fun create_double_click_autoincrement() = runTest {
         val counterId = 1L
         val click = getFakeClick(counterId = counterId)
 
@@ -83,7 +83,7 @@ class ClickDaoTest {
     }
 
     @Test
-    fun create_triple_click_autoincrement() = runBlockingTest {
+    fun create_triple_click_autoincrement() = runTest {
         val counterId = 1L
         val click = getFakeClick(counterId = counterId)
 
@@ -107,7 +107,7 @@ class ClickDaoTest {
     }
 
     @Test
-    fun findLongestClick_when_single_click_then_expected() = runBlockingTest {
+    fun findLongestClick_when_single_click_then_expected() = runTest {
         val counterId = 1L
         val expectedMillis = 1000
         val click = getFakeClick(counterId = counterId, heldMillis = 1000)
@@ -118,7 +118,7 @@ class ClickDaoTest {
     }
 
     @Test
-    fun findLongestClick_when_double_click_then_expected() = runBlockingTest {
+    fun findLongestClick_when_double_click_then_expected() = runTest {
         val counterId = 1L
         val expectedMillis = 2000
         val clickA = getFakeClick(counterId = counterId, heldMillis = 1000)
@@ -131,7 +131,7 @@ class ClickDaoTest {
     }
 
     @Test
-    fun findLongestClick_when_triple_click_then_expected() = runBlockingTest {
+    fun findLongestClick_when_triple_click_then_expected() = runTest {
         val counterId = 1L
         val expectedMillis = 9000
         val clickA = getFakeClick(counterId = counterId, heldMillis = 8999)
@@ -146,7 +146,7 @@ class ClickDaoTest {
     }
 
     @Test
-    fun `find most click in counter when two items with different counter id `() = runBlockingTest {
+    fun `find most click in counter when two items with different counter id `() = runTest {
         val expectedCount = 1
 
         clickDao.create(getFakeClick(counterId = 1))
@@ -156,7 +156,7 @@ class ClickDaoTest {
     }
 
     @Test
-    fun `find most click in counter when two items with same counter id `() = runBlockingTest {
+    fun `find most click in counter when two items with same counter id `() = runTest {
         val expectedCount = 2L
 
         clickDao.create(getFakeClick(counterId = 1L))
@@ -167,7 +167,7 @@ class ClickDaoTest {
 
     @Test
     fun `find most click in counter when many items with different counter id `() =
-        runBlockingTest {
+        runTest {
             val expectedCount = 5
 
             for (i in 0 until 3) {
@@ -186,7 +186,7 @@ class ClickDaoTest {
         }
 
     @Test
-    fun `observe list live data by counter id when changed once`() = runBlockingTest {
+    fun `observe list live data by counter id when changed once`() = runTest {
         val counterId = 1L
         val testObserver = clickDao.findListBy(counterId).test()
             .assertHasValue()
@@ -204,7 +204,7 @@ class ClickDaoTest {
     }
 
     @Test
-    fun `observe list live data by counter id when changed two times`() = runBlockingTest {
+    fun `observe list live data by counter id when changed two times`() = runTest {
         val counterId = 1L
         val testObserver = clickDao.findListBy(counterId).test()
             .assertHasValue()
@@ -231,7 +231,7 @@ class ClickDaoTest {
     }
 
     @Test
-    fun `observe list live data by counter id when changed three times`() = runBlockingTest {
+    fun `observe list live data by counter id when changed three times`() = runTest {
         val counterId = 1L
         val testObserver = clickDao.findListBy(counterId).test()
             .assertHasValue()
