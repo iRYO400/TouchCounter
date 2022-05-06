@@ -13,6 +13,7 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.ItemTouchHelper
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.android.AndroidInjection
 import workshop.akbolatss.tools.touchcounter.R
 import workshop.akbolatss.tools.touchcounter.databinding.ActivityCounterBinding
@@ -132,6 +133,22 @@ class ClickListActivity : AppCompatActivity() {
                 else -> false
             }
         }
+        binding.ivClear.setOnClickListener {
+            showClearCounterDialog()
+        }
+    }
+
+    private fun showClearCounterDialog() {
+        MaterialAlertDialogBuilder(this)
+            .setTitle(getString(R.string.confirmation_delete_title))
+            .setMessage(getString(R.string.confirmation_delete_message))
+            .setPositiveButton(R.string.confirmation_delete_positive) { _, _ ->
+                viewModel.clearAllClick()
+            }
+            .setNegativeButton(R.string.confirmation_delete_negative) { dialog, _ ->
+                dialog.cancel()
+            }
+            .show()
     }
 
     private fun btnHold() {

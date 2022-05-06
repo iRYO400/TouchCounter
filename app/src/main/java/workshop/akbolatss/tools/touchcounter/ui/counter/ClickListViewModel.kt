@@ -106,4 +106,12 @@ constructor(
             clickRepository.remove(clickDto.id)
         }
     }
+
+    fun clearAllClick() {
+        counterId.value?.let { counterId ->
+            viewModelScope.launch {
+                clickRepository.removeAll(counterId)
+            }
+        }
+    }
 }

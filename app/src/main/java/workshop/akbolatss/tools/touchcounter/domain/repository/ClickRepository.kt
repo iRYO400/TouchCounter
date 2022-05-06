@@ -14,4 +14,6 @@ interface ClickRepository {
     suspend fun getMostClicksInCounter(): Int
 
     fun findClickList(counterId: Long): LiveData<List<ClickDto>>
+
+    suspend fun removeAll(counterId: Long)
 }

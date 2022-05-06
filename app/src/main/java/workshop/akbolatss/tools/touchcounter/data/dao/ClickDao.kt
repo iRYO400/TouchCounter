@@ -2,10 +2,7 @@ package workshop.akbolatss.tools.touchcounter.data.dao
 
 import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.LiveData
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
+import androidx.room.*
 import workshop.akbolatss.tools.touchcounter.data.dto.ClickDto
 
 @Dao
@@ -32,4 +29,7 @@ interface ClickDao {
     @VisibleForTesting
     @Query("SELECT * FROM click WHERE id = :id")
     fun findBy(id: Long): ClickDto?
+
+    @Query("DELETE FROM click WHERE counterId = :counterId")
+    suspend fun removeAll(counterId: Long)
 }
