@@ -19,8 +19,10 @@ import workshop.akbolatss.tools.touchcounter.databinding.ActivityCounterBinding
 import workshop.akbolatss.tools.touchcounter.ui.ViewModelFactory
 import workshop.akbolatss.tools.touchcounter.utils.INTENT_COUNTER_ID
 import workshop.akbolatss.tools.touchcounter.utils.android.DarkThemeDelegate
+import workshop.akbolatss.tools.touchcounter.utils.android.IUserPreferencesDelegate
 import workshop.akbolatss.tools.touchcounter.utils.exts.toast
 import workshop.akbolatss.tools.touchcounter.utils.widget.PopupView
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 class ClickListActivity : AppCompatActivity() {
@@ -30,6 +32,9 @@ class ClickListActivity : AppCompatActivity() {
 
     @Inject
     lateinit var darkThemeDelegate: DarkThemeDelegate
+
+    @Inject
+    lateinit var userPreferencesDelegate: IUserPreferencesDelegate
 
     private val viewModel: ClickListViewModel by lazy {
         ViewModelProvider(this, viewModelFactory)[ClickListViewModel::class.java]
@@ -48,6 +53,7 @@ class ClickListActivity : AppCompatActivity() {
 
         initViewModel()
 
+        initView()
         initRecyclerView()
         initAnimator()
 
@@ -60,8 +66,12 @@ class ClickListActivity : AppCompatActivity() {
         viewModel.setCounterId(counterId)
     }
 
+    private fun initView() {
+        setHeldTiming(0)
+    }
+
     private fun initRecyclerView() {
-        adapter = ClickListRVA()
+        adapter = ClickListRVA(userPreferencesDelegate.isUseSecondsEnabled())
         binding.recyclerView.adapter = adapter
         val itemSwipeHelper = SwipeToDeleteCallback { clickPos ->
             val click = adapter.currentList[clickPos]
@@ -104,13 +114,23 @@ class ClickListActivity : AppCompatActivity() {
             }
         }
         viewModel.heldMillis.observe(this) { millis ->
-            binding.tvTiming.text = getString(R.string.millis, millis)
+            setHeldTiming(millis)
         }
         darkThemeDelegate.nightModeLive.observe(this) { nightMode ->
             nightMode?.let {
                 delegate.localNightMode = it
             }
         }
+    }
+
+    private fun setHeldTiming(millis: Long) {
+        val heldTimingText = if (userPreferencesDelegate.isUseSecondsEnabled()) {
+            val seconds = TimeUnit.MILLISECONDS.toSeconds(millis)
+            getString(R.string.seconds, seconds)
+        } else {
+            getString(R.string.millis, millis)
+        }
+        binding.tvTiming.text = heldTimingText
     }
 
     private fun updateClearAllIconState(size: Int) {

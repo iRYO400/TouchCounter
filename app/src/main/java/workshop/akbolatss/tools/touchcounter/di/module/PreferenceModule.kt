@@ -4,6 +4,8 @@ import android.content.SharedPreferences
 import dagger.Module
 import dagger.Provides
 import workshop.akbolatss.tools.touchcounter.utils.android.DarkThemeDelegate
+import workshop.akbolatss.tools.touchcounter.utils.android.IUserPreferencesDelegate
+import workshop.akbolatss.tools.touchcounter.utils.android.UserPreferencesDelegate
 import javax.inject.Singleton
 
 @Module
@@ -15,4 +17,9 @@ class PreferenceModule {
         DarkThemeDelegate(
             sharedPreferences
         )
+
+    @Singleton
+    @Provides
+    fun provideUserPreferences(sharedPreferences: SharedPreferences): IUserPreferencesDelegate =
+        UserPreferencesDelegate(sharedPreferences)
 }

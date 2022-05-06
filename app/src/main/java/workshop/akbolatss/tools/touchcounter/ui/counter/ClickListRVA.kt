@@ -12,8 +12,11 @@ import androidx.recyclerview.widget.RecyclerView
 import workshop.akbolatss.tools.touchcounter.R
 import workshop.akbolatss.tools.touchcounter.data.dto.ClickDto
 import workshop.akbolatss.tools.touchcounter.databinding.ItemClickBinding
+import java.util.concurrent.TimeUnit
 
-class ClickListRVA : ListAdapter<ClickDto, ClickListRVA.CounterVH>(DIFF_CALLBACK) {
+class ClickListRVA(
+    private val isUseSecondsEnabled: Boolean
+) : ListAdapter<ClickDto, ClickListRVA.CounterVH>(DIFF_CALLBACK) {
 
     private val handler = Handler(Looper.getMainLooper())
 
@@ -24,7 +27,7 @@ class ClickListRVA : ListAdapter<ClickDto, ClickListRVA.CounterVH>(DIFF_CALLBACK
                 R.layout.item_click,
                 parent,
                 false
-            ), handler
+            ), handler, isUseSecondsEnabled
         )
     }
 
@@ -42,7 +45,8 @@ class ClickListRVA : ListAdapter<ClickDto, ClickListRVA.CounterVH>(DIFF_CALLBACK
 
     class CounterVH(
         itemView: View,
-        private val handler: Handler
+        private val handler: Handler,
+        private val isUseSecondsEnabled: Boolean
     ) : RecyclerView.ViewHolder(itemView) {
 
         private val binding: ItemClickBinding = ItemClickBinding.bind(itemView)
@@ -56,8 +60,18 @@ class ClickListRVA : ListAdapter<ClickDto, ClickListRVA.CounterVH>(DIFF_CALLBACK
             customRunnable.init(binding.timestamp, clickObject.createTime)
             handler.postDelayed(customRunnable, 100)
 
-            binding.timing.text = clickObject.heldMillis.toString()
+            setHeldTiming(clickObject)
             setItemPosition()
+        }
+
+        private fun setHeldTiming(clickObject: ClickDto) {
+            val heldTiming = if (isUseSecondsEnabled) {
+                TimeUnit.MILLISECONDS.toSeconds(clickObject.heldMillis)
+            } else {
+                clickObject.heldMillis
+            }
+
+            binding.timing.text = heldTiming.toString()
         }
 
         fun setItemPosition() {

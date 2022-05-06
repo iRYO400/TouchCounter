@@ -28,5 +28,7 @@
     <string name="nav_send_email">Ваши предложения</string>
     <string name="nav_send_email_helper">Отправить предложения используя</string>
     <string name="millis">%d мс</string>
+    <string name="seconds">%d с</string>
     <string name="enable_dark_theme">Вкл. темную тему</string>
+    <string name="use_seconds">Исп. секунды</string>
 </resources>

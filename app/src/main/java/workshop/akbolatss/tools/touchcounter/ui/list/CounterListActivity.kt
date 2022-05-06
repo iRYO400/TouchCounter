@@ -19,6 +19,7 @@ import workshop.akbolatss.tools.touchcounter.ui.counter.ClickListActivity
 import workshop.akbolatss.tools.touchcounter.utils.INTENT_COUNTER_ID
 import workshop.akbolatss.tools.touchcounter.utils.SUPPORT_EMAIL
 import workshop.akbolatss.tools.touchcounter.utils.android.DarkThemeDelegate
+import workshop.akbolatss.tools.touchcounter.utils.android.IUserPreferencesDelegate
 import javax.inject.Inject
 
 class CounterListActivity : AppCompatActivity() {
@@ -28,6 +29,9 @@ class CounterListActivity : AppCompatActivity() {
 
     @Inject
     lateinit var darkThemeDelegate: DarkThemeDelegate
+
+    @Inject
+    lateinit var userPreferencesDelegate: IUserPreferencesDelegate
 
     private val viewModel: CounterListViewModel by lazy {
         ViewModelProvider(this, viewModelFactory).get(CounterListViewModel::class.java)
@@ -45,9 +49,14 @@ class CounterListActivity : AppCompatActivity() {
         binding = ActivityNavigationBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        initView()
         initRecyclerView()
         observeViewModel()
         setListeners()
+    }
+
+    private fun initView() {
+        navHeaderBinding.switchUseSeconds.isChecked = userPreferencesDelegate.isUseSecondsEnabled()
     }
 
     private fun initRecyclerView() {
@@ -118,6 +127,9 @@ class CounterListActivity : AppCompatActivity() {
 
         navHeaderBinding.darkThemeSwitch.setOnCheckedChangeListener { _, isChecked ->
             darkThemeDelegate.isDarkTheme = isChecked
+        }
+        navHeaderBinding.switchUseSeconds.setOnCheckedChangeListener { _, isChecked ->
+            userPreferencesDelegate.saveUseSecondsState(isChecked)
         }
     }
 
