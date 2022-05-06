@@ -95,7 +95,7 @@ class ClickListActivity : AppCompatActivity() {
                 onBackPressed()
             }
         })
-        viewModel.clickList.observe(this, Observer { clicks ->
+        viewModel.clickList.observe(this) { clicks ->
             adapter.submitList(clicks) {
                 adapter.notifyItemRangeChanged(
                     0, clicks.size,
@@ -104,15 +104,15 @@ class ClickListActivity : AppCompatActivity() {
                 binding.tvCounter.text = clicks.size.toString()
                 binding.recyclerView.smoothScrollToPosition(clicks.size)
             }
-        })
-        viewModel.heldMillis.observe(this, Observer { millis ->
+        }
+        viewModel.heldMillis.observe(this) { millis ->
             binding.tvTiming.text = getString(R.string.millis, millis)
-        })
-        darkThemeDelegate.nightModeLive.observe(this, Observer { nightMode ->
+        }
+        darkThemeDelegate.nightModeLive.observe(this) { nightMode ->
             nightMode?.let {
                 delegate.localNightMode = it
             }
-        })
+        }
     }
 
     private fun setListeners() {

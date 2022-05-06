@@ -69,27 +69,27 @@ class CounterListActivity : AppCompatActivity() {
     }
 
     private fun observeViewModel() {
-        viewModel.counterList.observe(this, Observer { counters ->
+        viewModel.counterList.observe(this) { counters ->
             adapter.submitList(counters) {
                 binding.recyclerView.smoothScrollToPosition(0)
             }
-        })
-        viewModel.statsLiveData.observe(this, Observer { stats ->
+        }
+        viewModel.statsLiveData.observe(this) { stats ->
             navHeaderBinding.tvCountersCount.text = stats.countersCount.toString()
             navHeaderBinding.tvClicksCount.text = stats.clicksCount.toString()
             navHeaderBinding.tvLongClick.text = stats.longClick.toString()
             navHeaderBinding.tvMaxClickInCounter.text = stats.mostClicks.toString()
-        })
-        darkThemeDelegate.nightModeLive.observe(this, Observer { nightMode ->
+        }
+        darkThemeDelegate.nightModeLive.observe(this) { nightMode ->
             nightMode?.let {
                 delegate.localNightMode = it
             }
-        })
-        darkThemeDelegate.isDarkThemeLive.observe(this, Observer { isDarkTheme ->
+        }
+        darkThemeDelegate.isDarkThemeLive.observe(this) { isDarkTheme ->
             isDarkTheme?.let {
                 navHeaderBinding.darkThemeSwitch.isChecked = isDarkTheme
             }
-        })
+        }
     }
 
     private fun setListeners() {
