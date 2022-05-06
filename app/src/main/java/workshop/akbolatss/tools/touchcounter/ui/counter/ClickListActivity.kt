@@ -2,6 +2,7 @@ package workshop.akbolatss.tools.touchcounter.ui.counter
 
 import android.animation.ArgbEvaluator
 import android.animation.ObjectAnimator
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Property
 import android.view.MotionEvent
@@ -89,12 +90,12 @@ class ClickListActivity : AppCompatActivity() {
     }
 
     private fun observeViewModel() {
-        viewModel.counter.observe(this, Observer { counterDto ->
+        viewModel.counter.observe(this) { counterDto ->
             if (counterDto == null) {
                 toast("Error occurred, please try open again")
                 onBackPressed()
             }
-        })
+        }
         viewModel.clickList.observe(this) { clicks ->
             adapter.submitList(clicks) {
                 adapter.notifyItemRangeChanged(
@@ -115,6 +116,7 @@ class ClickListActivity : AppCompatActivity() {
         }
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     private fun setListeners() {
         setupPopupView()
         binding.btnClick.setOnTouchListener { _, event ->
