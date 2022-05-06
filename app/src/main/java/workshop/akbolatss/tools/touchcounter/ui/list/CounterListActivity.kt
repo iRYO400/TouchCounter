@@ -126,8 +126,8 @@ class CounterListActivity : AppCompatActivity() {
         val mIntent = Intent(Intent.ACTION_SENDTO)
         mIntent.data = Uri.parse("mailto:")
         mIntent.putExtra(Intent.EXTRA_EMAIL, arrayOf(SUPPORT_EMAIL))
-        mIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.nav_send_email_helper))
-        startActivity(Intent.createChooser(mIntent, getString(R.string.nav_send_email_helper)))
+        mIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.nav_send_email_subject))
+        startActivity(Intent.createChooser(mIntent, getString(R.string.nav_send_email_subject)))
     }
 
     private fun createNewCounter() {
