@@ -1,19 +1,13 @@
 package workshop.akbolatss.tools.touchcounter.ui.counter
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import kotlinx.coroutines.launch
 import workshop.akbolatss.tools.touchcounter.data.dto.ClickDto
 import workshop.akbolatss.tools.touchcounter.data.dto.CounterDto
 import workshop.akbolatss.tools.touchcounter.domain.repository.ClickRepository
 import workshop.akbolatss.tools.touchcounter.domain.repository.CounterRepository
 import workshop.akbolatss.tools.touchcounter.utils.android.AbsentLiveData
-import java.util.Date
-import java.util.Timer
-import java.util.TimerTask
+import java.util.*
 import javax.inject.Inject
 import kotlin.concurrent.scheduleAtFixedRate
 
@@ -26,21 +20,19 @@ constructor(
 
     val counterId = MutableLiveData<Long>()
 
-    val counter: LiveData<CounterDto> =
-        Transformations.switchMap(counterId) { counterId ->
-            if (counterId == null)
-                AbsentLiveData.create()
-            else
-                counterRepository.findCounter(counterId)
-        }
+    val counter: LiveData<CounterDto> = counterId.switchMap { counterId ->
+        if (counterId == null)
+            AbsentLiveData.create()
+        else
+            counterRepository.findCounter(counterId)
+    }
 
-    val clickList: LiveData<List<ClickDto>> =
-        Transformations.switchMap(counterId) { counterId ->
-            if (counterId == null)
-                AbsentLiveData.create()
-            else
-                clickRepository.findClickList(counterId)
-        }
+    val clickList: LiveData<List<ClickDto>> = counterId.switchMap { counterId ->
+        if (counterId == null)
+            AbsentLiveData.create()
+        else
+            clickRepository.findClickList(counterId)
+    }
 
     private val timer: Timer = Timer()
     private var timerTask: TimerTask? = null

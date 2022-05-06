@@ -10,7 +10,6 @@ import android.view.animation.DecelerateInterpolator
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.ItemTouchHelper
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -18,7 +17,6 @@ import dagger.android.AndroidInjection
 import workshop.akbolatss.tools.touchcounter.R
 import workshop.akbolatss.tools.touchcounter.databinding.ActivityCounterBinding
 import workshop.akbolatss.tools.touchcounter.ui.ViewModelFactory
-import workshop.akbolatss.tools.touchcounter.ui.counter.ClickListRVA.Companion.ITEM_POSITION_CHANGED
 import workshop.akbolatss.tools.touchcounter.utils.INTENT_COUNTER_ID
 import workshop.akbolatss.tools.touchcounter.utils.android.DarkThemeDelegate
 import workshop.akbolatss.tools.touchcounter.utils.exts.toast
@@ -98,13 +96,11 @@ class ClickListActivity : AppCompatActivity() {
             }
         }
         viewModel.clickList.observe(this) { clicks ->
+            val size = clicks.size
             adapter.submitList(clicks) {
-                adapter.notifyItemRangeChanged(
-                    0, clicks.size,
-                    ITEM_POSITION_CHANGED
-                )
-                binding.tvCounter.text = clicks.size.toString()
-                binding.recyclerView.smoothScrollToPosition(clicks.size)
+                binding.tvCounter.text = size.toString()
+                binding.recyclerView.smoothScrollToPosition(size)
+                updateClearAllIconState(size)
             }
         }
         viewModel.heldMillis.observe(this) { millis ->
@@ -115,6 +111,10 @@ class ClickListActivity : AppCompatActivity() {
                 delegate.localNightMode = it
             }
         }
+    }
+
+    private fun updateClearAllIconState(size: Int) {
+        binding.ivClear.isEnabled = size > 0
     }
 
     @SuppressLint("ClickableViewAccessibility")

@@ -15,10 +15,6 @@ import workshop.akbolatss.tools.touchcounter.databinding.ItemClickBinding
 
 class ClickListRVA : ListAdapter<ClickDto, ClickListRVA.CounterVH>(DIFF_CALLBACK) {
 
-    companion object {
-        const val ITEM_POSITION_CHANGED = "_itemPosChanged"
-    }
-
     private val handler = Handler(Looper.getMainLooper())
 
     override fun onCreateViewHolder(parent: ViewGroup, p1: Int): CounterVH {

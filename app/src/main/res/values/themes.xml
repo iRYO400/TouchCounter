@@ -7,7 +7,7 @@
         <item name="colorPrimary">@color/blue</item>
         <item name="colorAccent">@color/blue</item>
         <item name="colorSurface">@color/white_50</item>
-        <item name="colorOnSurface">@color/black_700</item>
+        <item name="colorOnSurface">@color/md_grey_900</item>
         <item name="android:colorBackground">@color/white_50</item>
 
         <item name="colorDivider">@color/md_grey_500</item>
