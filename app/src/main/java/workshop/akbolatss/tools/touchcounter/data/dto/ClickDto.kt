@@ -7,18 +7,15 @@ import androidx.room.PrimaryKey
 import java.util.Date
 
 @Entity(
-    tableName = "click"
+    tableName = "click",
+    foreignKeys = [
+        ForeignKey(entity = CounterDto::class, parentColumns = ["id"], childColumns = ["counterId"], onDelete = CASCADE)
+    ]
 )
 data class ClickDto(
     @PrimaryKey(autoGenerate = true)
     val id: Long = 0,
     val createTime: Date,
     val heldMillis: Long,
-    @ForeignKey(
-        entity = CounterDto::class,
-        parentColumns = ["id"],
-        childColumns = ["counterId"],
-        onDelete = CASCADE
-    )
     val counterId: Long
 )
