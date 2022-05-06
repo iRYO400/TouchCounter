@@ -19,6 +19,9 @@ import workshop.akbolatss.tools.touchcounter.data.dto.ClickDto
 import workshop.akbolatss.tools.touchcounter.room.AppDataBase
 import java.util.Date
 
+/**
+ * TODO TESTS doesn't pass at all
+ */
 @OptIn(ExperimentalCoroutinesApi::class)
 @RunWith(AndroidJUnit4::class)
 @Config(sdk = [Build.VERSION_CODES.O_MR1], manifest = Config.NONE)
