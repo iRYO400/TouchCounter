@@ -33,7 +33,7 @@ class ClickListActivity : AppCompatActivity() {
     lateinit var darkThemeDelegate: DarkThemeDelegate
 
     private val viewModel: ClickListViewModel by lazy {
-        ViewModelProvider(this, viewModelFactory).get(ClickListViewModel::class.java)
+        ViewModelProvider(this, viewModelFactory)[ClickListViewModel::class.java]
     }
 
     private lateinit var binding: ActivityCounterBinding
