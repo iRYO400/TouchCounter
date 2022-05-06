@@ -26,36 +26,38 @@ class CounterListRVA(
                 parent,
                 false
             )
-        )
+        ).apply {
+            binding.root.setOnClickListener {
+                holdItem?.let(onCounterClickListener)
+            }
+            binding.imgOptions.setOnClickListener {
+                holdItem?.let(onCounterOptionsClickListener)
+            }
+        }
     }
 
     override fun onBindViewHolder(holder: CounterVH, position: Int) {
         val introAction = getItem(position)
-        holder.bind(introAction, onCounterClickListener, onCounterOptionsClickListener)
+        holder.bind(introAction)
     }
 
     class CounterVH(
         itemView: View
     ) : RecyclerView.ViewHolder(itemView) {
 
-        private val binding = ItemCounterBinding.bind(itemView)
+        val binding = ItemCounterBinding.bind(itemView)
+
+        var holdItem: CounterDto? = null
+            private set
+
         fun bind(
-            counter: CounterDto,
-            onCounterClickListener: (CounterDto) -> Unit,
-            onCounterOptionsClickListener: (CounterDto) -> Unit
+            counter: CounterDto
         ) {
+            this.holdItem = counter
             binding.name.text = counter.name
 
             binding.timestamp.text = counter.editTime.formatAsRelativeInMinutes()
             binding.count.text = counter.itemCount.toString()
-
-            binding.root.setOnClickListener {
-                onCounterClickListener(counter)
-            }
-
-            binding.imgOptions.setOnClickListener {
-                onCounterOptionsClickListener(counter)
-            }
         }
     }
 }
