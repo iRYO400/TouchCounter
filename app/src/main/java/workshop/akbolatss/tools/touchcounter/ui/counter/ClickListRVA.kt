@@ -1,6 +1,7 @@
 package workshop.akbolatss.tools.touchcounter.ui.counter
 
 import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,7 +19,7 @@ class ClickListRVA : ListAdapter<ClickDto, ClickListRVA.CounterVH>(DIFF_CALLBACK
         const val ITEM_POSITION_CHANGED = "_itemPosChanged"
     }
 
-    private val handler = Handler()
+    private val handler = Handler(Looper.getMainLooper())
 
     override fun onCreateViewHolder(parent: ViewGroup, p1: Int): CounterVH {
         val inflater = LayoutInflater.from(parent.context)
@@ -48,9 +49,9 @@ class ClickListRVA : ListAdapter<ClickDto, ClickListRVA.CounterVH>(DIFF_CALLBACK
         private val handler: Handler
     ) : RecyclerView.ViewHolder(itemView) {
 
-        private var binding: ItemClickBinding = ItemClickBinding.bind(itemView)
+        private val binding: ItemClickBinding = ItemClickBinding.bind(itemView)
 
-        private var customRunnable: TextViewAutoUpdateRunnable =
+        private val customRunnable: TextViewAutoUpdateRunnable =
             TextViewAutoUpdateRunnable(handler, binding.timestamp)
 
         fun bind(clickObject: ClickDto) {
