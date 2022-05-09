@@ -27,7 +27,7 @@ class PersistenceModule {
             AppDataBase::class.java,
             DATABASE_NAME
         )
-//            .createFromAsset("databases/your_counters.db") //TODO Prepopulate data
+            .createFromAsset("databases/InitialCounters.db")
             .fallbackToDestructiveMigration()
             .build()
 
