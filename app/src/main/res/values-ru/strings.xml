@@ -12,6 +12,7 @@
     <string name="options_negative">Отмена</string>
     <string name="options_neutral">Удалить</string>
     <string name="confirmation_delete_title">Вы уверены что хотите удалить?</string>
+    <string name="confirmation_clear_clicks_title">Вы уверены что хотите очистить все клики?</string>
     <string name="confirmation_delete_message">Удаленные данные не возможно восстановить</string>
     <string name="confirmation_delete_positive">Да</string>
     <string name="confirmation_delete_negative">Нет</string>

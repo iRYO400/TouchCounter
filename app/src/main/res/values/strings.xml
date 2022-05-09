@@ -21,6 +21,7 @@
 
     <string name="stats_title">Statistics</string>
     <string name="confirmation_delete_title">Are you sure you want to delete?</string>
+    <string name="confirmation_clear_clicks_title">Are you sure you want to clear all clicks?</string>
     <string name="confirmation_delete_positive">Yes</string>
     <string name="confirmation_delete_negative">No</string>
     <string name="nav_others">Others</string>
