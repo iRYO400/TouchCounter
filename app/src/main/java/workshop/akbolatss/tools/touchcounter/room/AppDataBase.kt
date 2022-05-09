@@ -10,7 +10,7 @@ import workshop.akbolatss.tools.touchcounter.data.dto.CounterDto
 
 @Database(
     entities = [(CounterDto::class), (ClickDto::class)],
-    version = 1, //TODO update schema version
+    version = 2,
     exportSchema = true
 )
 @TypeConverters(

@@ -4,6 +4,8 @@ import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
 import androidx.room.Room
+import androidx.room.migration.Migration
+import androidx.sqlite.db.SupportSQLiteDatabase
 import dagger.Module
 import dagger.Provides
 import workshop.akbolatss.tools.touchcounter.data.dao.ClickDao
@@ -17,6 +19,28 @@ class PersistenceModule {
     companion object {
         const val SHARED_PREFERENCES = "YourCountersPreferences"
         const val DATABASE_NAME = "YourCounters.db"
+
+        private val MIGRATION_1_2 = object : Migration(1, 2) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                val oldTable = "click"
+                val newTable = "${oldTable}_new"
+                database.execSQL(
+                    "CREATE TABLE IF NOT EXISTS `$newTable` (" +
+                        "`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, " +
+                        "`createTime` INTEGER NOT NULL, " +
+                        "`heldMillis` INTEGER NOT NULL, " +
+                        "`counterId` INTEGER NOT NULL, " +
+                        "FOREIGN KEY(`counterId`) REFERENCES `counter`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )"
+                )
+                database.execSQL(
+                    "INSERT INTO `$newTable` (id, createTime, heldMillis, counterId) " +
+                        "SELECT id, createTime, heldMillis, counterId " +
+                        "FROM $oldTable"
+                )
+                database.execSQL("DROP TABLE $oldTable")
+                database.execSQL("ALTER TABLE $newTable RENAME to $oldTable")
+            }
+        }
     }
 
     @Singleton
@@ -29,6 +53,7 @@ class PersistenceModule {
         )
             .createFromAsset("databases/InitialCounters.db")
             .fallbackToDestructiveMigration()
+            .addMigrations(MIGRATION_1_2)
             .build()
 
     @Singleton
