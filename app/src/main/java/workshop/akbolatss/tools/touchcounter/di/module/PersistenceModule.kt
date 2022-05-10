@@ -51,7 +51,6 @@ class PersistenceModule {
             AppDataBase::class.java,
             DATABASE_NAME
         )
-            .createFromAsset("databases/InitialCounters.db")
             .fallbackToDestructiveMigration()
             .addMigrations(MIGRATION_1_2)
             .build()
