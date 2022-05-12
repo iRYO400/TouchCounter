@@ -53,5 +53,11 @@ android {
     }
 }
 
+tasks.withType(Test) {
+    filter {
+        includeTestsMatching 'workshop.akbolatss.tools.touchcounter.AllTestSuites'
+    }
+}
+
 apply from: '../dependencies/dependencies.gradle'
 apply from: '../dependencies/testing_dependencies.gradle'
