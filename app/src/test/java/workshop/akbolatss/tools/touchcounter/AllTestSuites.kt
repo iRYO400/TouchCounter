@@ -7,7 +7,7 @@ import workshop.akbolatss.tools.touchcounter.ui.UiTestSuite
 
 @RunWith(Suite::class)
 @Suite.SuiteClasses(
-    DataTestSuite::class,
-    UiTestSuite::class
+    UiTestSuite::class,
+    DataTestSuite::class
 )
 class AllTestSuites

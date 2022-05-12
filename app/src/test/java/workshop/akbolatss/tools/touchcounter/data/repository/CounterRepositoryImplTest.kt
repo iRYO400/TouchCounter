@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import com.google.common.truth.Truth.assertThat
 import com.jraska.livedata.test
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.test.runBlockingTest
+import kotlinx.coroutines.test.runTest
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule
@@ -41,7 +41,7 @@ class CounterRepositoryImplTest {
     }
 
     @Test
-    fun `create counter`() = runBlockingTest {
+    fun `create counter`() = runTest {
         // given
         val counter = getFakeCounterA()
         val repository = CounterRepositoryImpl(counterDao)
@@ -55,7 +55,7 @@ class CounterRepositoryImplTest {
     }
 
     @Test
-    fun `create counter which is not modified`() = runBlockingTest {
+    fun `create counter which is not modified`() = runTest {
         // given
         val counterA = getFakeCounterA()
         val counterB = getFakeCounterB()
@@ -71,7 +71,7 @@ class CounterRepositoryImplTest {
     }
 
     @Test
-    fun `update counter`() = runBlockingTest {
+    fun `update counter`() = runTest {
         // given
         val counter = getFakeCounterA()
         val repository = CounterRepositoryImpl(counterDao)
@@ -85,7 +85,7 @@ class CounterRepositoryImplTest {
     }
 
     @Test
-    fun `update counter which is not modified`() = runBlockingTest {
+    fun `update counter which is not modified`() = runTest {
         // given
         val counterA = getFakeCounterA()
         val counterB = getFakeCounterB()
@@ -100,7 +100,7 @@ class CounterRepositoryImplTest {
     }
 
     @Test
-    fun `delete counter exact`() = runBlockingTest {
+    fun `delete counter exact`() = runTest {
         // given
         val counter = getFakeCounterA()
 
@@ -113,7 +113,7 @@ class CounterRepositoryImplTest {
     }
 
     @Test
-    fun `delete counter not different`() = runBlockingTest {
+    fun `delete counter not different`() = runTest {
         // given
         val counterA = getFakeCounterA()
         val counterB = getFakeCounterB()
@@ -128,7 +128,7 @@ class CounterRepositoryImplTest {
     }
 
     @Test
-    fun `get counters when not null return expected`() = runBlockingTest {
+    fun `get counters when not null return expected`() = runTest {
         // when
         `when`(counterDao.getCount()).thenReturn(10)
         val actual = repository.getCountersCount()
@@ -140,7 +140,7 @@ class CounterRepositoryImplTest {
     }
 
     @Test
-    fun `get counters when null return default value`() = runBlockingTest {
+    fun `get counters when null return default value`() = runTest {
         // when
         `when`(counterDao.getCount()).thenReturn(null)
         val actual = repository.getCountersCount()
@@ -151,7 +151,7 @@ class CounterRepositoryImplTest {
         assertThat(actual).isEqualTo(0)
     }
 
-    @Test(expected = IllegalArgumentException::class)
+    @Test(expected = NullPointerException::class)
     fun `find counters, when data source gives null, throws exception`() {
         // when
         `when`(counterDao.findList()).thenReturn(null)
@@ -209,7 +209,7 @@ class CounterRepositoryImplTest {
         verify(counterDao).findList()
     }
 
-    @Test(expected = IllegalArgumentException::class)
+    @Test(expected = NullPointerException::class)
     fun `find counter, when data source gives null, throw exception `() {
         // when
         `when`(counterDao.findBy(0)).thenReturn(null)

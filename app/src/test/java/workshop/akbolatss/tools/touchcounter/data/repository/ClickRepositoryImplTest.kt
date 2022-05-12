@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import com.google.common.truth.Truth.assertThat
 import com.jraska.livedata.test
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.test.runBlockingTest
+import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -36,7 +36,7 @@ class ClickRepositoryImplTest {
     }
 
     @Test
-    fun `create click `() = runBlockingTest {
+    fun `create click `() = runTest {
         // given
         val clickA = getFakeClickA()
         val clickB = getFakeClickB()
@@ -51,7 +51,7 @@ class ClickRepositoryImplTest {
     }
 
     @Test
-    fun `get clicks, when result is null, return default`() = runBlockingTest {
+    fun `get clicks, when result is null, return default`() = runTest {
         // when
         `when`(clickDao.getCount()).thenReturn(null)
         val actual = repository.getAllClicks()
@@ -63,7 +63,7 @@ class ClickRepositoryImplTest {
     }
 
     @Test
-    fun `get clicks, when result is NOT null, return expected`() = runBlockingTest {
+    fun `get clicks, when result is NOT null, return expected`() = runTest {
         // given
         val expected = 101
 
@@ -78,7 +78,7 @@ class ClickRepositoryImplTest {
     }
 
     @Test
-    fun `get longest, when result is null, return default`() = runBlockingTest {
+    fun `get longest, when result is null, return default`() = runTest {
         // when
         `when`(clickDao.getLongest()).thenReturn(null)
         val actual = repository.getLongestClick()
@@ -90,7 +90,7 @@ class ClickRepositoryImplTest {
     }
 
     @Test
-    fun `get longest, when result is NOT null, return expected`() = runBlockingTest {
+    fun `get longest, when result is NOT null, return expected`() = runTest {
         // given
         val expected = 101L
 
@@ -105,7 +105,7 @@ class ClickRepositoryImplTest {
     }
 
     @Test
-    fun `get most clicks in counter, when result is null, return default`() = runBlockingTest {
+    fun `get most clicks in counter, when result is null, return default`() = runTest {
         // when
         `when`(clickDao.getMostClicksInCounter()).thenReturn(null)
         val actual = repository.getMostClicksInCounter()
@@ -117,7 +117,7 @@ class ClickRepositoryImplTest {
     }
 
     @Test
-    fun `get most clicks in counter, when result is NOT null, return expected`() = runBlockingTest {
+    fun `get most clicks in counter, when result is NOT null, return expected`() = runTest {
         // given
         val expected = 101
 

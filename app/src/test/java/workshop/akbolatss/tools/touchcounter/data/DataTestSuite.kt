@@ -9,8 +9,8 @@ import workshop.akbolatss.tools.touchcounter.data.repository.CounterRepositoryIm
 
 @RunWith(Suite::class)
 @Suite.SuiteClasses(
-    ClickDaoTest::class,
-    CounterDaoTest::class,
+//    ClickDaoTest::class,
+//    CounterDaoTest::class,
     ClickRepositoryImplTest::class,
     CounterRepositoryImplTest::class
 )
