@@ -19,7 +19,7 @@ class UserPreferencesDelegate(
 
     override fun isUseSecondsEnabled(): Boolean = sharedPreferences.getBoolean(KEY_USE_SECONDS, false)
 
-    companion object{
+    companion object {
         private const val KEY_USE_SECONDS = "_useSeconds"
     }
 }
