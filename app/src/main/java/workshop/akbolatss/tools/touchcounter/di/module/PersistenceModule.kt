@@ -21,10 +21,10 @@ class PersistenceModule {
         const val DATABASE_NAME = "YourCounters.db"
 
         private val MIGRATION_1_2 = object : Migration(1, 2) {
-            override fun migrate(database: SupportSQLiteDatabase) {
+            override fun migrate(db: SupportSQLiteDatabase) {
                 val oldTable = "click"
                 val newTable = "${oldTable}_new"
-                database.execSQL(
+                db.execSQL(
                     "CREATE TABLE IF NOT EXISTS `$newTable` (" +
                         "`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, " +
                         "`createTime` INTEGER NOT NULL, " +
@@ -32,13 +32,13 @@ class PersistenceModule {
                         "`counterId` INTEGER NOT NULL, " +
                         "FOREIGN KEY(`counterId`) REFERENCES `counter`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )"
                 )
-                database.execSQL(
+                db.execSQL(
                     "INSERT INTO `$newTable` (id, createTime, heldMillis, counterId) " +
                         "SELECT id, createTime, heldMillis, counterId " +
                         "FROM $oldTable"
                 )
-                database.execSQL("DROP TABLE $oldTable")
-                database.execSQL("ALTER TABLE $newTable RENAME to $oldTable")
+                db.execSQL("DROP TABLE $oldTable")
+                db.execSQL("ALTER TABLE $newTable RENAME to $oldTable")
             }
         }
     }
