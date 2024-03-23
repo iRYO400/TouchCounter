@@ -35,6 +35,7 @@ This simple app uses a lot of popular libraries. Most of the libraries are in th
 -   [Dagger2](https://dagger.dev/) - dependency injector for replacement all FactoryFactory classes.
 -   [Material Design](https://material.io/) - material design components for Android.
 -   [Timber](https://github.com/JakeWharton/timber) - a logger with a small, extensible API which provides utility on top of Android's normal Log class.
+-   [and more...](./app/build.gradle)
 
 ### Test dependencies
 
@@ -44,7 +45,7 @@ This simple app uses a lot of popular libraries. Most of the libraries are in th
 -   [Mockk](https://github.com/mockk/mockk) - provides DSL to mock behavior. Built from zero to fit Kotlin language.
 -   [TestObserver](https://github.com/jraska/livedata-testing) - special observer which helps to easily test LiveData and make assertions on them.
 -   [AndroidX](https://github.com/android/android-test) - the androidx test library provides an extensive framework for testing Android apps.
--   [and more...](./dependencies/testing_dependencies.gradle)
+-   [and more...](./app/build.gradle)
 
 ### Plugins
 

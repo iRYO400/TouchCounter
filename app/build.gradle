@@ -92,6 +92,27 @@ dependencies {
     implementation libs.dagger.android
     implementation libs.dagger.android.support
     ksp libs.dagger.android.processor
-}
 
-apply from: '../dependencies/testing_dependencies.gradle'
+
+    androidTestImplementation libs.androidx.runner
+
+    androidTestImplementation libs.androidx.junit
+    testImplementation libs.androidx.junit
+
+    androidTestImplementation libs.mockito.kotlin
+    testImplementation libs.mockito.kotlin
+
+    androidTestImplementation libs.kotlinx.coroutines.test
+    testImplementation libs.kotlinx.coroutines.test
+
+    androidTestImplementation libs.livedata.testing.ktx
+    testImplementation libs.livedata.testing.ktx
+
+    androidTestImplementation libs.androidx.core.testing
+    testImplementation libs.androidx.core.testing
+
+    androidTestImplementation libs.google.truth
+    testImplementation libs.google.truth
+
+    testImplementation libs.robolectric
+}
