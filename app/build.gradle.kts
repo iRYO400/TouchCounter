@@ -16,7 +16,7 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
         ksp {
-            arg("room.schemaLocation", "${projectDir}/schemas")
+            arg("room.schemaLocation", "$projectDir/schemas")
             arg("room.incremental", "true")
             arg("room.expandProjection", "true")
         }
@@ -89,7 +89,6 @@ dependencies {
     implementation(libs.dagger.android)
     implementation(libs.dagger.android.support)
     ksp(libs.dagger.android.processor)
-
 
     androidTestImplementation(libs.androidx.runner)
 

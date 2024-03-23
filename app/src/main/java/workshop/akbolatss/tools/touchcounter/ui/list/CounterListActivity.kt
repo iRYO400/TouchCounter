@@ -63,7 +63,8 @@ class CounterListActivity : AppCompatActivity() {
         adapter = CounterListRVA(
             onCounterClickListener = {
                 openCounterActivity(it)
-            }, onCounterOptionsClickListener = {
+            },
+            onCounterOptionsClickListener = {
                 showPopupOptions(it)
             }
         )
@@ -102,10 +103,11 @@ class CounterListActivity : AppCompatActivity() {
 
     private fun setListeners() {
         binding.bottomBar.setNavigationOnClickListener {
-            if (!binding.drawerLayout.isDrawerOpen(binding.navigationView))
+            if (!binding.drawerLayout.isDrawerOpen(binding.navigationView)) {
                 binding.drawerLayout.openDrawer(binding.navigationView)
-            else
+            } else {
                 binding.drawerLayout.closeDrawer(binding.navigationView)
+            }
         }
         binding.navigationView.setNavigationItemSelectedListener { menuItem ->
             when (menuItem.itemId) {

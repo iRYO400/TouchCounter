@@ -7,12 +7,14 @@ import java.util.Date
 
 @Entity(
     tableName = "click",
-    foreignKeys = [ForeignKey(
-        entity = CounterDto::class,
-        parentColumns = ["id"],
-        childColumns = ["counterId"],
-        onDelete = ForeignKey.CASCADE
-    )]
+    foreignKeys = [
+        ForeignKey(
+            entity = CounterDto::class,
+            parentColumns = ["id"],
+            childColumns = ["counterId"],
+            onDelete = ForeignKey.CASCADE
+        )
+    ]
 )
 data class ClickDto(
     @PrimaryKey(autoGenerate = true)
