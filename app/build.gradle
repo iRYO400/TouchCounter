@@ -1,13 +1,14 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-kapt'
+apply plugin: 'com.google.devtools.ksp'
+apply plugin: "org.jlleitschuh.gradle.ktlint"
 
 android {
-    compileSdkVersion 32
+    compileSdk libs.versions.android.compileSdk.get().toInteger()
     defaultConfig {
         applicationId "workshop.akbolatss.tools.touchcounter"
-        minSdkVersion 22
-        targetSdkVersion 32
+        minSdkVersion libs.versions.android.minSdk.get().toInteger()
+        targetSdkVersion libs.versions.android.targetSdk.get().toInteger()
         versionCode 10
         versionName "1.2.3"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -32,7 +33,7 @@ android {
         }
     }
 
-    namespace 'workshop.akbolatss.tools.touchcounter'
+    namespace defaultConfig.applicationId
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_11
@@ -53,13 +54,44 @@ android {
         }
         execution 'ANDROIDX_TEST_ORCHESTRATOR'
     }
+    buildFeatures {
+        buildConfig true
+    }
 }
 
-tasks.withType(Test) {
+tasks.withType(Test).configureEach {
     filter {
         includeTestsMatching 'workshop.akbolatss.tools.touchcounter.AllTestSuites'
     }
 }
 
-apply from: '../dependencies/dependencies.gradle'
+dependencies {
+    implementation libs.kotlin.coroutines
+    implementation libs.kotlin.coroutines.android
+
+    implementation libs.material
+
+    implementation libs.androidx.core.ktx
+    implementation libs.androidx.appcompat
+
+    implementation libs.androidx.recyclerview
+    implementation libs.androidx.constraintlayout
+
+    implementation libs.timber
+
+    implementation libs.androidx.lifecycle.livedata
+    implementation libs.androidx.lifecycle.viewmodel
+    implementation libs.androidx.lifecycle.runtime
+
+    implementation libs.androidx.room.runtime
+    implementation libs.androidx.room
+    ksp libs.androidx.room.compiler
+
+    implementation libs.dagger
+    ksp libs.dagger.compiler
+    implementation libs.dagger.android
+    implementation libs.dagger.android.support
+    ksp libs.dagger.android.processor
+}
+
 apply from: '../dependencies/testing_dependencies.gradle'

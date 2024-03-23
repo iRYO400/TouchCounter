@@ -5,7 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
-import androidx.room.OnConflictStrategy.REPLACE
+import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
 import workshop.akbolatss.tools.touchcounter.data.dto.CounterDto
@@ -13,7 +13,7 @@ import workshop.akbolatss.tools.touchcounter.data.dto.CounterDto
 @Dao
 interface CounterDao {
 
-    @Insert(onConflict = REPLACE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun create(counterObject: CounterDto): Long
 
     @Update

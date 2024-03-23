@@ -2,7 +2,6 @@ package workshop.akbolatss.tools.touchcounter.ui.list
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
@@ -22,10 +21,7 @@ constructor(
 
     val statsLiveData = MutableLiveData<Stats>()
 
-    val counterList: LiveData<List<CounterDto>> =
-        Transformations.map(counterRepository.findCounters()) {
-            it
-        }
+    val counterList: LiveData<List<CounterDto>> = counterRepository.findCounters()
 
     fun loadStats() {
         viewModelScope.launch {
@@ -58,8 +54,7 @@ constructor(
     }
 
     fun deleteCounter(counter: CounterDto) {
-        viewModelScope.launch {
-            counterRepository.deleteCounter(counter)
+        viewModelScope.launch { counterRepository.deleteCounter(counter)
         }
     }
 

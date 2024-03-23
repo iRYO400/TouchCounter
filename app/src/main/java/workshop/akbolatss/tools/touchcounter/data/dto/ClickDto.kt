@@ -2,7 +2,6 @@ package workshop.akbolatss.tools.touchcounter.data.dto
 
 import androidx.room.Entity
 import androidx.room.ForeignKey
-import androidx.room.ForeignKey.CASCADE
 import androidx.room.PrimaryKey
 import java.util.Date
 
@@ -12,7 +11,7 @@ import java.util.Date
         entity = CounterDto::class,
         parentColumns = ["id"],
         childColumns = ["counterId"],
-        onDelete = CASCADE
+        onDelete = ForeignKey.CASCADE
     )]
 )
 data class ClickDto(

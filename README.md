@@ -35,7 +35,6 @@ This simple app uses a lot of popular libraries. Most of the libraries are in th
 -   [Dagger2](https://dagger.dev/) - dependency injector for replacement all FactoryFactory classes.
 -   [Material Design](https://material.io/) - material design components for Android.
 -   [Timber](https://github.com/JakeWharton/timber) - a logger with a small, extensible API which provides utility on top of Android's normal Log class.
--   [and more...](./dependencies/dependencies.gradle)
 
 ### Test dependencies
 
