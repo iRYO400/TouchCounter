@@ -50,6 +50,7 @@ android {
 
     viewBinding.isEnabled = true
 
+    @Suppress("UnstableApiUsage")
     testOptions {
         unitTests.isIncludeAndroidResources = true
         execution = ("ANDROIDX_TEST_ORCHESTRATOR")
@@ -59,11 +60,11 @@ android {
     }
 }
 
-//tasks.withType(Test).configureEach {
-//    filter {
-//        includeTestsMatching = "workshop.akbolatss.tools.touchcounter.AllTestSuites"
-//    }
-//}
+tasks.withType(Test::class.java).configureEach {
+    filter {
+        includeTestsMatching("workshop.akbolatss.tools.touchcounter.AllTestSuites")
+    }
+}
 
 dependencies {
     implementation(libs.kotlin.coroutines)

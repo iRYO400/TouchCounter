@@ -7,7 +7,6 @@ import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.google.common.truth.Truth.assertThat
 import com.jraska.livedata.test
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.After
 import org.junit.Before
@@ -19,9 +18,8 @@ import workshop.akbolatss.tools.touchcounter.data.dto.CounterDto
 import workshop.akbolatss.tools.touchcounter.room.AppDataBase
 import java.util.Date
 
-@OptIn(ExperimentalCoroutinesApi::class)
 @RunWith(AndroidJUnit4::class)
-@Config(sdk = [Build.VERSION_CODES.O_MR1], manifest = Config.NONE)
+@Config(sdk = [Build.VERSION_CODES.TIRAMISU], manifest = Config.NONE)
 class CounterDaoTest {
 
     @get:Rule

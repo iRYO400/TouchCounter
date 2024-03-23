@@ -13,9 +13,9 @@ import com.nhaarman.mockitokotlin2.verifyZeroInteractions
 import com.nhaarman.mockitokotlin2.whenever
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.test.TestCoroutineDispatcher
+import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.resetMain
-import kotlinx.coroutines.test.runBlockingTest
+import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
 import org.junit.After
 import org.junit.Before
@@ -27,7 +27,7 @@ import workshop.akbolatss.tools.touchcounter.domain.repository.CounterRepository
 import workshop.akbolatss.tools.touchcounter.utils.exts.init
 import java.util.Date
 
-@ExperimentalCoroutinesApi
+@OptIn(ExperimentalCoroutinesApi::class)
 class CounterViewModelTest {
 
     @get:Rule
@@ -36,7 +36,7 @@ class CounterViewModelTest {
     private val counterRepository: CounterRepository = mock()
     private val clickRepository: ClickRepository = mock()
 
-    private val testDispatcher = TestCoroutineDispatcher()
+    private val testDispatcher = UnconfinedTestDispatcher()
 
     private lateinit var viewModel: ClickListViewModel
 
@@ -48,7 +48,6 @@ class CounterViewModelTest {
 
     @After
     fun tearDown() {
-        testDispatcher.cleanupTestCoroutines()
         Dispatchers.resetMain()
     }
 
@@ -120,33 +119,8 @@ class CounterViewModelTest {
             }
     }
 
-//    @Test TODO don't know
-//    fun executeTask() {
-//        // given
-//        val testObserver = viewModel.heldMillis.test()
-//            .assertNoValue()
-//        assertThat(viewModel.timerTask).isNull()
-//        assertThat(viewModel.timer).isNotNull()
-//
-//        // when
-//        viewModel.executeTask()
-//        testObserver.assertHasValue()
-//            .assertHistorySize(1)
-//
-//        assertThat(viewModel.timerTask).isNotNull()
-//        assertThat(viewModel.timer).isNotNull()
-//
-//        viewModel.cancelTask()
-//        assertThat(viewModel.timerTask).isNull()
-//        assertThat(viewModel.timer).isNotNull()
-//    }
-
-//    @Test
-//    fun cancelTask() {
-//    }
-
     @Test
-    fun `create click, when force, then nothing`() = runBlockingTest {
+    fun `create click, when force, then nothing`() = runTest {
         // given
         val testObserver = viewModel.counterId.test()
             .assertNoValue()
@@ -161,7 +135,7 @@ class CounterViewModelTest {
     }
 
     @Test
-    fun `create click, when not force and counterId is null, then nothing`() = runBlockingTest {
+    fun `create click, when not force and counterId is null, then nothing`() = runTest {
         // given
         val testObserver = viewModel.counterId.test()
             .assertNoValue()
@@ -177,7 +151,7 @@ class CounterViewModelTest {
     }
 
     @Test
-    fun `create click, when not force and has counterId, then expected`() = runBlockingTest {
+    fun `create click, when not force and has counterId, then expected`() = runTest {
         // given
         val testObserver = viewModel.counterId.test()
             .assertNoValue()
@@ -194,7 +168,7 @@ class CounterViewModelTest {
     }
 
     @Test
-    fun `update counter, when counter is null, then nothing`() = runBlockingTest {
+    fun `update counter, when counter is null, then nothing`() = runTest {
         // given
         val testObserver = viewModel.counter.test()
             .assertNoValue()
@@ -209,7 +183,7 @@ class CounterViewModelTest {
     }
 
     @Test
-    fun `update counter, when counter is Not null, then expected`() = runBlockingTest {
+    fun `update counter, when counter is Not null, then expected`() = runTest {
         // given
         val testObserverId = viewModel.counterId.test()
             .assertNoValue()

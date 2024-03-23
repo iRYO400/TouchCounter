@@ -11,21 +11,22 @@ import com.nhaarman.mockitokotlin2.verifyZeroInteractions
 import com.nhaarman.mockitokotlin2.whenever
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.test.TestCoroutineDispatcher
+import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.resetMain
-import kotlinx.coroutines.test.runBlockingTest
+import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import org.mockito.Mockito.`when`
 import workshop.akbolatss.tools.touchcounter.data.dto.CounterDto
 import workshop.akbolatss.tools.touchcounter.domain.repository.ClickRepository
 import workshop.akbolatss.tools.touchcounter.domain.repository.CounterRepository
 import workshop.akbolatss.tools.touchcounter.utils.exts.init
 import java.util.Date
 
-@ExperimentalCoroutinesApi
+@OptIn(ExperimentalCoroutinesApi::class)
 class NavigationViewModelTest {
 
     @get:Rule
@@ -34,7 +35,7 @@ class NavigationViewModelTest {
     private val counterRepository: CounterRepository = mock()
     private val clickRepository: ClickRepository = mock()
 
-    private val testDispatcher = TestCoroutineDispatcher()
+    private val testDispatcher = UnconfinedTestDispatcher()
 
     @Before
     fun setUp() {
@@ -43,12 +44,7 @@ class NavigationViewModelTest {
 
     @After
     fun tearDown() {
-        testDispatcher.cleanupTestCoroutines()
         Dispatchers.resetMain()
-    }
-
-    @Test
-    fun getStatsLiveData() {
     }
 
     @Test
@@ -110,25 +106,21 @@ class NavigationViewModelTest {
         verifyZeroInteractions(clickRepository)
     }
 
-//    @Test(expected = NullPointerException::class) TODO wait for https://github.com/Kotlin/kotlinx.coroutines/issues/1205
-//    fun `load stats, when result is null, throw exception`() = runBlockingTest {
-//        // given
-//        `when`(counterRepository.getCountersCount()).thenReturn(null)
-//        `when`(clickRepository.getAllClicks()).thenReturn(null)
-//        `when`(clickRepository.getLongestClick()).thenReturn(null)
-//        `when`(clickRepository.getMostClicksInCounter()).thenReturn(null)
-//
-//        // when
-//        viewModel.loadStats()
-//
-//        // then
-// //        viewModel.statsLiveData.test()
-// //            .assertNoValue()
-// //            .assertHistorySize(0)
-//    }
+    @Test(expected = NullPointerException::class)
+    fun `load stats, when result is null, throw exception`() = runTest {
+        // given
+        `when`(counterRepository.getCountersCount()).thenReturn(null)
+        `when`(clickRepository.getAllClicks()).thenReturn(null)
+        `when`(clickRepository.getLongestClick()).thenReturn(null)
+        `when`(clickRepository.getMostClicksInCounter()).thenReturn(null)
+        val viewModel = CounterListViewModel(counterRepository, clickRepository)
+
+        // when
+        viewModel.loadStats()
+    }
 
     @Test
-    fun `load stats, when result is expected, then return expected`() = runBlockingTest {
+    fun `load stats, when result is expected, then return expected`() = runTest {
         // given
         val expectedCountersCount = 10
         val expectedClicks = 20
@@ -160,7 +152,7 @@ class NavigationViewModelTest {
     }
 
     @Test
-    fun `create counter`() = runBlockingTest {
+    fun `create counter`() = runTest {
         // given
         val counterName = "Test"
         val counter = CounterDto(createTime = Date(), editTime = Date(), name = counterName)
@@ -177,7 +169,7 @@ class NavigationViewModelTest {
     }
 
     @Test
-    fun deleteCounter() = runBlockingTest {
+    fun deleteCounter() = runTest {
         // given
         val counter = getFakeCounter()
         whenever(counterRepository.deleteCounter(counter)).thenReturn(Unit)
@@ -191,7 +183,7 @@ class NavigationViewModelTest {
     }
 
     @Test
-    fun `update counter`() = runBlockingTest {
+    fun `update counter`() = runTest {
         // given
         val counter = getFakeCounter()
         whenever(counterRepository.updateCounter(any())).thenReturn(Unit)

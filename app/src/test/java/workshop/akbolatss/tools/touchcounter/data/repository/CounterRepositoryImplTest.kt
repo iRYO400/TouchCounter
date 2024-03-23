@@ -4,7 +4,6 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.MutableLiveData
 import com.google.common.truth.Truth.assertThat
 import com.jraska.livedata.test
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.After
 import org.junit.Before
@@ -21,7 +20,6 @@ import workshop.akbolatss.tools.touchcounter.domain.repository.CounterRepository
 import workshop.akbolatss.tools.touchcounter.utils.exts.init
 import java.util.Date
 
-@ExperimentalCoroutinesApi
 class CounterRepositoryImplTest {
 
     @get:Rule
