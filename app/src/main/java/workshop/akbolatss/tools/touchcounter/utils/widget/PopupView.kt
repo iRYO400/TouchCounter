@@ -1,5 +1,6 @@
 package workshop.akbolatss.tools.touchcounter.utils.widget
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
@@ -25,6 +26,7 @@ class PopupView(anchor: View) {
         popupWindow.showAsDropDown(anchor)
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     private fun setDismissListener() {
         popupWindow.setTouchInterceptor { _, event ->
             val dismissPopup = event.action == MotionEvent.ACTION_OUTSIDE

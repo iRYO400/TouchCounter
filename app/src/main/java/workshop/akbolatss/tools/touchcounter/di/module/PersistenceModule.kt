@@ -8,10 +8,10 @@ import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 import dagger.Module
 import dagger.Provides
+import javax.inject.Singleton
 import workshop.akbolatss.tools.touchcounter.data.dao.ClickDao
 import workshop.akbolatss.tools.touchcounter.data.dao.CounterDao
 import workshop.akbolatss.tools.touchcounter.room.AppDataBase
-import javax.inject.Singleton
 
 @Module
 class PersistenceModule {

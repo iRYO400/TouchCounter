@@ -6,9 +6,9 @@ import android.app.Application
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasAndroidInjector
+import javax.inject.Inject
 import workshop.akbolatss.tools.touchcounter.di.DaggerAppComponent
 import workshop.akbolatss.tools.touchcounter.utils.logging.TimberLogImplementation
-import javax.inject.Inject
 
 class ApplicationMain : Application(), HasAndroidInjector {
 

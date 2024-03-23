@@ -9,6 +9,7 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.android.AndroidInjection
+import javax.inject.Inject
 import workshop.akbolatss.tools.touchcounter.R
 import workshop.akbolatss.tools.touchcounter.data.dto.CounterDto
 import workshop.akbolatss.tools.touchcounter.databinding.ActivityNavigationBinding
@@ -20,7 +21,6 @@ import workshop.akbolatss.tools.touchcounter.utils.INTENT_COUNTER_ID
 import workshop.akbolatss.tools.touchcounter.utils.SUPPORT_EMAIL
 import workshop.akbolatss.tools.touchcounter.utils.android.DarkThemeDelegate
 import workshop.akbolatss.tools.touchcounter.utils.android.IUserPreferencesDelegate
-import javax.inject.Inject
 
 class CounterListActivity : AppCompatActivity() {
 

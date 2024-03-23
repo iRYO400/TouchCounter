@@ -2,8 +2,8 @@ package workshop.akbolatss.tools.touchcounter.ui.counter
 
 import android.os.Handler
 import android.widget.TextView
-import workshop.akbolatss.tools.touchcounter.utils.exts.formatAsRelativeInSeconds
 import java.util.Date
+import workshop.akbolatss.tools.touchcounter.utils.exts.formatAsRelativeInSeconds
 
 class TextViewAutoUpdateRunnable(
     private val handler: Handler,

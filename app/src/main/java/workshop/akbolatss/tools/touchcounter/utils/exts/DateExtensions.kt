@@ -1,10 +1,10 @@
 package workshop.akbolatss.tools.touchcounter.utils.exts
 
 import android.text.format.DateUtils
-import timber.log.Timber
 import java.text.ParseException
 import java.util.Calendar
 import java.util.Date
+import timber.log.Timber
 
 fun Date.formatAsRelativeInMinutes(): String {
     return try {

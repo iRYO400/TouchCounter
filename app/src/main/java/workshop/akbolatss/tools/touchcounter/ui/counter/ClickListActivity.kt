@@ -14,6 +14,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.ItemTouchHelper
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.android.AndroidInjection
+import java.util.concurrent.TimeUnit
+import javax.inject.Inject
 import workshop.akbolatss.tools.touchcounter.R
 import workshop.akbolatss.tools.touchcounter.databinding.ActivityCounterBinding
 import workshop.akbolatss.tools.touchcounter.ui.ViewModelFactory
@@ -22,8 +24,6 @@ import workshop.akbolatss.tools.touchcounter.utils.android.DarkThemeDelegate
 import workshop.akbolatss.tools.touchcounter.utils.android.IUserPreferencesDelegate
 import workshop.akbolatss.tools.touchcounter.utils.exts.toast
 import workshop.akbolatss.tools.touchcounter.utils.widget.PopupView
-import java.util.concurrent.TimeUnit
-import javax.inject.Inject
 
 class ClickListActivity : AppCompatActivity() {
 

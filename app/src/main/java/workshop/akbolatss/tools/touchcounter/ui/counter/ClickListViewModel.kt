@@ -1,15 +1,21 @@
 package workshop.akbolatss.tools.touchcounter.ui.counter
 
-import androidx.lifecycle.*
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.switchMap
+import androidx.lifecycle.viewModelScope
+import javax.inject.Inject
+import kotlin.concurrent.scheduleAtFixedRate
 import kotlinx.coroutines.launch
 import workshop.akbolatss.tools.touchcounter.data.dto.ClickDto
 import workshop.akbolatss.tools.touchcounter.data.dto.CounterDto
 import workshop.akbolatss.tools.touchcounter.domain.repository.ClickRepository
 import workshop.akbolatss.tools.touchcounter.domain.repository.CounterRepository
 import workshop.akbolatss.tools.touchcounter.utils.android.AbsentLiveData
-import java.util.*
-import javax.inject.Inject
-import kotlin.concurrent.scheduleAtFixedRate
+import java.util.Date
+import java.util.Timer
+import java.util.TimerTask
 
 class ClickListViewModel
 @Inject

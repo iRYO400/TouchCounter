@@ -3,10 +3,10 @@ package workshop.akbolatss.tools.touchcounter.di.module
 import android.content.SharedPreferences
 import dagger.Module
 import dagger.Provides
+import javax.inject.Singleton
 import workshop.akbolatss.tools.touchcounter.utils.android.DarkThemeDelegate
 import workshop.akbolatss.tools.touchcounter.utils.android.IUserPreferencesDelegate
 import workshop.akbolatss.tools.touchcounter.utils.android.UserPreferencesDelegate
-import javax.inject.Singleton
 
 @Module
 class PreferenceModule {
