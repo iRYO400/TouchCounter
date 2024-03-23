@@ -2,7 +2,10 @@ package workshop.akbolatss.tools.touchcounter.data.dao
 
 import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.LiveData
-import androidx.room.*
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.Query
 import workshop.akbolatss.tools.touchcounter.data.dto.ClickDto
 
 @Dao
