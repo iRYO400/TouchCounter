@@ -2,14 +2,17 @@ package workshop.akbolatss.tools.touchcounter.ui.list
 
 import android.content.Intent
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updatePadding
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.android.AndroidInjection
-import javax.inject.Inject
 import workshop.akbolatss.tools.touchcounter.R
 import workshop.akbolatss.tools.touchcounter.data.dto.CounterDto
 import workshop.akbolatss.tools.touchcounter.databinding.ActivityNavigationBinding
@@ -21,6 +24,8 @@ import workshop.akbolatss.tools.touchcounter.utils.INTENT_COUNTER_ID
 import workshop.akbolatss.tools.touchcounter.utils.SUPPORT_EMAIL
 import workshop.akbolatss.tools.touchcounter.utils.android.DarkThemeDelegate
 import workshop.akbolatss.tools.touchcounter.utils.android.IUserPreferencesDelegate
+import javax.inject.Inject
+
 
 class CounterListActivity : AppCompatActivity() {
 
@@ -49,10 +54,29 @@ class CounterListActivity : AppCompatActivity() {
         binding = ActivityNavigationBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        setupWindowInsets()
         initView()
         initRecyclerView()
         observeViewModel()
         setListeners()
+    }
+
+    private fun setupWindowInsets() {
+        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { view, insets ->
+            val systemBars =
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) { // API 34+
+                    insets.getInsets(WindowInsetsCompat.Type.systemBars())
+                } else {
+                    insets.getInsets(WindowInsetsCompat.Type.systemBars() or WindowInsetsCompat.Type.displayCutout())
+                }
+
+            with(binding) {
+                recyclerView.updatePadding(top = systemBars.top, bottom = systemBars.bottom)
+                navigationView.updatePadding(top = systemBars.top)
+            }
+
+            insets
+        }
     }
 
     private fun initView() {

@@ -3,6 +3,7 @@ package workshop.akbolatss.tools.touchcounter.ui.counter
 import android.animation.ArgbEvaluator
 import android.animation.ObjectAnimator
 import android.annotation.SuppressLint
+import android.os.Build
 import android.os.Bundle
 import android.util.Property
 import android.view.MotionEvent
@@ -10,12 +11,13 @@ import android.view.animation.DecelerateInterpolator
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updatePadding
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.ItemTouchHelper
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.android.AndroidInjection
-import java.util.concurrent.TimeUnit
-import javax.inject.Inject
 import workshop.akbolatss.tools.touchcounter.R
 import workshop.akbolatss.tools.touchcounter.databinding.ActivityCounterBinding
 import workshop.akbolatss.tools.touchcounter.ui.ViewModelFactory
@@ -24,6 +26,8 @@ import workshop.akbolatss.tools.touchcounter.utils.android.DarkThemeDelegate
 import workshop.akbolatss.tools.touchcounter.utils.android.IUserPreferencesDelegate
 import workshop.akbolatss.tools.touchcounter.utils.exts.toast
 import workshop.akbolatss.tools.touchcounter.utils.widget.PopupView
+import java.util.concurrent.TimeUnit
+import javax.inject.Inject
 
 class ClickListActivity : AppCompatActivity() {
 
@@ -53,6 +57,7 @@ class ClickListActivity : AppCompatActivity() {
 
         initViewModel()
 
+        setupWindowInsets()
         initView()
         initRecyclerView()
         initAnimator()
@@ -64,6 +69,20 @@ class ClickListActivity : AppCompatActivity() {
     private fun initViewModel() {
         val counterId = intent.getLongExtra(INTENT_COUNTER_ID, -1)
         viewModel.setCounterId(counterId)
+    }
+
+    private fun setupWindowInsets() {
+        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { view, insets ->
+            val systemBars =
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) { // API 34+
+                    insets.getInsets(WindowInsetsCompat.Type.systemBars())
+                } else {
+                    insets.getInsets(WindowInsetsCompat.Type.systemBars() or WindowInsetsCompat.Type.displayCutout())
+                }
+
+            view.updatePadding(top = systemBars.top, bottom = systemBars.bottom)
+            insets
+        }
     }
 
     private fun initView() {
@@ -85,12 +104,18 @@ class ClickListActivity : AppCompatActivity() {
     private fun initAnimator() {
         animator = ObjectAnimator.ofInt(
             binding.tvTiming, property,
-            ContextCompat.getColor(this, R.color.md_blue_grey_500),
-            ContextCompat.getColor(this, R.color.md_blue_500),
-            ContextCompat.getColor(this, R.color.md_red_500),
+            ContextCompat.getColor(this, R.color.md_blue_900),
+            ContextCompat.getColor(this, R.color.md_blue_700),
+            ContextCompat.getColor(this, R.color.md_light_blue_500),
+            ContextCompat.getColor(this, R.color.md_cyan_500),
+            ContextCompat.getColor(this, R.color.md_teal_500),
             ContextCompat.getColor(this, R.color.md_green_500),
-            ContextCompat.getColor(this, R.color.md_grey_500),
-            ContextCompat.getColor(this, R.color.blue)
+            ContextCompat.getColor(this, R.color.md_light_green_500),
+            ContextCompat.getColor(this, R.color.md_lime_500),
+            ContextCompat.getColor(this, R.color.md_yellow_500),
+            ContextCompat.getColor(this, R.color.md_amber_500),
+            ContextCompat.getColor(this, R.color.md_orange_500),
+            ContextCompat.getColor(this, R.color.md_red_500)
         ).apply {
             duration = 20000L
             setEvaluator(ArgbEvaluator())
@@ -146,10 +171,12 @@ class ClickListActivity : AppCompatActivity() {
                     btnHold()
                     true
                 }
+
                 MotionEvent.ACTION_UP -> {
                     btnRelease()
                     true
                 }
+
                 else -> false
             }
         }
