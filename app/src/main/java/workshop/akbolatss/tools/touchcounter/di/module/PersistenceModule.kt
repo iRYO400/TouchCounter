@@ -51,7 +51,7 @@ class PersistenceModule {
             AppDataBase::class.java,
             DATABASE_NAME
         )
-            .fallbackToDestructiveMigration()
+            .fallbackToDestructiveMigration(dropAllTables = true)
             .addMigrations(MIGRATION_1_2)
             .build()
 
