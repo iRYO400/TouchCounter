@@ -111,6 +111,7 @@ class CounterListActivity : AppCompatActivity() {
             navHeaderBinding.tvCountersCount.text = stats.countersCount.toString()
             navHeaderBinding.tvClicksCount.text = stats.clicksCount.toString()
             navHeaderBinding.tvLongClick.text = stats.longClick.toString()
+            navHeaderBinding.tvShortClick.text = stats.shortClick.toString()
             navHeaderBinding.tvMaxClickInCounter.text = stats.mostClicks.toString()
         }
         darkThemeDelegate.nightModeLive.observe(this) { nightMode ->

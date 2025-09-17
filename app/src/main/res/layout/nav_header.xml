@@ -89,10 +89,21 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:layout_marginTop="8dp"
-        android:text="@string/stats_most_clicks"
+        android:text="@string/stats_short_click"
         android:textColor="@color/material_on_surface_emphasis_medium"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView3" />
+
+    <TextView
+        android:id="@+id/textView5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/stats_most_clicks"
+        android:textColor="@color/material_on_surface_emphasis_medium"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView4" />
 
     <TextView
         android:id="@+id/tv_counters_count"
@@ -140,7 +151,7 @@
         tools:text="10225 ms" />
 
     <TextView
-        android:id="@+id/tv_max_click_in_counter"
+        android:id="@+id/tv_short_click"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -152,6 +163,21 @@
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toEndOf="@+id/textView4"
         app:layout_constraintTop_toBottomOf="@+id/tv_long_click"
+        tools:text="5 ms" />
+
+    <TextView
+        android:id="@+id/tv_max_click_in_counter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:gravity="end"
+        android:textColor="@color/material_on_surface_emphasis_high_type"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/textView5"
+        app:layout_constraintTop_toBottomOf="@+id/tv_short_click"
         tools:text="350" />
 
     <androidx.constraintlayout.widget.Group

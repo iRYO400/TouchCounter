@@ -24,6 +24,9 @@ constructor(private val clickDao: ClickDao) : ClickRepository {
     override suspend fun getLongestClick(): Long =
         clickDao.getLongest() ?: 0
 
+    override suspend fun getShortestClick(): Long =
+        clickDao.getShortest() ?: 0
+
     override suspend fun getMostClicksInCounter(): Int =
         clickDao.getMostClicksInCounter() ?: 0
 

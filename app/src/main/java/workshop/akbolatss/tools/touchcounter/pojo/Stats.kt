@@ -4,5 +4,6 @@ data class Stats(
     val countersCount: Int,
     val clicksCount: Int,
     val longClick: Long,
+    val shortClick: Long,
     val mostClicks: Int
 )

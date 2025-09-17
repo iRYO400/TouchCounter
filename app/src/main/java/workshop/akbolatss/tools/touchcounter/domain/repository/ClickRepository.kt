@@ -10,6 +10,7 @@ interface ClickRepository {
 
     suspend fun getAllClicks(): Int
     suspend fun getLongestClick(): Long
+    suspend fun getShortestClick(): Long
 
     suspend fun getMostClicksInCounter(): Int
 

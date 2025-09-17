@@ -28,12 +28,14 @@ constructor(
             val countersCount = counterRepository.getCountersCount()
             val clicksCount = clickRepository.getAllClicks()
             val longestClick = clickRepository.getLongestClick()
+            val shortClick = clickRepository.getShortestClick()
             val mostClicksInCounter = clickRepository.getMostClicksInCounter()
 
             val stats = Stats(
                 countersCount = countersCount,
                 clicksCount = clicksCount,
                 longClick = longestClick,
+                shortClick = shortClick,
                 mostClicks = mostClicksInCounter
             )
             statsLiveData.value = stats

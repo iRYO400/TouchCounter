@@ -26,6 +26,9 @@ interface ClickDao {
     @Query("SELECT MAX(heldMillis) FROM click")
     suspend fun getLongest(): Long?
 
+    @Query("SELECT MIN(heldMillis) FROM click")
+    suspend fun getShortest(): Long?
+
     @Query("SELECT COUNT(counterId) AS c FROM click GROUP BY counterId ORDER BY c DESC LIMIT 1")
     suspend fun getMostClicksInCounter(): Int?
 

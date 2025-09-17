@@ -22,6 +22,7 @@
     <string name="stats_counters_count">Счетчиков:</string>
     <string name="stats_clicks_count">Кликов:</string>
     <string name="stats_long_click">Самый долгий клик(мс):</string>
+    <string name="stats_short_click">Самый короткий клик(мс):</string>
     <string name="stats_most_clicks">Макс. кликов:</string>
 
     <string name="stats_title">Статистика</string>

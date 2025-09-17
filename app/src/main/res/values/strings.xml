@@ -17,6 +17,7 @@
     <string name="stats_counters_count">Counters:</string>
     <string name="stats_clicks_count">Clicks:</string>
     <string name="stats_long_click">Longest click (ms):</string>
+    <string name="stats_short_click">Shortest click (ms):</string>
     <string name="stats_most_clicks">Max clicks:</string>
 
     <string name="stats_title">Statistics</string>
