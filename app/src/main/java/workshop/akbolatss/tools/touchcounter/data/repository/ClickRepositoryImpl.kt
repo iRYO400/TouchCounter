@@ -1,10 +1,10 @@
 package workshop.akbolatss.tools.touchcounter.data.repository
 
 import androidx.lifecycle.LiveData
-import javax.inject.Inject
 import workshop.akbolatss.tools.touchcounter.data.dao.ClickDao
 import workshop.akbolatss.tools.touchcounter.data.dto.ClickDto
 import workshop.akbolatss.tools.touchcounter.domain.repository.ClickRepository
+import javax.inject.Inject
 
 class ClickRepositoryImpl
 @Inject

@@ -21,6 +21,7 @@ import dagger.android.AndroidInjection
 import workshop.akbolatss.tools.touchcounter.R
 import workshop.akbolatss.tools.touchcounter.databinding.ActivityCounterBinding
 import workshop.akbolatss.tools.touchcounter.ui.ViewModelFactory
+import workshop.akbolatss.tools.touchcounter.utils.INTENT_CLICK_COUNT
 import workshop.akbolatss.tools.touchcounter.utils.INTENT_COUNTER_ID
 import workshop.akbolatss.tools.touchcounter.utils.android.DarkThemeDelegate
 import workshop.akbolatss.tools.touchcounter.utils.android.IUserPreferencesDelegate
@@ -75,7 +76,8 @@ class ClickListActivity : AppCompatActivity() {
 
     private fun initViewModel() {
         val counterId = intent.getLongExtra(INTENT_COUNTER_ID, -1)
-        viewModel.setCounterId(counterId)
+        val initialClickCount = intent.getIntExtra(INTENT_CLICK_COUNT, -1)
+        viewModel.initArguments(counterId, initialClickCount)
     }
 
     private fun setupWindowInsets() {

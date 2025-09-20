@@ -22,6 +22,7 @@ import workshop.akbolatss.tools.touchcounter.databinding.DialogOptionsBinding
 import workshop.akbolatss.tools.touchcounter.databinding.NavHeaderBinding
 import workshop.akbolatss.tools.touchcounter.ui.ViewModelFactory
 import workshop.akbolatss.tools.touchcounter.ui.counter.ClickListActivity
+import workshop.akbolatss.tools.touchcounter.utils.INTENT_CLICK_COUNT
 import workshop.akbolatss.tools.touchcounter.utils.INTENT_COUNTER_ID
 import workshop.akbolatss.tools.touchcounter.utils.SUPPORT_EMAIL
 import workshop.akbolatss.tools.touchcounter.utils.android.DarkThemeDelegate
@@ -158,6 +159,7 @@ class CounterListActivity : AppCompatActivity() {
     private fun openCounterActivity(counter: CounterDto) {
         val intent = Intent(this, ClickListActivity::class.java)
         intent.putExtra(INTENT_COUNTER_ID, counter.id)
+        intent.putExtra(INTENT_CLICK_COUNT, counter.itemCount)
         startActivity(intent)
     }
 

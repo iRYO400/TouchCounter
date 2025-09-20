@@ -21,5 +21,5 @@ data class ClickDto(
     val id: Long = 0,
     val createTime: Date,
     val heldMillis: Long,
-    val counterId: Long
+    val counterId: Long,
 )

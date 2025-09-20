@@ -305,7 +305,8 @@ class ClickDaoTest {
         id = id,
         createTime = createTime,
         editTime = editTime,
-        name = name
+        name = name,
+        itemCount = 0,
     )
 
     private fun createClickDto(
@@ -318,6 +319,6 @@ class ClickDaoTest {
             id = id,
             createTime = createTime,
             heldMillis = heldMillis,
-            counterId = counterId
+            counterId = counterId,
         )
 }

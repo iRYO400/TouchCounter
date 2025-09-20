@@ -46,7 +46,6 @@ android {
 
     viewBinding.isEnabled = true
 
-    @Suppress("UnstableApiUsage")
     testOptions {
         unitTests.isIncludeAndroidResources = true
         execution = ("ANDROIDX_TEST_ORCHESTRATOR")
@@ -57,7 +56,13 @@ android {
 
     ktlint {
         android = true
-        disabledRules = listOf("argument-list-wrapping", "import-ordering", "max-line-length", "wrapping", "multiline-if-else")
+        disabledRules = listOf(
+            "argument-list-wrapping",
+            "import-ordering",
+            "max-line-length",
+            "wrapping",
+            "multiline-if-else",
+        )
     }
 }
 

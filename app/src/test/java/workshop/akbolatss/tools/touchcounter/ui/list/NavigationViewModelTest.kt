@@ -125,10 +125,12 @@ class NavigationViewModelTest {
         val expectedCountersCount = 10
         val expectedClicks = 20
         val expectedLongestClick = 2500L
+        val expectedShortestClick = 25L
         val expectedMostClicks = 35
         whenever(counterRepository.getCountersCount()).thenReturn(expectedCountersCount)
         whenever(clickRepository.getAllClicks()).thenReturn(expectedClicks)
         whenever(clickRepository.getLongestClick()).thenReturn(expectedLongestClick)
+        whenever(clickRepository.getShortestClick()).thenReturn(expectedShortestClick)
         whenever(clickRepository.getMostClicksInCounter()).thenReturn(expectedMostClicks)
         val viewModel = CounterListViewModel(counterRepository, clickRepository)
 
@@ -139,15 +141,17 @@ class NavigationViewModelTest {
         verify(counterRepository, times(1)).getCountersCount()
         verify(clickRepository, times(1)).getAllClicks()
         verify(clickRepository, times(1)).getLongestClick()
+        verify(clickRepository, times(1)).getShortestClick()
         verify(clickRepository, times(1)).getMostClicksInCounter()
         viewModel.statsLiveData.test()
             .assertHasValue()
             .assertHistorySize(1)
             .assertValue { stats ->
                 stats.countersCount == expectedCountersCount &&
-                    stats.clicksCount == expectedClicks &&
-                    stats.longClick == expectedLongestClick &&
-                    stats.mostClicks == expectedMostClicks
+                        stats.clicksCount == expectedClicks &&
+                        stats.longClick == expectedLongestClick &&
+                        stats.shortClick == expectedShortestClick &&
+                        stats.mostClicks == expectedMostClicks
             }
     }
 
@@ -155,7 +159,7 @@ class NavigationViewModelTest {
     fun `create counter`() = runTest {
         // given
         val counterName = "Test"
-        val counter = CounterDto(createTime = Date(), editTime = Date(), name = counterName)
+        val counter = getFakeCounter(name = counterName)
         whenever(counterRepository.getCountersCount()).thenReturn(0)
         whenever(counterRepository.createCounter(counter)).thenReturn(Unit)
         val viewModel = CounterListViewModel(counterRepository, clickRepository)
@@ -196,6 +200,12 @@ class NavigationViewModelTest {
         verify(counterRepository, times(1)).updateCounter(counter)
     }
 
-    private fun getFakeCounter(name: String = "Test"): CounterDto =
-        CounterDto(createTime = Date(), editTime = Date(), name = name)
+    private fun getFakeCounter(
+        name: String = "Test"
+    ): CounterDto = CounterDto(
+        createTime = Date(),
+        editTime = Date(),
+        name = name,
+        itemCount = 0,
+    )
 }

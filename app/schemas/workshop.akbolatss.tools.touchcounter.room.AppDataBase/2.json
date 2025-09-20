@@ -44,9 +44,7 @@
           "columnNames": [
             "id"
           ]
-        },
-        "indices": [],
-        "foreignKeys": []
+        }
       },
       {
         "tableName": "click",
@@ -83,7 +81,6 @@
             "id"
           ]
         },
-        "indices": [],
         "foreignKeys": [
           {
             "table": "counter",
@@ -99,7 +96,6 @@
         ]
       }
     ],
-    "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
       "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'cb1e214f7b854e04a51ba4879e9f68da')"

@@ -4,21 +4,20 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.MutableLiveData
 import com.google.common.truth.Truth.assertThat
 import com.jraska.livedata.test
-import java.util.Date
 import kotlinx.coroutines.test.runTest
-import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import org.mockito.Mockito.`when`
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.never
 import org.mockito.Mockito.times
 import org.mockito.Mockito.verify
+import org.mockito.Mockito.`when`
 import workshop.akbolatss.tools.touchcounter.data.dao.CounterDao
 import workshop.akbolatss.tools.touchcounter.data.dto.CounterDto
 import workshop.akbolatss.tools.touchcounter.domain.repository.CounterRepository
 import workshop.akbolatss.tools.touchcounter.utils.exts.init
+import java.util.Date
 
 class CounterRepositoryImplTest {
 
@@ -32,10 +31,6 @@ class CounterRepositoryImplTest {
     @Before
     fun setUp() {
         repository = CounterRepositoryImpl(counterDao)
-    }
-
-    @After
-    fun tearDown() {
     }
 
     @Test
@@ -123,6 +118,20 @@ class CounterRepositoryImplTest {
         // then
         verify(counterDao, times(1)).delete(counterA)
         verify(counterDao, never()).delete(counterB)
+    }
+
+    @Test
+    fun `delete multiple counters`() = runTest {
+        // given
+        val counterA = getFakeCounterA()
+        val counterB = getFakeCounterB()
+        val counterIdsToDelete = listOf(counterA, counterB).map { it.id }
+
+        `when`(counterDao.deleteCounters(counterIdsToDelete)).thenReturn(Unit)
+        repository.deleteCounters(counterIdsToDelete)
+
+        // then
+        verify(counterDao, times(1)).deleteCounters(counterIdsToDelete)
     }
 
     @Test
@@ -253,8 +262,18 @@ class CounterRepositoryImplTest {
     }
 
     private fun getFakeCounterA(): CounterDto =
-        CounterDto(createTime = Date(), editTime = Date(), name = "Test1")
+        CounterDto(
+            createTime = Date(),
+            editTime = Date(),
+            name = "Test1",
+            itemCount = 0,
+        )
 
     private fun getFakeCounterB(): CounterDto =
-        CounterDto(createTime = Date(), editTime = Date(), name = "Test2")
+        CounterDto(
+            createTime = Date(),
+            editTime = Date(),
+            name = "Test2",
+            itemCount = 0,
+        )
 }

@@ -33,17 +33,9 @@ class CounterViewModelTest {
     @get:Rule
     val liveDataRule = InstantTaskExecutorRule()
 
-    private val counterRepository: CounterRepository = mock()
-    private val clickRepository: ClickRepository = mock()
-
-    private val testDispatcher = UnconfinedTestDispatcher()
-
-    private lateinit var viewModel: ClickListViewModel
-
     @Before
     fun setUp() {
-        Dispatchers.setMain(testDispatcher)
-        viewModel = ClickListViewModel(counterRepository, clickRepository)
+        Dispatchers.setMain(UnconfinedTestDispatcher())
     }
 
     @After
@@ -54,12 +46,13 @@ class CounterViewModelTest {
     @Test
     fun `set counterId, when called once, then changed once`() {
         // given
+        val viewModel = getViewModel()
         val testObserver = viewModel.counterId.test()
             .assertNoValue()
         val counterId = 0L
 
         // when
-        viewModel.setCounterId(counterId)
+        viewModel.initArguments(counterId, CLICK_COUNT)
 
         // then
         testObserver.assertHasValue()
@@ -72,18 +65,19 @@ class CounterViewModelTest {
     @Test
     fun `set counterId, when called twice with same counterId, then changed once`() {
         // given
+        val viewModel = getViewModel()
         val testObserver = viewModel.counterId.test()
             .assertNoValue()
         val counterId = 0L
 
         // when
-        viewModel.setCounterId(counterId)
+        viewModel.initArguments(counterId, CLICK_COUNT)
 
         testObserver.assertHasValue()
             .assertHistorySize(1)
             .assertValueHistory(counterId)
 
-        viewModel.setCounterId(counterId)
+        viewModel.initArguments(counterId, CLICK_COUNT)
 
         // then
         viewModel.counterId.test()
@@ -97,11 +91,12 @@ class CounterViewModelTest {
         // given
         val counterIdA = 0L
         val counterIdB = 101L
+        val viewModel = getViewModel()
         val testObserver = viewModel.counterId.test()
             .assertNoValue()
 
         // when
-        viewModel.setCounterId(counterIdA)
+        viewModel.initArguments(counterIdA, CLICK_COUNT)
 
         testObserver.assertHasValue()
             .assertHistorySize(1)
@@ -110,7 +105,7 @@ class CounterViewModelTest {
                 it == counterIdA
             }
 
-        viewModel.setCounterId(counterIdB)
+        viewModel.initArguments(counterIdB, CLICK_COUNT)
 
         testObserver.assertHistorySize(2)
             .assertValueHistory(counterIdA, counterIdB)
@@ -122,8 +117,15 @@ class CounterViewModelTest {
     @Test
     fun `create click, when force, then nothing`() = runTest {
         // given
+        val counterRepository: CounterRepository = mock()
+        val clickRepository: ClickRepository = mock()
+        val viewModel = getViewModel(
+            counterRepository = counterRepository,
+            clickRepository = clickRepository,
+        )
         val testObserver = viewModel.counterId.test()
             .assertNoValue()
+
         // when
         viewModel.createClick(true)
 
@@ -137,6 +139,12 @@ class CounterViewModelTest {
     @Test
     fun `create click, when not force and counterId is null, then nothing`() = runTest {
         // given
+        val counterRepository: CounterRepository = mock()
+        val clickRepository: ClickRepository = mock()
+        val viewModel = getViewModel(
+            counterRepository = counterRepository,
+            clickRepository = clickRepository,
+        )
         val testObserver = viewModel.counterId.test()
             .assertNoValue()
 
@@ -153,6 +161,12 @@ class CounterViewModelTest {
     @Test
     fun `create click, when not force and has counterId, then expected`() = runTest {
         // given
+        val counterRepository: CounterRepository = mock()
+        val clickRepository: ClickRepository = mock()
+        val viewModel = getViewModel(
+            counterRepository = counterRepository,
+            clickRepository = clickRepository,
+        )
         val testObserver = viewModel.counterId.test()
             .assertNoValue()
         viewModel.counterId.postValue(1L)
@@ -170,6 +184,12 @@ class CounterViewModelTest {
     @Test
     fun `update counter, when counter is null, then nothing`() = runTest {
         // given
+        val counterRepository: CounterRepository = mock()
+        val clickRepository: ClickRepository = mock()
+        val viewModel = getViewModel(
+            counterRepository = counterRepository,
+            clickRepository = clickRepository,
+        )
         val testObserver = viewModel.counter.test()
             .assertNoValue()
 
@@ -185,11 +205,17 @@ class CounterViewModelTest {
     @Test
     fun `update counter, when counter is Not null, then expected`() = runTest {
         // given
+        val counterRepository: CounterRepository = mock()
+        val clickRepository: ClickRepository = mock()
+        val viewModel = getViewModel(
+            counterRepository = counterRepository,
+            clickRepository = clickRepository,
+        )
         val testObserverId = viewModel.counterId.test()
             .assertNoValue()
         val testObserverCounter = viewModel.counter.test()
             .assertNoValue()
-        val counter = CounterDto(createTime = Date(), editTime = Date(), name = "Test")
+        val counter = CounterDto(createTime = Date(), editTime = Date(), name = "Test", itemCount = CLICK_COUNT)
         val counterLD = MutableLiveData<CounterDto>().init(counter)
         whenever(counterRepository.findCounter(any())).thenReturn(counterLD)
         viewModel.counterId.postValue(1L)
@@ -204,5 +230,19 @@ class CounterViewModelTest {
         verifyNoMoreInteractions(clickRepository)
         testObserverId.assertHasValue()
         testObserverCounter.assertHasValue()
+    }
+
+    private fun getViewModel(
+        counterRepository: CounterRepository = mock(),
+        clickRepository: ClickRepository = mock(),
+    ): ClickListViewModel {
+        return ClickListViewModel(
+            counterRepository = counterRepository,
+            clickRepository = clickRepository,
+        )
+    }
+
+    private companion object {
+        const val CLICK_COUNT = 0
     }
 }
