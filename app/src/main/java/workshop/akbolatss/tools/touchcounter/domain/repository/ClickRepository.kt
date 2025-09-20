@@ -9,8 +9,13 @@ interface ClickRepository {
     suspend fun remove(id: Long)
 
     suspend fun getAllClicks(): Int
+
     suspend fun getLongestClick(): Long
+    fun getLongestClick(counterId: Long): LiveData<Long?>
+
     suspend fun getShortestClick(): Long
+    fun getShortestClick(counterId: Long): LiveData<Long?>
+
     suspend fun getMostClicksInCounter(): Int
 
     fun findClickList(counterId: Long): LiveData<List<ClickDto>>

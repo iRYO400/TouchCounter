@@ -34,6 +34,9 @@
     <string name="enable_dark_theme">Enable dark theme</string>
     <string name="use_seconds">Use seconds</string>
 
+    <string name="min" translatable="false">Min: %s</string>
+    <string name="max" translatable="false">Max: %s</string>
+
     <string name="selected_items_count" formatted="false">%d selected</string>
     <string name="menu_delete_selected">Delete Selected</string>
     <string name="menu_wipe_selected">Wipe Clicks</string>

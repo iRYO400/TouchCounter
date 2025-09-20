@@ -14,10 +14,14 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.ItemTouchHelper
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.android.AndroidInjection
+import kotlinx.coroutines.launch
 import workshop.akbolatss.tools.touchcounter.R
 import workshop.akbolatss.tools.touchcounter.databinding.ActivityCounterBinding
 import workshop.akbolatss.tools.touchcounter.ui.ViewModelFactory
@@ -149,6 +153,38 @@ class ClickListActivity : AppCompatActivity() {
         }
         viewModel.heldMillis.observe(this) { millis ->
             setHeldTiming(millis)
+        }
+
+        with(lifecycleScope) {
+            launch {
+                repeatOnLifecycle(Lifecycle.State.STARTED) {
+                    viewModel.longestClick.collect { ms ->
+                        val longestClickText = if (userPreferencesDelegate.isUseSecondsEnabled()) {
+                            val seconds = TimeUnit.MILLISECONDS.toSeconds(ms)
+                            getString(R.string.seconds, seconds)
+                        } else {
+                            getString(R.string.millis, ms)
+                        }
+
+                        binding.tvMax.text = getString(R.string.max, longestClickText)
+                    }
+                }
+            }
+
+            launch {
+                repeatOnLifecycle(Lifecycle.State.STARTED) {
+                    viewModel.shortestClick.collect { ms ->
+                        val shortestClickText = if (userPreferencesDelegate.isUseSecondsEnabled()) {
+                            val seconds = TimeUnit.MILLISECONDS.toSeconds(ms)
+                            getString(R.string.seconds, seconds)
+                        } else {
+                            getString(R.string.millis, ms)
+                        }
+
+                        binding.tvMin.text = getString(R.string.min, shortestClickText)
+                    }
+                }
+            }
         }
     }
 

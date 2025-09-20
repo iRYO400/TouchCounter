@@ -3,8 +3,15 @@ package workshop.akbolatss.tools.touchcounter.ui.counter
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asFlow
 import androidx.lifecycle.switchMap
 import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.viewmodel.CreationExtras
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.mapNotNull
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import workshop.akbolatss.tools.touchcounter.data.dto.ClickDto
 import workshop.akbolatss.tools.touchcounter.data.dto.CounterDto
@@ -21,7 +28,7 @@ class ClickListViewModel
 @Inject
 constructor(
     private val counterRepository: CounterRepository,
-    private val clickRepository: ClickRepository
+    private val clickRepository: ClickRepository,
 ) : ViewModel() {
 
     val counterId = MutableLiveData<Long>()
@@ -35,6 +42,23 @@ constructor(
         if (counterId == null) AbsentLiveData.create()
         else clickRepository.findClickList(counterId)
     }
+
+    val longestClick: Flow<Long> = counterId.switchMap { counterId ->
+        if (counterId == null) AbsentLiveData.create()
+        else clickRepository.getLongestClick(counterId)
+    }
+        .asFlow()
+        .mapNotNull { it ?: 0 }
+        .stateIn(viewModelScope, SharingStarted.Lazily, 0)
+
+
+    val shortestClick: Flow<Long> = counterId.switchMap { counterId ->
+        if (counterId == null) AbsentLiveData.create()
+        else clickRepository.getShortestClick(counterId)
+    }
+        .asFlow()
+        .mapNotNull { it ?: 0 }
+        .stateIn(viewModelScope, SharingStarted.Lazily, 0)
 
     private val timer: Timer = Timer()
     private var timerTask: TimerTask? = null
@@ -96,9 +120,9 @@ constructor(
     }
 
     fun clearAllClick() {
-        counterId.value?.let { counterId ->
+        counter.value?.let { counter ->
             viewModelScope.launch {
-                clickRepository.removeAll(counterId)
+                clickRepository.removeAll(counter.id)
             }
         }
     }
@@ -107,5 +131,9 @@ constructor(
         super.onCleared()
         timer.cancel()
         timer.purge()
+    }
+
+    companion object {
+        val COUNTER_ID = object : CreationExtras.Key<Long> {}
     }
 }

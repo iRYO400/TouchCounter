@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import workshop.akbolatss.tools.touchcounter.data.dao.ClickDao
 import workshop.akbolatss.tools.touchcounter.data.dto.ClickDto
 import workshop.akbolatss.tools.touchcounter.domain.repository.ClickRepository
+import workshop.akbolatss.tools.touchcounter.utils.android.AbsentLiveData
 import javax.inject.Inject
 
 class ClickRepositoryImpl
@@ -24,8 +25,15 @@ constructor(private val clickDao: ClickDao) : ClickRepository {
     override suspend fun getLongestClick(): Long =
         clickDao.getLongest() ?: 0
 
+    override fun getLongestClick(counterId: Long): LiveData<Long?> =
+        clickDao.getLongestClick(counterId)
+
     override suspend fun getShortestClick(): Long =
         clickDao.getShortest() ?: 0
+
+    override fun getShortestClick(counterId: Long): LiveData<Long?> {
+        return clickDao.getShortestClick(counterId)
+    }
 
     override suspend fun getMostClicksInCounter(): Int =
         clickDao.getMostClicksInCounter() ?: 0
