@@ -9,6 +9,7 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
 import workshop.akbolatss.tools.touchcounter.data.dto.CounterDto
+import java.util.Date
 
 @Dao
 interface CounterDao {
@@ -37,4 +38,7 @@ interface CounterDao {
 
     @Query("DELETE FROM counter WHERE id IN (:ids)")
     suspend fun deleteCounters(ids: List<Long>)
+
+    @Query("UPDATE counter SET editTime = :editTime WHERE id IN (:counterIds)")
+    suspend fun updateCounters(counterIds: List<Long>, editTime: Date)
 }

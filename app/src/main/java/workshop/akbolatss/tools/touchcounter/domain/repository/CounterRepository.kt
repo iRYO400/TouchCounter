@@ -2,6 +2,7 @@ package workshop.akbolatss.tools.touchcounter.domain.repository
 
 import androidx.lifecycle.LiveData
 import workshop.akbolatss.tools.touchcounter.data.dto.CounterDto
+import java.util.Date
 
 interface CounterRepository {
 
@@ -14,4 +15,6 @@ interface CounterRepository {
 
     fun findCounters(): LiveData<List<CounterDto>>
     fun findCounter(id: Long): LiveData<CounterDto>
+
+    suspend fun updateCounters(counterIds: List<Long>, editTime: Date)
 }

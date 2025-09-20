@@ -5,6 +5,7 @@ import javax.inject.Inject
 import workshop.akbolatss.tools.touchcounter.data.dao.CounterDao
 import workshop.akbolatss.tools.touchcounter.data.dto.CounterDto
 import workshop.akbolatss.tools.touchcounter.domain.repository.CounterRepository
+import java.util.Date
 
 class CounterRepositoryImpl
 @Inject
@@ -35,5 +36,9 @@ constructor(private val counterDao: CounterDao) : CounterRepository {
 
     override suspend fun deleteCounters(ids: List<Long>) {
         counterDao.deleteCounters(ids)
+    }
+
+    override suspend fun updateCounters(counterIds: List<Long>, editTime: Date) {
+        counterDao.updateCounters(counterIds, editTime)
     }
 }

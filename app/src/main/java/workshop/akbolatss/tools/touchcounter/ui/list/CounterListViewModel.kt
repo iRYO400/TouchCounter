@@ -65,7 +65,10 @@ constructor(
     }
 
     fun wipeClicksForCounters(ids: List<Long>) {
-        viewModelScope.launch { clickRepository.deleteClicksByCounterIds(counterIds = ids) }
+        viewModelScope.launch {
+            clickRepository.deleteClicksByCounterIds(counterIds = ids)
+            counterRepository.updateCounters(counterIds = ids, editTime = Date())
+        }
     }
 
     fun updateCounter(counter: CounterDto) {
