@@ -10,6 +10,7 @@
         <item name="android:colorBackground">@color/black_900</item>
 
         <item name="colorDivider">@color/md_grey_700</item>
+        <item name="popupBackgroundColor">@color/transparent</item>
 
         <item name="android:windowLightStatusBar">false</item>
         <item name="android:windowLightNavigationBar" tools:ignore="NewApi">false</item>
