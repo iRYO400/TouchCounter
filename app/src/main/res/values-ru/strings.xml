@@ -8,14 +8,12 @@
     <string name="counter_list">Список счетчиков</string>
     <string name="options_title">Настройки: %s</string>
     <string name="options_hint_name">Имя</string>
-    <string name="options_positive">Сохранить</string>
+    <string name="options_save">Сохранить</string>
     <string name="options_negative">Отмена</string>
-    <string name="options_neutral">Удалить</string>
-    <string name="confirmation_delete_title">Вы уверены что хотите удалить?</string>
-    <string name="confirmation_clear_clicks_title">Вы уверены что хотите очистить все клики?</string>
+    <string name="options_delete">Удалить</string>
+    <string name="confirmation_delete_title">Удалить счетчик?</string>
+    <string name="confirmation_clear_clicks_title">Удалить все клики?</string>
     <string name="confirmation_delete_message">Удаленные данные не возможно восстановить</string>
-    <string name="confirmation_delete_positive">Да</string>
-    <string name="confirmation_delete_negative">Нет</string>
     <string name="options_description">Настройки</string>
 
     <string name="action_settings">Настройки</string>

@@ -8,9 +8,9 @@
     <string name="counter_list">Counters count</string>
     <string name="options_title">Options: %s</string>
     <string name="options_hint_name">Name</string>
-    <string name="options_positive">Save</string>
+    <string name="options_save">Save</string>
     <string name="options_negative">Cancel</string>
-    <string name="options_neutral">Delete</string>
+    <string name="options_delete">Delete</string>
     <string name="confirmation_delete_message">Deleted data cannot be recovered</string>
 
     <string name="action_settings">Settings</string>
@@ -21,10 +21,8 @@
     <string name="stats_most_clicks">Max clicks:</string>
 
     <string name="stats_title">Statistics</string>
-    <string name="confirmation_delete_title">Are you sure you want to delete?</string>
-    <string name="confirmation_clear_clicks_title">Are you sure you want to clear all clicks?</string>
-    <string name="confirmation_delete_positive">Yes</string>
-    <string name="confirmation_delete_negative">No</string>
+    <string name="confirmation_delete_title">Delete counter?</string>
+    <string name="confirmation_clear_clicks_title">Clear all clicks?</string>
     <string name="nav_others">Others</string>
     <string name="nav_send_email_helper">Send email using</string>
     <string name="nav_send_email_subject" translatable="false">[Feedback] Touch Counter</string>

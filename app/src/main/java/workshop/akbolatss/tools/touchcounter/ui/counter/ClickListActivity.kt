@@ -191,10 +191,10 @@ class ClickListActivity : AppCompatActivity() {
         MaterialAlertDialogBuilder(this)
             .setTitle(getString(R.string.confirmation_clear_clicks_title))
             .setMessage(getString(R.string.confirmation_delete_message))
-            .setPositiveButton(R.string.confirmation_delete_positive) { _, _ ->
+            .setPositiveButton(R.string.options_delete) { _, _ ->
                 viewModel.clearAllClick()
             }
-            .setNegativeButton(R.string.confirmation_delete_negative) { dialog, _ ->
+            .setNegativeButton(R.string.options_negative) { dialog, _ ->
                 dialog.cancel()
             }
             .show()

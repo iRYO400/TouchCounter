@@ -271,10 +271,10 @@ class CounterListActivity : AppCompatActivity() {
             .setNegativeButton(R.string.options_negative) { dialog, _ ->
                 dialog.cancel()
             }
-            .setNeutralButton(R.string.options_neutral) { _, _ ->
+            .setNeutralButton(R.string.options_delete) { _, _ ->
                 showDeleteDialog(counter)
             }
-            .setPositiveButton(R.string.options_positive) { _, _ ->
+            .setPositiveButton(R.string.options_save) { _, _ ->
                 val updatedCounter =
                     counter.copy(name = dialogOptionsBinding.inputName.text.toString())
                 viewModel.updateCounter(updatedCounter)
@@ -286,10 +286,10 @@ class CounterListActivity : AppCompatActivity() {
         MaterialAlertDialogBuilder(this)
             .setTitle(getString(R.string.confirmation_delete_title))
             .setMessage(getString(R.string.confirmation_delete_message))
-            .setPositiveButton(R.string.confirmation_delete_positive) { _, _ ->
+            .setPositiveButton(R.string.options_delete) { _, _ ->
                 viewModel.deleteCounter(counter)
             }
-            .setNegativeButton(R.string.confirmation_delete_negative) { dialog, _ ->
+            .setNegativeButton(R.string.options_negative) { dialog, _ ->
                 dialog.cancel()
             }
             .show()
