@@ -9,6 +9,7 @@ interface CounterRepository {
     suspend fun updateCounter(counterDto: CounterDto)
     suspend fun deleteCounter(counter: CounterDto)
 
+    suspend fun deleteCounters(ids: List<Long>)
     suspend fun getCountersCount(): Int
 
     fun findCounters(): LiveData<List<CounterDto>>

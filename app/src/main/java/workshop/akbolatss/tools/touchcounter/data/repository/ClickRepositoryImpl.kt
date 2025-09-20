@@ -37,4 +37,8 @@ constructor(private val clickDao: ClickDao) : ClickRepository {
     override suspend fun removeAll(counterId: Long) {
         clickDao.removeAll(counterId)
     }
+
+    override suspend fun deleteClicksByCounterIds(counterIds: List<Long>) {
+        clickDao.deleteClicksByCounterIds(counterIds)
+    }
 }

@@ -32,4 +32,8 @@ constructor(private val counterDao: CounterDao) : CounterRepository {
     override fun findCounter(id: Long): LiveData<CounterDto> {
         return counterDao.findBy(id)
     }
+
+    override suspend fun deleteCounters(ids: List<Long>) {
+        counterDao.deleteCounters(ids)
+    }
 }

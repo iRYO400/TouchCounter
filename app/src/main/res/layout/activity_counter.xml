@@ -84,7 +84,7 @@
         app:layout_constraintBottom_toBottomOf="@+id/tv_timing"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/tv_timing"
-        app:srcCompat="@drawable/ic_info_outline_black_24dp" />
+        app:srcCompat="@drawable/ic_rounded_info_24" />
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/iv_clear"
@@ -94,9 +94,10 @@
         android:background="?attr/selectableItemBackgroundBorderless"
         android:clickable="true"
         android:focusable="true"
+        android:padding="4dp"
         app:layout_constraintBottom_toBottomOf="@+id/tv_timing"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/tv_timing"
-        app:srcCompat="@drawable/ic_outline_layers_clear_24" />
+        app:srcCompat="@drawable/ic_rounded_delete_sweep_24" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

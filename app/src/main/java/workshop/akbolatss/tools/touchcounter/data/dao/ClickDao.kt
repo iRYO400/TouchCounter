@@ -38,4 +38,7 @@ interface ClickDao {
 
     @Query("DELETE FROM click WHERE counterId = :counterId")
     suspend fun removeAll(counterId: Long)
+
+    @Query("DELETE FROM click WHERE counterId IN (:counterIds)")
+    suspend fun deleteClicksByCounterIds(counterIds: List<Long>)
 }

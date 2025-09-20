@@ -17,4 +17,5 @@ interface ClickRepository {
     fun findClickList(counterId: Long): LiveData<List<ClickDto>>
 
     suspend fun removeAll(counterId: Long)
+    suspend fun deleteClicksByCounterIds(counterIds: List<Long>)
 }

@@ -12,7 +12,6 @@ data class CounterDto(
     val id: Long = 0,
     val createTime: Date,
     val editTime: Date,
-    val name: String
-) {
-    var itemCount: Int = 0
-}
+    val name: String,
+    val itemCount: Int,
+)

@@ -36,7 +36,7 @@ constructor(
                 clicksCount = clicksCount,
                 longClick = longestClick,
                 shortClick = shortClick,
-                mostClicks = mostClicksInCounter
+                mostClicks = mostClicksInCounter,
             )
             statsLiveData.value = stats
         }
@@ -49,20 +49,26 @@ constructor(
                 CounterDto(
                     createTime = Date(),
                     editTime = Date(),
-                    name = "$newName $countersCount"
+                    name = "$newName $countersCount",
+                    itemCount = 0,
                 )
             )
         }
     }
 
     fun deleteCounter(counter: CounterDto) {
-        viewModelScope.launch { counterRepository.deleteCounter(counter)
-        }
+        viewModelScope.launch { counterRepository.deleteCounter(counter) }
+    }
+
+    fun deleteCounters(ids: List<Long>) {
+        viewModelScope.launch { counterRepository.deleteCounters(ids = ids) }
+    }
+
+    fun wipeClicksForCounters(ids: List<Long>) {
+        viewModelScope.launch { clickRepository.deleteClicksByCounterIds(counterIds = ids) }
     }
 
     fun updateCounter(counter: CounterDto) {
-        viewModelScope.launch {
-            counterRepository.updateCounter(counter)
-        }
+        viewModelScope.launch { counterRepository.updateCounter(counter) }
     }
 }

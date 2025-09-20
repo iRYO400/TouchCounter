@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.DiffUtil.ItemCallback
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import workshop.akbolatss.tools.touchcounter.R
@@ -15,54 +14,105 @@ import workshop.akbolatss.tools.touchcounter.utils.exts.formatAsRelativeInMinute
 
 class CounterListRVA(
     private val onCounterClickListener: (CounterDto) -> Unit,
-    private val onCounterOptionsClickListener: (CounterDto) -> Unit
+    private val onCounterOptionsClickListener: (CounterDto) -> Unit,
+    private val onSelectionStateChanged: (Boolean, Int) -> Unit // Boolean for isInSelectionMode, Int for selected count
 ) : ListAdapter<CounterDto, CounterListRVA.CounterVH>(DIFF_CALLBACK) {
 
-    override fun onCreateViewHolder(parent: ViewGroup, p1: Int): CounterVH {
+    private val selectedCounterIds = mutableSetOf<Long>()
+    private var isInSelectionMode = false
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CounterVH {
         val inflater = LayoutInflater.from(parent.context)
-        return CounterVH(
-            inflater.inflate(
-                R.layout.item_counter,
-                parent,
-                false
-            )
-        ).apply {
+        val view = inflater.inflate(R.layout.item_counter, parent, false)
+        return CounterVH(view).apply {
             binding.root.setOnClickListener {
-                holdItem?.let(onCounterClickListener)
+                val position = bindingAdapterPosition
+                if (position == RecyclerView.NO_POSITION) return@setOnClickListener
+                val item = getItem(position)
+                if (isInSelectionMode) {
+                    toggleSelection(item, position)
+                } else {
+                    onCounterClickListener(item)
+                }
+            }
+            binding.root.setOnLongClickListener {
+                val position = bindingAdapterPosition
+                if (position == RecyclerView.NO_POSITION) return@setOnLongClickListener true
+                val item = getItem(position)
+                toggleSelection(item, position)
+                true
             }
             binding.imgOptions.setOnClickListener {
-                holdItem?.let(onCounterOptionsClickListener)
+                val position = bindingAdapterPosition
+                if (position == RecyclerView.NO_POSITION) return@setOnClickListener
+                val item = getItem(position)
+                // In selection mode, options button might be hidden or disabled,
+                // but if it's somehow clicked, prefer options over selection.
+                if (!isInSelectionMode) {
+                    onCounterOptionsClickListener(item)
+                } else {
+                    // Or, allow options click to also toggle selection for that item
+                    // toggleSelection(item, position)
+                }
             }
         }
     }
 
     override fun onBindViewHolder(holder: CounterVH, position: Int) {
-        val introAction = getItem(position)
-        holder.bind(introAction)
+        val counter = getItem(position)
+        holder.bind(counter, selectedCounterIds.contains(counter.id))
     }
 
-    class CounterVH(
-        itemView: View
-    ) : RecyclerView.ViewHolder(itemView) {
+    private fun toggleSelection(counter: CounterDto, position: Int) {
+        val previouslySelected = selectedCounterIds.contains(counter.id)
+        if (previouslySelected) {
+            selectedCounterIds.remove(counter.id)
+        } else {
+            selectedCounterIds.add(counter.id)
+        }
+        notifyItemChanged(position)
 
+        val oldIsInSelectionMode = isInSelectionMode
+        isInSelectionMode = selectedCounterIds.isNotEmpty()
+
+        if (oldIsInSelectionMode != isInSelectionMode || oldIsInSelectionMode) {
+            onSelectionStateChanged(isInSelectionMode, selectedCounterIds.size)
+        }
+    }
+
+    fun getSelectedCounterIds(): List<Long> {
+        return selectedCounterIds.toList()
+    }
+
+    fun clearSelection() {
+        if (!isInSelectionMode && selectedCounterIds.isEmpty()) return
+
+        val previouslySelectedPositions = mutableListOf<Int>()
+        currentList.forEachIndexed { index, counterDto ->
+            if (selectedCounterIds.contains(counterDto.id)) {
+                previouslySelectedPositions.add(index)
+            }
+        }
+
+        selectedCounterIds.clear()
+        isInSelectionMode = false
+        previouslySelectedPositions.forEach { notifyItemChanged(it) }
+        onSelectionStateChanged(false, 0)
+    }
+
+    class CounterVH(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val binding = ItemCounterBinding.bind(itemView)
 
-        var holdItem: CounterDto? = null
-            private set
-
-        fun bind(
-            counter: CounterDto
-        ) {
-            this.holdItem = counter
+        fun bind(counter: CounterDto, isSelected: Boolean) {
             binding.name.text = counter.name
-
             binding.timestamp.text = counter.editTime.formatAsRelativeInMinutes()
             binding.count.text = counter.itemCount.toString()
+            itemView.isActivated = isSelected
         }
     }
 }
 
-private val DIFF_CALLBACK: ItemCallback<CounterDto> =
+private val DIFF_CALLBACK: DiffUtil.ItemCallback<CounterDto> =
     object : DiffUtil.ItemCallback<CounterDto>() {
 
         override fun areItemsTheSame(
@@ -76,6 +126,7 @@ private val DIFF_CALLBACK: ItemCallback<CounterDto> =
         ): Boolean {
             return TextUtils.equals(oldItem.name, newItem.name) &&
                 oldItem.createTime == newItem.createTime &&
-                oldItem.editTime == newItem.editTime
+                oldItem.editTime == newItem.editTime &&
+                    oldItem.itemCount == newItem.itemCount
         }
     }

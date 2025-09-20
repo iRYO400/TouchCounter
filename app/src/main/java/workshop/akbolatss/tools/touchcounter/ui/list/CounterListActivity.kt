@@ -5,7 +5,9 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.view.View
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
@@ -26,7 +28,6 @@ import workshop.akbolatss.tools.touchcounter.utils.android.DarkThemeDelegate
 import workshop.akbolatss.tools.touchcounter.utils.android.IUserPreferencesDelegate
 import javax.inject.Inject
 
-
 class CounterListActivity : AppCompatActivity() {
 
     @Inject
@@ -39,14 +40,26 @@ class CounterListActivity : AppCompatActivity() {
     lateinit var userPreferencesDelegate: IUserPreferencesDelegate
 
     private val viewModel: CounterListViewModel by lazy {
-        ViewModelProvider(this, viewModelFactory).get(CounterListViewModel::class.java)
+        ViewModelProvider(this, viewModelFactory)[CounterListViewModel::class.java]
     }
 
     private lateinit var binding: ActivityNavigationBinding
+
     private val navHeaderBinding by lazy {
         NavHeaderBinding.bind(binding.navigationView.getHeaderView(0))
     }
+
     private lateinit var adapter: CounterListRVA
+
+    private var isInSelectionMode = false
+
+    private val onBackPressedCallback: OnBackPressedCallback by lazy {
+        object : OnBackPressedCallback(false) {
+            override fun handleOnBackPressed() {
+                adapter.clearSelection()
+            }
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         AndroidInjection.inject(this)
@@ -54,11 +67,16 @@ class CounterListActivity : AppCompatActivity() {
         binding = ActivityNavigationBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        setupOnBackPressed()
         setupWindowInsets()
         initView()
         initRecyclerView()
         observeViewModel()
         setListeners()
+    }
+
+    private fun setupOnBackPressed() {
+        onBackPressedDispatcher.addCallback(this, onBackPressedCallback)
     }
 
     private fun setupWindowInsets() {
@@ -86,13 +104,55 @@ class CounterListActivity : AppCompatActivity() {
     private fun initRecyclerView() {
         adapter = CounterListRVA(
             onCounterClickListener = {
-                openCounterActivity(it)
+                if (!isInSelectionMode) {
+                    openCounterActivity(it)
+                }
             },
             onCounterOptionsClickListener = {
-                showPopupOptions(it)
+                if (!isInSelectionMode) {
+                    showPopupOptions(it)
+                }
+            },
+            onSelectionStateChanged = { isInSelectionMode, selectedCount ->
+                handleSelectionStateChanged(isInSelectionMode, selectedCount)
             }
         )
         binding.recyclerView.adapter = adapter
+    }
+
+    private fun handleSelectionStateChanged(isInSelectionMode: Boolean, selectedCount: Int) {
+        this.isInSelectionMode = isInSelectionMode
+        onBackPressedCallback.isEnabled = isInSelectionMode
+
+        with(binding) {
+            if (isInSelectionMode) {
+                fab.hide()
+                bottomBar.navigationIcon = ContextCompat.getDrawable(
+                    this@CounterListActivity,
+                    R.drawable.ic_rounded_close_24,
+                )
+                bottomBar.replaceMenu(R.menu.selection_actions_menu)
+                bottomBar.title = getString(R.string.selected_items_count, selectedCount)
+                bottomBar.setNavigationOnClickListener {
+                    adapter.clearSelection()
+                }
+            } else {
+                fab.show()
+                bottomBar.navigationIcon = ContextCompat.getDrawable(
+                        this@CounterListActivity,
+                        R.drawable.ic_rounded_menu_24,
+                    )
+                bottomBar.menu.clear()
+                bottomBar.title = getString(R.string.app_name)
+                bottomBar.setNavigationOnClickListener {
+                    if (!binding.drawerLayout.isDrawerOpen(navigationView)) {
+                        drawerLayout.openDrawer(navigationView)
+                    } else {
+                        drawerLayout.closeDrawer(navigationView)
+                    }
+                }
+            }
+        }
     }
 
     private fun openCounterActivity(counter: CounterDto) {
@@ -104,7 +164,9 @@ class CounterListActivity : AppCompatActivity() {
     private fun observeViewModel() {
         viewModel.counterList.observe(this) { counters ->
             adapter.submitList(counters) {
-                binding.recyclerView.smoothScrollToPosition(0)
+                if (!isInSelectionMode) {
+                    binding.recyclerView.smoothScrollToPosition(0)
+                }
             }
         }
         viewModel.statsLiveData.observe(this) { stats ->
@@ -134,7 +196,32 @@ class CounterListActivity : AppCompatActivity() {
                 binding.drawerLayout.closeDrawer(binding.navigationView)
             }
         }
+
+        binding.bottomBar.setOnMenuItemClickListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.action_delete_selected -> {
+                    val selectedIds = adapter.getSelectedCounterIds()
+                    if (selectedIds.isNotEmpty()) {
+                        showDeleteSelectedDialog(selectedIds)
+                    }
+                    true
+                }
+
+                R.id.action_wipe_selected -> {
+                    val selectedIds = adapter.getSelectedCounterIds()
+                    if (selectedIds.isNotEmpty()) {
+                        showWipeSelectedDialog(selectedIds)
+                    }
+                    true
+                }
+
+                else -> false
+            }
+        }
+
         binding.navigationView.setNavigationItemSelectedListener { menuItem ->
+            if (isInSelectionMode) return@setNavigationItemSelectedListener false
+
             when (menuItem.itemId) {
                 R.id.send_email -> sendEmail()
             }
@@ -144,7 +231,9 @@ class CounterListActivity : AppCompatActivity() {
 
         binding.drawerLayout.addDrawerListener(object : DrawerLayout.SimpleDrawerListener() {
             override fun onDrawerOpened(drawerView: View) {
-                viewModel.loadStats()
+                if (!isInSelectionMode) { // Only load stats if not in selection mode
+                    viewModel.loadStats()
+                }
             }
         })
 
@@ -201,6 +290,34 @@ class CounterListActivity : AppCompatActivity() {
                 viewModel.deleteCounter(counter)
             }
             .setNegativeButton(R.string.confirmation_delete_negative) { dialog, _ ->
+                dialog.cancel()
+            }
+            .show()
+    }
+
+    private fun showDeleteSelectedDialog(selectedIds: List<Long>) {
+        MaterialAlertDialogBuilder(this)
+            .setTitle(getString(R.string.confirmation_delete_selected_title))
+            .setMessage(getString(R.string.confirmation_delete_selected_message, selectedIds.size))
+            .setPositiveButton(R.string.confirmation_action_positive_delete) { _, _ ->
+                viewModel.deleteCounters(selectedIds)
+                adapter.clearSelection()
+            }
+            .setNegativeButton(R.string.options_negative) { dialog, _ ->
+                dialog.cancel()
+            }
+            .show()
+    }
+
+    private fun showWipeSelectedDialog(selectedIds: List<Long>) {
+        MaterialAlertDialogBuilder(this)
+            .setTitle(getString(R.string.confirmation_wipe_selected_title))
+            .setMessage(getString(R.string.confirmation_wipe_selected_message, selectedIds.size))
+            .setPositiveButton(R.string.confirmation_action_positive_wipe) { _, _ ->
+                viewModel.wipeClicksForCounters(selectedIds)
+                adapter.clearSelection()
+            }
+            .setNegativeButton(R.string.options_negative) { dialog, _ ->
                 dialog.cancel()
             }
             .show()

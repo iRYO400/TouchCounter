@@ -30,7 +30,7 @@
             app:fabCradleMargin="10dp"
             app:hideOnScroll="true"
             app:layout_scrollFlags="scroll|enterAlways"
-            app:navigationIcon="@drawable/ic_menu_black_24dp"
+            app:navigationIcon="@drawable/ic_rounded_menu_24"
             app:title="Toolbar" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -38,7 +38,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:elevation="12dp"
-            android:src="@drawable/ic_add_black_24dp"
+            android:src="@drawable/ic_rounded_add_24"
             app:backgroundTint="?attr/colorPrimary"
             app:layout_anchor="@id/bottom_bar"
             app:tint="?attr/colorOnPrimary" />

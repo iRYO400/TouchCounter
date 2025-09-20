@@ -33,4 +33,16 @@
     <string name="seconds">%d с</string>
     <string name="enable_dark_theme">Вкл. темную тему</string>
     <string name="use_seconds">Исп. секунды</string>
+
+    <string name="selected_items_count" formatted="false">Выбрано: %d</string>
+    <string name="menu_delete_selected">Удалить выбранное</string>
+    <string name="menu_wipe_selected">Сбросить клики</string>
+
+    <string name="confirmation_delete_selected_title">Удалить выбранные элементы?</string>
+    <string name="confirmation_delete_selected_message" formatted="false">Вы уверены, что хотите удалить счетчики (%d)? Это действие нельзя будет отменить.</string>
+    <string name="confirmation_action_positive_delete">Удалить</string>
+
+    <string name="confirmation_wipe_selected_title">Сбросить клики для выбранных?</string>
+    <string name="confirmation_wipe_selected_message" formatted="false">Вы уверены, что хотите сбросить все клики для выбранных счетчиков (%d)?</string>
+    <string name="confirmation_action_positive_wipe">Сбросить</string>
 </resources>

@@ -4,6 +4,7 @@ import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.core.content.edit
 
 class DarkThemeDelegate(
     private val sharedPreferences: SharedPreferences
@@ -27,13 +28,15 @@ class DarkThemeDelegate(
     var isDarkTheme = false
         get() = nightMode == AppCompatDelegate.MODE_NIGHT_YES
         set(value) {
-            sharedPreferences.edit().putInt(
-                SHARED_NIGHT_MODE, if (value) {
-                    AppCompatDelegate.MODE_NIGHT_YES
-                } else {
-                    AppCompatDelegate.MODE_NIGHT_NO
-                }
-            ).apply()
+            sharedPreferences.edit {
+                putInt(
+                    SHARED_NIGHT_MODE, if (value) {
+                        AppCompatDelegate.MODE_NIGHT_YES
+                    } else {
+                        AppCompatDelegate.MODE_NIGHT_NO
+                    }
+                )
+            }
             field = value
         }
 

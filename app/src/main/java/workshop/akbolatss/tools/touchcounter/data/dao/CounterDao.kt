@@ -34,4 +34,7 @@ interface CounterDao {
     @VisibleForTesting
     @Query("SELECT * FROM counter WHERE id = :id")
     fun find(id: Long): CounterDto?
+
+    @Query("DELETE FROM counter WHERE id IN (:ids)")
+    suspend fun deleteCounters(ids: List<Long>)
 }

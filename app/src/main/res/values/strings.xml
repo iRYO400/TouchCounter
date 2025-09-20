@@ -35,4 +35,16 @@
     <string name="click" translatable="false">Click</string>
     <string name="enable_dark_theme">Enable dark theme</string>
     <string name="use_seconds">Use seconds</string>
+
+    <string name="selected_items_count" formatted="false">%d selected</string>
+    <string name="menu_delete_selected">Delete Selected</string>
+    <string name="menu_wipe_selected">Wipe Clicks</string>
+
+    <string name="confirmation_delete_selected_title">Delete Selected Items?</string>
+    <string name="confirmation_delete_selected_message" formatted="false">Are you sure you want to delete %d counters? This action cannot be undone.</string>
+    <string name="confirmation_action_positive_delete">Delete</string>
+
+    <string name="confirmation_wipe_selected_title">Wipe Clicks for Selected?</string>
+    <string name="confirmation_wipe_selected_message" formatted="false">Are you sure you want to wipe all clicks for %d selected counters?</string>
+    <string name="confirmation_action_positive_wipe">Wipe</string>
 </resources>

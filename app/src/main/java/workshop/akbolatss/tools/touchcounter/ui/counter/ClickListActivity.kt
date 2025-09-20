@@ -51,6 +51,13 @@ class ClickListActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         AndroidInjection.inject(this)
+
+        darkThemeDelegate.nightModeLive.observe(this) { nightMode ->
+            nightMode?.let {
+                delegate.localNightMode = it
+            }
+        }
+
         super.onCreate(savedInstanceState)
         binding = ActivityCounterBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -140,11 +147,6 @@ class ClickListActivity : AppCompatActivity() {
         }
         viewModel.heldMillis.observe(this) { millis ->
             setHeldTiming(millis)
-        }
-        darkThemeDelegate.nightModeLive.observe(this) { nightMode ->
-            nightMode?.let {
-                delegate.localNightMode = it
-            }
         }
     }
 
