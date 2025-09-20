@@ -5,7 +5,7 @@
         <item name="colorPrimary">@color/md_teal_200</item>
         <item name="colorAccent">@color/md_teal_200</item>
         <item name="colorSurface">@color/black_800</item>
-        <item name="colorOnSurface">@color/white_50</item>
+        <item name="colorOnSurface">@color/md_grey_200</item>
         <item name="colorSurfaceBright">@color/md_grey_700</item>
         <item name="android:colorBackground">@color/black_900</item>
 

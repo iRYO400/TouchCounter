@@ -5,8 +5,8 @@
         <item name="colorPrimary">@color/blue</item>
         <item name="colorAccent">@color/blue</item>
         <item name="colorSurface">@color/white_50</item>
-        <item name="colorOnSurface">@color/md_grey_900</item>
-        <item name="colorSurfaceBright">@color/md_light_blue_50</item>
+        <item name="colorOnSurface">@color/md_grey_800</item>
+        <item name="colorSurfaceBright">@color/md_teal_50</item>
         <item name="android:colorBackground">@color/white_50</item>
 
         <item name="colorDivider">@color/md_grey_500</item>
@@ -16,7 +16,7 @@
         <item name="android:windowLightNavigationBar" tools:ignore="NewApi">true</item>
     </style>
 
-    <style name="Base.Theme" parent="Theme.MaterialComponents.DayNight.NoActionBar" >
+    <style name="Base.Theme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <item name="android:windowContentTransitions">true</item>
         <item name="android:windowAllowEnterTransitionOverlap">true</item>
         <item name="android:windowAllowReturnTransitionOverlap">true</item>
