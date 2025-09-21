@@ -62,13 +62,13 @@ android {
 
     ktlint {
         android = true
-        disabledRules = listOf(
-            "argument-list-wrapping",
-            "import-ordering",
-            "max-line-length",
-            "wrapping",
-            "multiline-if-else",
-        )
+//        disabledRules = listOf(
+//            "argument-list-wrapping",
+//            "import-ordering",
+//            "max-line-length",
+//            "wrapping",
+//            "multiline-if-else",
+//        )
     }
 }
 
