@@ -27,7 +27,7 @@ import workshop.akbolatss.tools.touchcounter.utils.exts.init
 import java.util.Date
 
 @OptIn(ExperimentalCoroutinesApi::class)
-class NavigationViewModelTest {
+class CounterListViewModelTest {
 
     @get:Rule
     val liveDataRule = InstantTaskExecutorRule()
