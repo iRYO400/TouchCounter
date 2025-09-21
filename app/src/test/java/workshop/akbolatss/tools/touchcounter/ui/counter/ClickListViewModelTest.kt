@@ -2,6 +2,8 @@ package workshop.akbolatss.tools.touchcounter.ui.counter
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.MutableLiveData
+import app.cash.turbine.test
+import com.google.common.truth.Truth.assertThat
 import com.jraska.livedata.test
 import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.mock
@@ -13,6 +15,7 @@ import com.nhaarman.mockitokotlin2.verifyZeroInteractions
 import com.nhaarman.mockitokotlin2.whenever
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
@@ -21,6 +24,7 @@ import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import workshop.akbolatss.tools.touchcounter.data.dto.ClickStatsDto
 import workshop.akbolatss.tools.touchcounter.data.dto.CounterDto
 import workshop.akbolatss.tools.touchcounter.domain.repository.ClickRepository
 import workshop.akbolatss.tools.touchcounter.domain.repository.CounterRepository
@@ -33,9 +37,11 @@ class ClickListViewModelTest {
     @get:Rule
     val liveDataRule = InstantTaskExecutorRule()
 
+    private val testDispatcher = UnconfinedTestDispatcher()
+
     @Before
     fun setUp() {
-        Dispatchers.setMain(UnconfinedTestDispatcher())
+        Dispatchers.setMain(testDispatcher)
     }
 
     @After
@@ -232,6 +238,98 @@ class ClickListViewModelTest {
         testObserverCounter.assertHasValue()
     }
 
+    @Test
+    fun `longestClick initially emits empty dto`() = runTest {
+        val clickRepository: ClickRepository = mock()
+        val viewModel = getViewModel(clickRepository = clickRepository)
+
+        viewModel.longestClick.test {
+            assertThat(awaitItem()).isEqualTo(ClickStatsDto.empty())
+            cancelAndConsumeRemainingEvents()
+        }
+    }
+
+    @Test
+    fun `longestClick emits data from repository when counterId is set`() = runTest {
+        val clickRepository: ClickRepository = mock()
+        val viewModel = getViewModel(clickRepository = clickRepository)
+        val expectedStats = ClickStatsDto(heldMillis = 100L, position = 1L)
+
+        whenever(clickRepository.getLongestClick(DEFAULT_COUNTER_ID)).thenReturn(flowOf(expectedStats))
+
+        viewModel.longestClick.test {
+            assertThat(awaitItem()).isEqualTo(ClickStatsDto.empty())
+
+            viewModel.initArguments(DEFAULT_COUNTER_ID, CLICK_COUNT)
+
+            assertThat(awaitItem()).isEqualTo(expectedStats)
+            cancelAndConsumeRemainingEvents()
+        }
+        @Suppress("UnusedFlow")
+        verify(clickRepository).getLongestClick(DEFAULT_COUNTER_ID)
+    }
+
+    @Test
+    fun `longestClick remains empty dto if repository returns null after counterId is set`() = runTest {
+        val clickRepository: ClickRepository = mock()
+        val viewModel = getViewModel(clickRepository = clickRepository)
+
+        whenever(clickRepository.getLongestClick(DEFAULT_COUNTER_ID)).thenReturn(flowOf(null))
+
+        viewModel.longestClick.test {
+            assertThat(awaitItem()).isEqualTo(ClickStatsDto.empty())
+            viewModel.initArguments(DEFAULT_COUNTER_ID, CLICK_COUNT)
+            cancelAndIgnoreRemainingEvents()
+        }
+        @Suppress("UnusedFlow")
+        verify(clickRepository).getLongestClick(DEFAULT_COUNTER_ID)
+    }
+
+    @Test
+    fun `shortestClick initially emits empty dto`() = runTest {
+        val clickRepository: ClickRepository = mock()
+        val viewModel = getViewModel(clickRepository = clickRepository)
+
+        viewModel.shortestClick.test {
+            assertThat(awaitItem()).isEqualTo(ClickStatsDto.empty())
+            cancelAndConsumeRemainingEvents()
+        }
+    }
+
+    @Test
+    fun `shortestClick emits data from repository when counterId is set`() = runTest {
+        val clickRepository: ClickRepository = mock()
+        val viewModel = getViewModel(clickRepository = clickRepository)
+        val expectedStats = ClickStatsDto(heldMillis = 10L, position = 1L)
+
+        whenever(clickRepository.getShortestClick(DEFAULT_COUNTER_ID)).thenReturn(flowOf(expectedStats))
+
+        viewModel.shortestClick.test {
+            assertThat(awaitItem()).isEqualTo(ClickStatsDto.empty())
+            viewModel.initArguments(DEFAULT_COUNTER_ID, CLICK_COUNT)
+            assertThat(awaitItem()).isEqualTo(expectedStats)
+            cancelAndConsumeRemainingEvents()
+        }
+        @Suppress("UnusedFlow")
+        verify(clickRepository).getShortestClick(DEFAULT_COUNTER_ID)
+    }
+
+    @Test
+    fun `shortestClick remains empty dto if repository returns null after counterId is set`() = runTest {
+        val clickRepository: ClickRepository = mock()
+        val viewModel = getViewModel(clickRepository = clickRepository)
+
+        whenever(clickRepository.getShortestClick(DEFAULT_COUNTER_ID)).thenReturn(flowOf(null))
+
+        viewModel.shortestClick.test {
+            assertThat(awaitItem()).isEqualTo(ClickStatsDto.empty()) // Initial from stateIn
+            viewModel.initArguments(DEFAULT_COUNTER_ID, CLICK_COUNT) // Set counterId
+            cancelAndIgnoreRemainingEvents()
+        }
+        @Suppress("UnusedFlow")
+        verify(clickRepository).getShortestClick(DEFAULT_COUNTER_ID)
+    }
+
     private fun getViewModel(
         counterRepository: CounterRepository = mock(),
         clickRepository: ClickRepository = mock(),
@@ -244,5 +342,6 @@ class ClickListViewModelTest {
 
     private companion object {
         const val CLICK_COUNT = 0
+        const val DEFAULT_COUNTER_ID = 1L // Added for new tests
     }
 }
