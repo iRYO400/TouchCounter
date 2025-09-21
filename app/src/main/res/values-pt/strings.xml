@@ -1,0 +1,42 @@
+<resources>
+    <string name="app_name">Touch Counter</string>
+    <string name="info_hold_timing">Tempo de pressionamento. ± 5 erro</string>
+    <string name="default_name">Contador #</string>
+    <string name="counter_group">Contadores</string>
+    <string name="counter_list">Quantidade de contadores</string>
+    <string name="options_title">Opções: %s</string>
+    <string name="options_hint_name">Nome</string>
+    <string name="options_save">Salvar</string>
+    <string name="options_negative">Cancelar</string>
+    <string name="options_delete">Excluir</string>
+    <string name="confirmation_delete_message">Dados excluídos não podem ser recuperados</string>
+
+    <string name="action_settings">Configurações</string>
+    <string name="stats_counters_count">Contadores:</string>
+    <string name="stats_clicks_count">Cliques:</string>
+    <string name="stats_long_click">Clique mais longo (ms):</string>
+    <string name="stats_short_click">Clique mais curto (ms):</string>
+    <string name="stats_most_clicks">Máximo de cliques:</string>
+
+    <string name="stats_title">Estatísticas</string>
+    <string name="confirmation_delete_title">Excluir contador?</string>
+    <string name="confirmation_clear_clicks_title">Limpar todos os cliques?</string>
+    <string name="nav_others">Outros</string>
+    <string name="nav_send_email_helper">Enviar email usando</string>
+    <string name="nav_send_email">Enviar feedback</string>
+    <string name="options_description">Opções</string>
+    <string name="enable_dark_theme">Ativar tema escuro</string>
+    <string name="use_seconds">Usar segundos</string>
+
+    <string name="selected_items_count" formatted="false">%d selecionados</string>
+    <string name="menu_delete_selected">Excluir selecionados</string>
+    <string name="menu_wipe_selected">Limpar cliques</string>
+
+    <string name="confirmation_delete_selected_title">Excluir itens selecionados?</string>
+    <string name="confirmation_delete_selected_message" formatted="false">Tem certeza de que deseja excluir %d contadores? Esta ação não pode ser desfeita.</string>
+    <string name="confirmation_action_positive_delete">Excluir</string>
+
+    <string name="confirmation_wipe_selected_title">Limpar cliques dos selecionados?</string>
+    <string name="confirmation_wipe_selected_message" formatted="false">Tem certeza de que deseja limpar todos os cliques de %d contadores selecionados?</string>
+    <string name="confirmation_action_positive_wipe">Limpar</string>
+</resources>

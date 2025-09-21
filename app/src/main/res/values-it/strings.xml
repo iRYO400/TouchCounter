@@ -1,0 +1,42 @@
+<resources>
+    <string name="app_name">Touch Counter</string>
+    <string name="info_hold_timing">Tempo di pressione. ± 5 errore</string>
+    <string name="default_name">Contatore #</string>
+    <string name="counter_group">Contatori</string>
+    <string name="counter_list">Numero contatori</string>
+    <string name="options_title">Opzioni: %s</string>
+    <string name="options_hint_name">Nome</string>
+    <string name="options_save">Salva</string>
+    <string name="options_negative">Annulla</string>
+    <string name="options_delete">Elimina</string>
+    <string name="confirmation_delete_message">I dati eliminati non possono essere recuperati</string>
+
+    <string name="action_settings">Impostazioni</string>
+    <string name="stats_counters_count">Contatori:</string>
+    <string name="stats_clicks_count">Clic:</string>
+    <string name="stats_long_click">Clic più lungo (ms):</string>
+    <string name="stats_short_click">Clic più breve (ms):</string>
+    <string name="stats_most_clicks">Massimo clic:</string>
+
+    <string name="stats_title">Statistiche</string>
+    <string name="confirmation_delete_title">Eliminare il contatore?</string>
+    <string name="confirmation_clear_clicks_title">Cancellare tutti i clic?</string>
+    <string name="nav_others">Altri</string>
+    <string name="nav_send_email_helper">Invia email usando</string>
+    <string name="nav_send_email">Invia feedback</string>
+    <string name="options_description">Opzioni</string>
+    <string name="enable_dark_theme">Abilita tema scuro</string>
+    <string name="use_seconds">Usa secondi</string>
+
+    <string name="selected_items_count" formatted="false">%d selezionati</string>
+    <string name="menu_delete_selected">Elimina selezionati</string>
+    <string name="menu_wipe_selected">Cancella clic</string>
+
+    <string name="confirmation_delete_selected_title">Eliminare gli elementi selezionati?</string>
+    <string name="confirmation_delete_selected_message" formatted="false">Sei sicuro di voler eliminare %d contatori? Questa azione non può essere annullata.</string>
+    <string name="confirmation_action_positive_delete">Elimina</string>
+
+    <string name="confirmation_wipe_selected_title">Cancellare i clic per i selezionati?</string>
+    <string name="confirmation_wipe_selected_message" formatted="false">Sei sicuro di voler cancellare tutti i clic per %d contatori selezionati?</string>
+    <string name="confirmation_action_positive_wipe">Cancella</string>
+</resources>

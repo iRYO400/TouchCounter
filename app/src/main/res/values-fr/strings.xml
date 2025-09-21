@@ -1,0 +1,42 @@
+<resources>
+    <string name="app_name">Touch Counter</string>
+    <string name="info_hold_timing">Durée de maintien. ± 5 erreur</string>
+    <string name="default_name">Compteur #</string>
+    <string name="counter_group">Compteurs</string>
+    <string name="counter_list">Nombre de compteurs</string>
+    <string name="options_title">Options : %s</string>
+    <string name="options_hint_name">Nom</string>
+    <string name="options_save">Enregistrer</string>
+    <string name="options_negative">Annuler</string>
+    <string name="options_delete">Supprimer</string>
+    <string name="confirmation_delete_message">Les données supprimées ne peuvent pas être récupérées</string>
+
+    <string name="action_settings">Paramètres</string>
+    <string name="stats_counters_count">Compteurs :</string>
+    <string name="stats_clicks_count">Clics :</string>
+    <string name="stats_long_click">Clic le plus long (ms) :</string>
+    <string name="stats_short_click">Clic le plus court (ms) :</string>
+    <string name="stats_most_clicks">Maximum de clics :</string>
+
+    <string name="stats_title">Statistiques</string>
+    <string name="confirmation_delete_title">Supprimer le compteur ?</string>
+    <string name="confirmation_clear_clicks_title">Effacer tous les clics ?</string>
+    <string name="nav_others">Autres</string>
+    <string name="nav_send_email_helper">Envoyer un e-mail avec</string>
+    <string name="nav_send_email">Envoyer des commentaires</string>
+    <string name="options_description">Options</string>
+    <string name="enable_dark_theme">Activer le thème sombre</string>
+    <string name="use_seconds">Utiliser les secondes</string>
+
+    <string name="selected_items_count" formatted="false">%d sélectionnés</string>
+    <string name="menu_delete_selected">Supprimer la sélection</string>
+    <string name="menu_wipe_selected">Effacer les clics</string>
+
+    <string name="confirmation_delete_selected_title">Supprimer les éléments sélectionnés ?</string>
+    <string name="confirmation_delete_selected_message" formatted="false">Êtes-vous sûr de vouloir supprimer %d compteurs ? Cette action ne peut pas être annulée.</string>
+    <string name="confirmation_action_positive_delete">Supprimer</string>
+
+    <string name="confirmation_wipe_selected_title">Effacer les clics pour la sélection ?</string>
+    <string name="confirmation_wipe_selected_message" formatted="false">Êtes-vous sûr de vouloir effacer tous les clics pour %d compteurs sélectionnés ?</string>
+    <string name="confirmation_action_positive_wipe">Effacer</string>
+</resources>

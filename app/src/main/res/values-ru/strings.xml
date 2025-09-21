@@ -1,8 +1,6 @@
 <resources>
     <string name="app_name">Счетчик кликов</string>
     <string name="info_hold_timing">Время удержания кнопки. Погрешность ±5</string>
-    <string name="default_timing">0 мс</string>
-    <string name="default_count">0</string>
     <string name="default_name">Счетчик #</string>
     <string name="counter_group">Счетчики</string>
     <string name="counter_list">Список счетчиков</string>
@@ -19,16 +17,14 @@
     <string name="action_settings">Настройки</string>
     <string name="stats_counters_count">Счетчиков:</string>
     <string name="stats_clicks_count">Кликов:</string>
-    <string name="stats_long_click">Самый долгий клик(мс):</string>
-    <string name="stats_short_click">Самый короткий клик(мс):</string>
+    <string name="stats_long_click">Самый долгий клик(ms):</string>
+    <string name="stats_short_click">Самый короткий клик(ms):</string>
     <string name="stats_most_clicks">Макс. кликов:</string>
 
     <string name="stats_title">Статистика</string>
     <string name="nav_others">Другое</string>
     <string name="nav_send_email">Ваши предложения</string>
     <string name="nav_send_email_helper">Отправить предложения используя</string>
-    <string name="millis">%d мс</string>
-    <string name="seconds">%d с</string>
     <string name="enable_dark_theme">Вкл. темную тему</string>
     <string name="use_seconds">Исп. секунды</string>
 

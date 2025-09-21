@@ -1,0 +1,42 @@
+<resources>
+    <string name="app_name">Touch Counter</string>
+    <string name="info_hold_timing">होल्ड समय। ± 5 त्रुटि</string>
+    <string name="default_name">काउंटर #</string>
+    <string name="counter_group">काउंटर</string>
+    <string name="counter_list">काउंटर गिनती</string>
+    <string name="options_title">विकल्प: %s</string>
+    <string name="options_hint_name">नाम</string>
+    <string name="options_save">सेव करें</string>
+    <string name="options_negative">रद्द करें</string>
+    <string name="options_delete">डिलीट करें</string>
+    <string name="confirmation_delete_message">डिलीट किया गया डेटा वापस नहीं किया जा सकता</string>
+
+    <string name="action_settings">सेटिंग्स</string>
+    <string name="stats_counters_count">काउंटर:</string>
+    <string name="stats_clicks_count">क्लिक्स:</string>
+    <string name="stats_long_click">सबसे लंबा क्लिक (ms):</string>
+    <string name="stats_short_click">सबसे छोटा क्लिक (ms):</string>
+    <string name="stats_most_clicks">अधिकतम क्लिक्स:</string>
+
+    <string name="stats_title">आंकड़े</string>
+    <string name="confirmation_delete_title">काउंटर डिलीट करें?</string>
+    <string name="confirmation_clear_clicks_title">सभी क्लिक्स साफ़ करें?</string>
+    <string name="nav_others">अन्य</string>
+    <string name="nav_send_email_helper">ईमेल भेजें का उपयोग करके</string>
+    <string name="nav_send_email">फीडबैक भेजें</string>
+    <string name="options_description">विकल्प</string>
+    <string name="enable_dark_theme">डार्क थीम सक्षम करें</string>
+    <string name="use_seconds">सेकंड का उपयोग करें</string>
+
+    <string name="selected_items_count" formatted="false">%d चयनित</string>
+    <string name="menu_delete_selected">चयनित को डिलीट करें</string>
+    <string name="menu_wipe_selected">क्लिक्स साफ़ करें</string>
+
+    <string name="confirmation_delete_selected_title">चयनित आइटम डिलीट करें?</string>
+    <string name="confirmation_delete_selected_message" formatted="false">क्या आप वाकई %d काउंटर डिलीट करना चाहते हैं? यह कार्रवाई पूर्ववत नहीं की जा सकती।</string>
+    <string name="confirmation_action_positive_delete">डिलीट करें</string>
+
+    <string name="confirmation_wipe_selected_title">चयनित के लिए क्लिक्स साफ़ करें?</string>
+    <string name="confirmation_wipe_selected_message" formatted="false">क्या आप वाकई %d चयनित काउंटर के लिए सभी क्लिक्स साफ़ करना चाहते हैं?</string>
+    <string name="confirmation_action_positive_wipe">साफ़ करें</string>
+</resources>

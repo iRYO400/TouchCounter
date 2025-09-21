@@ -1,8 +1,8 @@
 <resources>
     <string name="app_name">Touch Counter</string>
     <string name="info_hold_timing">Hold timing. ± 5 error</string>
-    <string name="default_timing">0 ms</string>
-    <string name="default_count">0</string>
+    <string name="default_timing" translatable="false">0 ms</string>
+    <string name="default_count" translatable="false">0</string>
     <string name="default_name">Counter #</string>
     <string name="counter_group">Counters</string>
     <string name="counter_list">Counters count</string>
@@ -28,8 +28,8 @@
     <string name="nav_send_email_subject" translatable="false">[Feedback] Touch Counter</string>
     <string name="nav_send_email">Send feedback</string>
     <string name="options_description">Options</string>
-    <string name="millis">%d ms</string>
-    <string name="seconds">%d s</string>
+    <string name="millis" translatable="false">%d ms</string>
+    <string name="seconds" translatable="false">%d s</string>
     <string name="click" translatable="false">Click</string>
     <string name="enable_dark_theme">Enable dark theme</string>
     <string name="use_seconds">Use seconds</string>

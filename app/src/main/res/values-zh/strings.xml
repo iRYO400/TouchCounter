@@ -1,0 +1,42 @@
+<resources>
+    <string name="app_name">Touch Counter</string>
+    <string name="info_hold_timing">按住时间。± 5 误差</string>
+    <string name="default_name">计数器 #</string>
+    <string name="counter_group">计数器</string>
+    <string name="counter_list">计数器数量</string>
+    <string name="options_title">选项：%s</string>
+    <string name="options_hint_name">名称</string>
+    <string name="options_save">保存</string>
+    <string name="options_negative">取消</string>
+    <string name="options_delete">删除</string>
+    <string name="confirmation_delete_message">已删除的数据无法恢复</string>
+
+    <string name="action_settings">设置</string>
+    <string name="stats_counters_count">计数器：</string>
+    <string name="stats_clicks_count">点击数：</string>
+    <string name="stats_long_click">最长点击 (ms)：</string>
+    <string name="stats_short_click">最短点击 (ms)：</string>
+    <string name="stats_most_clicks">最多点击：</string>
+
+    <string name="stats_title">统计</string>
+    <string name="confirmation_delete_title">删除计数器？</string>
+    <string name="confirmation_clear_clicks_title">清除所有点击？</string>
+    <string name="nav_others">其他</string>
+    <string name="nav_send_email_helper">发送邮件使用</string>
+    <string name="nav_send_email">发送反馈</string>
+    <string name="options_description">选项</string>
+    <string name="enable_dark_theme">启用深色主题</string>
+    <string name="use_seconds">使用秒</string>
+
+    <string name="selected_items_count" formatted="false">已选择 %d 项</string>
+    <string name="menu_delete_selected">删除选中项</string>
+    <string name="menu_wipe_selected">清除点击</string>
+
+    <string name="confirmation_delete_selected_title">删除选中的项目？</string>
+    <string name="confirmation_delete_selected_message" formatted="false">确定要删除 %d 个计数器吗？此操作无法撤消。</string>
+    <string name="confirmation_action_positive_delete">删除</string>
+
+    <string name="confirmation_wipe_selected_title">清除选中项的点击？</string>
+    <string name="confirmation_wipe_selected_message" formatted="false">确定要清除 %d 个选中计数器的所有点击吗？</string>
+    <string name="confirmation_action_positive_wipe">清除</string>
+</resources>
