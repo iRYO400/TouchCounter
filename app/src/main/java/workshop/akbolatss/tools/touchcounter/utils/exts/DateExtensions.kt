@@ -11,7 +11,8 @@ fun Date.formatAsRelativeInMinutes(): String {
         DateUtils.getRelativeTimeSpanString(
             this.time,
             Calendar.getInstance().timeInMillis,
-            DateUtils.MINUTE_IN_MILLIS
+            DateUtils.MINUTE_IN_MILLIS,
+            DateUtils.FORMAT_ABBREV_RELATIVE,
         ).toString()
     } catch (e: ParseException) {
         Timber.e(e)
