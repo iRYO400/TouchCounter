@@ -28,6 +28,7 @@
     <string name="enable_dark_theme">डार्क थीम सक्षम करें</string>
     <string name="use_seconds">सेकंड का उपयोग करें</string>
 
+    <string name="enable_vibrations">कंपन सक्षम करें</string>
     <string name="selected_items_count" formatted="false">%d चयनित</string>
     <string name="menu_delete_selected">चयनित को डिलीट करें</string>
     <string name="menu_wipe_selected">क्लिक्स साफ़ करें</string>

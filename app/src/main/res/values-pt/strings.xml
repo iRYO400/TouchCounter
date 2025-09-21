@@ -28,6 +28,7 @@
     <string name="enable_dark_theme">Ativar tema escuro</string>
     <string name="use_seconds">Usar segundos</string>
 
+    <string name="enable_vibrations">Ativar vibrações</string>
     <string name="selected_items_count" formatted="false">%d selecionados</string>
     <string name="menu_delete_selected">Excluir selecionados</string>
     <string name="menu_wipe_selected">Limpar cliques</string>

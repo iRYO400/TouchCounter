@@ -28,6 +28,7 @@
     <string name="enable_dark_theme">Вкл. темную тему</string>
     <string name="use_seconds">Исп. секунды</string>
 
+    <string name="enable_vibrations">Вкл. вибрации</string>
     <string name="selected_items_count" formatted="false">Выбрано: %d</string>
     <string name="menu_delete_selected">Удалить выбранное</string>
     <string name="menu_wipe_selected">Сбросить клики</string>

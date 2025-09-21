@@ -3,8 +3,12 @@ package workshop.akbolatss.tools.touchcounter.ui.counter
 import android.animation.ArgbEvaluator
 import android.animation.ObjectAnimator
 import android.annotation.SuppressLint
+import android.content.Context
 import android.os.Build
 import android.os.Bundle
+import android.os.VibrationEffect
+import android.os.Vibrator
+import android.os.VibratorManager
 import android.util.Property
 import android.view.MotionEvent
 import android.view.animation.DecelerateInterpolator
@@ -55,6 +59,16 @@ class ClickListActivity : AppCompatActivity() {
     private lateinit var adapter: ClickListRVA
 
     private lateinit var animator: ObjectAnimator
+
+    private val vibrator: Vibrator by lazy {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            val vibratorManager = getSystemService(Context.VIBRATOR_MANAGER_SERVICE) as VibratorManager
+            vibratorManager.defaultVibrator
+        } else {
+            @Suppress("DEPRECATION")
+            getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         AndroidInjection.inject(this)
@@ -141,7 +155,7 @@ class ClickListActivity : AppCompatActivity() {
         viewModel.counter.observe(this) { counterDto ->
             if (counterDto == null) {
                 toast("Error occurred, please try open again")
-                onBackPressed()
+                finish()
             }
         }
         viewModel.clickList.observe(this) { clicks ->
@@ -194,6 +208,12 @@ class ClickListActivity : AppCompatActivity() {
 
                         binding.tvMin.text = getString(R.string.min_click, timeText, click.position)
                     }
+                }
+            }
+
+            launch {
+                repeatOnLifecycle(Lifecycle.State.STARTED) {
+                    viewModel.vibrateEffect.collect { vibratePhone() }
                 }
             }
         }
@@ -277,7 +297,21 @@ class ClickListActivity : AppCompatActivity() {
     override fun onPause() {
         btnRelease(true)
         viewModel.updateCounter()
+        vibrator.cancel()
         super.onPause()
+    }
+
+    private fun vibratePhone() {
+        if (userPreferencesDelegate.isVibrationEnabled() && vibrator.hasVibrator()) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                vibrator.vibrate(VibrationEffect.createOneShot(300, VibrationEffect.EFFECT_CLICK))
+            } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                vibrator.vibrate(VibrationEffect.createOneShot(300, VibrationEffect.DEFAULT_AMPLITUDE))
+            } else {
+                @Suppress("DEPRECATION")
+                vibrator.vibrate(300)
+            }
+        }
     }
 
     private val property: Property<TextView, Int> =

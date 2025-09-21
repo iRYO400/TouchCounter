@@ -6,12 +6,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asFlow
 import androidx.lifecycle.switchMap
 import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.CreationExtras
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.shareIn
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import workshop.akbolatss.tools.touchcounter.data.dto.ClickDto
@@ -35,6 +36,7 @@ constructor(
 ) : ViewModel() {
 
     val counterId = MutableLiveData<Long>()
+    val heldMillis = MutableLiveData<Long>()
 
     val counter: LiveData<CounterDto> = counterId.switchMap { counterId ->
         if (counterId == null) AbsentLiveData.create()
@@ -58,12 +60,23 @@ constructor(
         .filterNotNull()
         .stateIn(viewModelScope, SharingStarted.Lazily, ClickStatsDto.empty())
 
+    val vibrateEffect: Flow<Unit> = heldMillis
+        .asFlow()
+        .map { currentHeldMillis ->
+            if (currentHeldMillis >= lastVibrationTriggerMillis + VIBRATION_INTERVAL_MS) {
+                lastVibrationTriggerMillis = (currentHeldMillis / VIBRATION_INTERVAL_MS) * VIBRATION_INTERVAL_MS
+            } else {
+                null
+            }
+        }
+        .filterNotNull()
+        .shareIn(viewModelScope, SharingStarted.Lazily)
+
     private val timer: Timer = Timer()
     private var timerTask: TimerTask? = null
     private var btnHoldingStartTime = Date()
     private var initialClickCount = 0
-
-    val heldMillis = MutableLiveData<Long>()
+    private var lastVibrationTriggerMillis: Long = 0
 
     fun initArguments(counterId: Long, initialClickCount: Int) {
         if (this.counterId.value == counterId)
@@ -75,14 +88,17 @@ constructor(
 
     fun executeTask() {
         btnHoldingStartTime = Date()
+        lastVibrationTriggerMillis = 0
         timerTask = timer.scheduleAtFixedRate(time = btnHoldingStartTime, period = 1) {
-            heldMillis.postValue(System.currentTimeMillis().minus(btnHoldingStartTime.time))
+            val currentHeldMillis = System.currentTimeMillis().minus(btnHoldingStartTime.time)
+            heldMillis.postValue(currentHeldMillis)
         }
     }
 
     fun cancelTask() {
         timerTask?.cancel()
         timerTask = null
+        lastVibrationTriggerMillis = 0
     }
 
     fun createClick(isForce: Boolean) {
@@ -131,7 +147,7 @@ constructor(
         timer.purge()
     }
 
-    companion object {
-        val COUNTER_ID = object : CreationExtras.Key<Long> {}
+    private companion object {
+        const val VIBRATION_INTERVAL_MS = 10_000L
     }
 }

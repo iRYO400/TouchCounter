@@ -33,6 +33,7 @@
     <string name="click" translatable="false">Click</string>
     <string name="enable_dark_theme">Enable dark theme</string>
     <string name="use_seconds">Use seconds</string>
+    <string name="enable_vibrations">Enable Vibrations</string>
 
     <string name="selected_items_count" formatted="false">%d selected</string>
     <string name="menu_delete_selected">Delete Selected</string>

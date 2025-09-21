@@ -199,7 +199,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textView4" />
 
     <com.google.android.material.switchmaterial.SwitchMaterial
-        android:id="@+id/switchUseSeconds"
+        android:id="@+id/useSecondsSwitch"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -208,5 +208,16 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/darkThemeSwitch" />
+
+    <com.google.android.material.switchmaterial.SwitchMaterial
+        android:id="@+id/enableVibrationsSwitch"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:text="@string/enable_vibrations"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/useSecondsSwitch" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -28,6 +28,7 @@
     <string name="enable_dark_theme">启用深色主题</string>
     <string name="use_seconds">使用秒</string>
 
+    <string name="enable_vibrations">启用震动</string>
     <string name="selected_items_count" formatted="false">已选择 %d 项</string>
     <string name="menu_delete_selected">删除选中项</string>
     <string name="menu_wipe_selected">清除点击</string>

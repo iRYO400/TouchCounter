@@ -99,7 +99,8 @@ class CounterListActivity : AppCompatActivity() {
     }
 
     private fun initView() {
-        navHeaderBinding.switchUseSeconds.isChecked = userPreferencesDelegate.isUseSecondsEnabled()
+        navHeaderBinding.useSecondsSwitch.isChecked = userPreferencesDelegate.isUseSecondsEnabled()
+        navHeaderBinding.enableVibrationsSwitch.isChecked = userPreferencesDelegate.isVibrationEnabled()
     }
 
     private fun initRecyclerView() {
@@ -246,8 +247,11 @@ class CounterListActivity : AppCompatActivity() {
         navHeaderBinding.darkThemeSwitch.setOnCheckedChangeListener { _, isChecked ->
             darkThemeDelegate.isDarkTheme = isChecked
         }
-        navHeaderBinding.switchUseSeconds.setOnCheckedChangeListener { _, isChecked ->
+        navHeaderBinding.useSecondsSwitch.setOnCheckedChangeListener { _, isChecked ->
             userPreferencesDelegate.saveUseSecondsState(isChecked)
+        }
+        navHeaderBinding.enableVibrationsSwitch.setOnCheckedChangeListener { _, isChecked ->
+            userPreferencesDelegate.saveVibrationEnabledState(isChecked)
         }
     }
 
