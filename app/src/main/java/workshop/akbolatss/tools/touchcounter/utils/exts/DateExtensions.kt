@@ -24,7 +24,8 @@ fun Date.formatAsRelativeInSeconds(): String {
         DateUtils.getRelativeTimeSpanString(
             this.time,
             Calendar.getInstance().timeInMillis,
-            DateUtils.SECOND_IN_MILLIS
+            DateUtils.SECOND_IN_MILLIS,
+            DateUtils.FORMAT_ABBREV_RELATIVE,
         ).toString()
     } catch (e: ParseException) {
         Timber.e(e)

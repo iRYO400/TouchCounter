@@ -7,13 +7,15 @@ import androidx.lifecycle.asFlow
 import androidx.lifecycle.switchMap
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.CreationExtras
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.mapNotNull
+import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import workshop.akbolatss.tools.touchcounter.data.dto.ClickDto
+import workshop.akbolatss.tools.touchcounter.data.dto.ClickStatsDto
 import workshop.akbolatss.tools.touchcounter.data.dto.CounterDto
 import workshop.akbolatss.tools.touchcounter.domain.repository.ClickRepository
 import workshop.akbolatss.tools.touchcounter.domain.repository.CounterRepository
@@ -24,6 +26,7 @@ import java.util.TimerTask
 import javax.inject.Inject
 import kotlin.concurrent.scheduleAtFixedRate
 
+@OptIn(ExperimentalCoroutinesApi::class)
 class ClickListViewModel
 @Inject
 constructor(
@@ -43,22 +46,17 @@ constructor(
         else clickRepository.findClickList(counterId)
     }
 
-    val longestClick: Flow<Long> = counterId.switchMap { counterId ->
-        if (counterId == null) AbsentLiveData.create()
-        else clickRepository.getLongestClick(counterId)
-    }
+    val longestClick: Flow<ClickStatsDto> = counterId
         .asFlow()
-        .mapNotNull { it ?: 0 }
-        .stateIn(viewModelScope, SharingStarted.Lazily, 0)
+        .flatMapLatest { counterId -> clickRepository.getLongestClick(counterId) }
+        .filterNotNull()
+        .stateIn(viewModelScope, SharingStarted.Lazily, ClickStatsDto.empty())
 
-
-    val shortestClick: Flow<Long> = counterId.switchMap { counterId ->
-        if (counterId == null) AbsentLiveData.create()
-        else clickRepository.getShortestClick(counterId)
-    }
+    val shortestClick: Flow<ClickStatsDto> = counterId
         .asFlow()
-        .mapNotNull { it ?: 0 }
-        .stateIn(viewModelScope, SharingStarted.Lazily, 0)
+        .flatMapLatest { counterId -> clickRepository.getShortestClick(counterId) }
+        .filterNotNull()
+        .stateIn(viewModelScope, SharingStarted.Lazily, ClickStatsDto.empty())
 
     private val timer: Timer = Timer()
     private var timerTask: TimerTask? = null
@@ -116,13 +114,13 @@ constructor(
     }
 
     fun removeClick(clickDto: ClickDto) {
-        viewModelScope.launch { clickRepository.remove(clickDto.id) }
+        viewModelScope.launch { clickRepository.removeBy(clickDto) }
     }
 
     fun clearAllClick() {
-        counter.value?.let { counter ->
+        counterId.value?.let { counterId ->
             viewModelScope.launch {
-                clickRepository.removeAll(counter.id)
+                clickRepository.removeBy(counterId)
             }
         }
     }

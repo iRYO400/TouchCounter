@@ -121,7 +121,7 @@
         app:layout_constraintEnd_toStartOf="@+id/tv_max"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="Min: 25 ms" />
+        tools:text="Min: 25 ms (55)" />
 
     <TextView
         android:id="@+id/tv_max"
@@ -134,6 +134,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/tv_min"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="Max: 3500 ms" />
+        tools:text="Max: 3500 ms (34)" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

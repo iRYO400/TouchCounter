@@ -34,9 +34,6 @@
     <string name="enable_dark_theme">Enable dark theme</string>
     <string name="use_seconds">Use seconds</string>
 
-    <string name="min" translatable="false">Min: %s</string>
-    <string name="max" translatable="false">Max: %s</string>
-
     <string name="selected_items_count" formatted="false">%d selected</string>
     <string name="menu_delete_selected">Delete Selected</string>
     <string name="menu_wipe_selected">Wipe Clicks</string>
@@ -48,4 +45,9 @@
     <string name="confirmation_wipe_selected_title">Wipe Clicks for Selected?</string>
     <string name="confirmation_wipe_selected_message" formatted="false">Are you sure you want to wipe all clicks for %d selected counters?</string>
     <string name="confirmation_action_positive_wipe">Wipe</string>
+
+    <string name="min_click_empty" translatable="false">Min: - (-)</string>
+    <string name="min_click" translatable="false">Min: %s (%d)</string>
+    <string name="max_click" translatable="false">Max: %s (%d)</string>
+    <string name="max_click_empty" translatable="false">Max: - (-)</string>
 </resources>

@@ -1,25 +1,26 @@
 package workshop.akbolatss.tools.touchcounter.domain.repository
 
 import androidx.lifecycle.LiveData
+import kotlinx.coroutines.flow.Flow
 import workshop.akbolatss.tools.touchcounter.data.dto.ClickDto
+import workshop.akbolatss.tools.touchcounter.data.dto.ClickStatsDto
 
 interface ClickRepository {
 
     suspend fun createClick(clickObject: ClickDto)
-    suspend fun remove(id: Long)
 
     suspend fun getAllClicks(): Int
+    suspend fun getMostClicksInCounter(): Int
 
     suspend fun getLongestClick(): Long
-    fun getLongestClick(counterId: Long): LiveData<Long?>
-
     suspend fun getShortestClick(): Long
-    fun getShortestClick(counterId: Long): LiveData<Long?>
 
-    suspend fun getMostClicksInCounter(): Int
+    fun getLongestClick(counterId: Long): Flow<ClickStatsDto?>
+    fun getShortestClick(counterId: Long): Flow<ClickStatsDto?>
 
     fun findClickList(counterId: Long): LiveData<List<ClickDto>>
 
-    suspend fun removeAll(counterId: Long)
-    suspend fun deleteClicksByCounterIds(counterIds: List<Long>)
+    suspend fun removeBy(clickDto: ClickDto)
+    suspend fun removeBy(counterId: Long)
+    suspend fun removeBy(counterIds: List<Long>)
 }

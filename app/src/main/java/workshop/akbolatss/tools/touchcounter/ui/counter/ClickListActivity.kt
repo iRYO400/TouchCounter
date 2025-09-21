@@ -25,6 +25,8 @@ import kotlinx.coroutines.launch
 import workshop.akbolatss.tools.touchcounter.R
 import workshop.akbolatss.tools.touchcounter.databinding.ActivityCounterBinding
 import workshop.akbolatss.tools.touchcounter.ui.ViewModelFactory
+import workshop.akbolatss.tools.touchcounter.ui.counter.callbacks.SwipeToDeleteCallback
+import workshop.akbolatss.tools.touchcounter.utils.INITIAL
 import workshop.akbolatss.tools.touchcounter.utils.INTENT_CLICK_COUNT
 import workshop.akbolatss.tools.touchcounter.utils.INTENT_COUNTER_ID
 import workshop.akbolatss.tools.touchcounter.utils.android.DarkThemeDelegate
@@ -106,8 +108,7 @@ class ClickListActivity : AppCompatActivity() {
         adapter = ClickListRVA(userPreferencesDelegate.isUseSecondsEnabled())
         binding.recyclerView.adapter = adapter
         val itemSwipeHelper = SwipeToDeleteCallback { clickPos ->
-            val click = adapter.currentList[clickPos]
-            click?.let {
+            adapter.currentList[clickPos]?.let {
                 viewModel.removeClick(it)
             }
         }
@@ -158,30 +159,40 @@ class ClickListActivity : AppCompatActivity() {
         with(lifecycleScope) {
             launch {
                 repeatOnLifecycle(Lifecycle.State.STARTED) {
-                    viewModel.longestClick.collect { ms ->
-                        val longestClickText = if (userPreferencesDelegate.isUseSecondsEnabled()) {
-                            val seconds = TimeUnit.MILLISECONDS.toSeconds(ms)
-                            getString(R.string.seconds, seconds)
-                        } else {
-                            getString(R.string.millis, ms)
+                    viewModel.longestClick.collect { click ->
+                        if (click.heldMillis == INITIAL) {
+                            binding.tvMax.text = getString(R.string.max_click_empty)
+                            return@collect
                         }
 
-                        binding.tvMax.text = getString(R.string.max, longestClickText)
+                        val timeText = if (userPreferencesDelegate.isUseSecondsEnabled()) {
+                            val seconds = TimeUnit.MILLISECONDS.toSeconds(click.heldMillis)
+                            getString(R.string.seconds, seconds)
+                        } else {
+                            getString(R.string.millis, click.heldMillis)
+                        }
+
+                        binding.tvMax.text = getString(R.string.max_click, timeText, click.position)
                     }
                 }
             }
 
             launch {
                 repeatOnLifecycle(Lifecycle.State.STARTED) {
-                    viewModel.shortestClick.collect { ms ->
-                        val shortestClickText = if (userPreferencesDelegate.isUseSecondsEnabled()) {
-                            val seconds = TimeUnit.MILLISECONDS.toSeconds(ms)
-                            getString(R.string.seconds, seconds)
-                        } else {
-                            getString(R.string.millis, ms)
+                    viewModel.shortestClick.collect { click ->
+                        if (click.heldMillis == INITIAL) {
+                            binding.tvMin.text = getString(R.string.min_click_empty)
+                            return@collect
                         }
 
-                        binding.tvMin.text = getString(R.string.min, shortestClickText)
+                        val timeText = if (userPreferencesDelegate.isUseSecondsEnabled()) {
+                            val seconds = TimeUnit.MILLISECONDS.toSeconds(click.heldMillis)
+                            getString(R.string.seconds, seconds)
+                        } else {
+                            getString(R.string.millis, click.heldMillis)
+                        }
+
+                        binding.tvMin.text = getString(R.string.min_click, timeText, click.position)
                     }
                 }
             }

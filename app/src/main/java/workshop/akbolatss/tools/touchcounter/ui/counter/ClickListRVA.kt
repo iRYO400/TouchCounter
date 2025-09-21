@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import java.util.concurrent.TimeUnit
@@ -27,7 +26,9 @@ class ClickListRVA(
                 R.layout.item_click,
                 parent,
                 false
-            ), handler, isUseSecondsEnabled
+            ),
+            handler,
+            isUseSecondsEnabled,
         )
     }
 
@@ -91,22 +92,3 @@ private val DIFF_CALLBACK: DiffUtil.ItemCallback<ClickDto> =
                 oldItem.heldMillis == newItem.heldMillis
         }
     }
-
-class SwipeToDeleteCallback(
-    private val itemPos: (Int) -> Unit
-) : ItemTouchHelper.SimpleCallback(
-    0, ItemTouchHelper.LEFT
-) {
-
-    override fun onMove(
-        recyclerView: RecyclerView,
-        viewHolder: RecyclerView.ViewHolder,
-        target: RecyclerView.ViewHolder
-    ): Boolean = false
-
-    override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-        itemPos(viewHolder.layoutPosition)
-    }
-
-    override fun getSwipeThreshold(viewHolder: RecyclerView.ViewHolder): Float = 0.7f
-}
