@@ -110,6 +110,7 @@ dependencies {
 
     androidTestImplementation(libs.androidx.junit)
     testImplementation(libs.androidx.junit)
+    testImplementation(libs.kotlin.test)
 
     androidTestImplementation(libs.mockito.kotlin)
     testImplementation(libs.mockito.kotlin)
@@ -127,4 +128,5 @@ dependencies {
     testImplementation(libs.google.truth)
 
     testImplementation(libs.robolectric)
+    testImplementation(libs.turbine)
 }

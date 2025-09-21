@@ -2,22 +2,25 @@ package workshop.akbolatss.tools.touchcounter.data.repository
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.MutableLiveData
+import app.cash.turbine.test
 import com.google.common.truth.Truth.assertThat
 import com.jraska.livedata.test
-import java.util.Date
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import org.mockito.Mockito.`when`
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.never
 import org.mockito.Mockito.times
 import org.mockito.Mockito.verify
+import org.mockito.Mockito.`when`
 import workshop.akbolatss.tools.touchcounter.data.dao.ClickDao
 import workshop.akbolatss.tools.touchcounter.data.dto.ClickDto
+import workshop.akbolatss.tools.touchcounter.data.dto.ClickStatsDto
 import workshop.akbolatss.tools.touchcounter.domain.repository.ClickRepository
 import workshop.akbolatss.tools.touchcounter.utils.exts.init
+import java.util.Date
+import kotlin.test.assertEquals
 
 class ClickRepositoryImplTest {
 
@@ -195,6 +198,76 @@ class ClickRepositoryImplTest {
                 it.isNotEmpty() && it.size == 2
             }
         verify(clickDao, times(1)).findListBy(counterId)
+    }
+
+    @Test
+    fun `get longest click by counterId, when dao returns null, flow emits empty dto`() = runTest {
+        // given
+        val counterId = 0L
+        `when`(clickDao.getLongestClick(counterId)).thenReturn(null)
+
+        // when
+        val actualFlow = repository.getLongestClick(counterId)
+
+        // then
+        actualFlow.test {
+            assertEquals(ClickStatsDto.empty(), awaitItem())
+            cancelAndIgnoreRemainingEvents()
+        }
+        verify(clickDao, times(1)).getLongestClick(counterId)
+    }
+
+    @Test
+    fun `get longest click by counterId, when dao returns data, flow emits data`() = runTest {
+        // given
+        val counterId = 0L
+        val expectedDto = ClickStatsDto(heldMillis = 101L, position = 1L)
+        `when`(clickDao.getLongestClick(counterId)).thenReturn(expectedDto)
+
+        // when
+        val actualFlow = repository.getLongestClick(counterId)
+
+        // then
+        actualFlow.test {
+            assertEquals(expectedDto, awaitItem())
+            cancelAndIgnoreRemainingEvents()
+        }
+        verify(clickDao, times(1)).getLongestClick(counterId)
+    }
+
+    @Test
+    fun `get shortest click by counterId, when dao returns null, flow emits empty dto`() = runTest {
+        // given
+        val counterId = 0L
+        `when`(clickDao.getShortestClick(counterId)).thenReturn(null)
+
+        // when
+        val actualFlow = repository.getShortestClick(counterId)
+
+        // then
+        actualFlow.test {
+            assertEquals(ClickStatsDto.empty(), awaitItem())
+            cancelAndIgnoreRemainingEvents()
+        }
+        verify(clickDao, times(1)).getShortestClick(counterId)
+    }
+
+    @Test
+    fun `get shortest click by counterId, when dao returns data, flow emits data`() = runTest {
+        // given
+        val counterId = 0L
+        val expectedDto = ClickStatsDto(heldMillis = 10L, position = 1L)
+        `when`(clickDao.getShortestClick(counterId)).thenReturn(expectedDto)
+
+        // when
+        val actualFlow = repository.getShortestClick(counterId)
+
+        // then
+        actualFlow.test {
+            assertEquals(expectedDto, awaitItem())
+            cancelAndIgnoreRemainingEvents()
+        }
+        verify(clickDao, times(1)).getShortestClick(counterId)
     }
 
     private fun getFakeClickA(): ClickDto =
