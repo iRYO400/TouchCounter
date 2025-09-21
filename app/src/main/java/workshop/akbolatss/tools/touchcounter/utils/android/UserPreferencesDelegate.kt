@@ -29,7 +29,7 @@ class UserPreferencesDelegate(
         }
     }
 
-    override fun isVibrationEnabled(): Boolean = sharedPreferences.getBoolean(KEY_VIBRATION_ENABLED, true)
+    override fun isVibrationEnabled(): Boolean = sharedPreferences.getBoolean(KEY_VIBRATION_ENABLED, false)
 
     companion object {
         private const val KEY_USE_SECONDS = "_useSeconds"

@@ -303,13 +303,11 @@ class ClickListActivity : AppCompatActivity() {
 
     private fun vibratePhone() {
         if (userPreferencesDelegate.isVibrationEnabled() && vibrator.hasVibrator()) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                vibrator.vibrate(VibrationEffect.createOneShot(300, VibrationEffect.EFFECT_CLICK))
-            } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                vibrator.vibrate(VibrationEffect.createOneShot(300, VibrationEffect.DEFAULT_AMPLITUDE))
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                vibrator.vibrate(VibrationEffect.createOneShot(100, VibrationEffect.DEFAULT_AMPLITUDE))
             } else {
                 @Suppress("DEPRECATION")
-                vibrator.vibrate(300)
+                vibrator.vibrate(100)
             }
         }
     }
